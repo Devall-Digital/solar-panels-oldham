@@ -3,117 +3,387 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Solar Panels Oldham - Webhook Test</title>
+    <title>Coming Soon - We're Building Something Amazing</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        * {
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #ffc837 100%);
-            color: white;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+            color: white;
+            overflow: hidden;
         }
+
+        .background-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(120, 119, 198, 0.2) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
         .container {
             text-align: center;
-            padding: 40px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 20px;
-            backdrop-filter: blur(15px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+            position: relative;
             max-width: 800px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
+            padding: 60px 40px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 1s ease-out;
         }
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
-            animation: glow 2s ease-in-out infinite alternate;
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        @keyframes glow {
-            from { text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5), 0 0 10px #ffc837; }
-            to { text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5), 0 0 20px #ffc837, 0 0 30px #ffc837; }
-        }
-        .status {
-            background: linear-gradient(45deg, #ff6b6b, #feca57);
-            padding: 15px 30px;
-            border-radius: 10px;
-            font-size: 1.2rem;
-            margin: 20px 0;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        }
-        .test-info {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        .timestamp {
-            font-size: 0.9rem;
-            opacity: 0.9;
-            margin-top: 20px;
-            background: rgba(0, 0, 0, 0.2);
-            padding: 10px;
-            border-radius: 5px;
-        }
-        .emoji {
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 40px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 2rem;
-            margin: 0 10px;
-            animation: bounce 1s infinite;
+            animation: pulse 2s ease-in-out infinite;
         }
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-10px); }
-            60% { transform: translateY(-5px); }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ffffff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+            animation: textGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes textGlow {
+            from { filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5)); }
+            to { filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.8)); }
+        }
+
+        .subtitle {
+            font-size: 1.4rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        .progress-container {
+            margin: 50px 0;
+            position: relative;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 3px;
+            width: 0%;
+            animation: progressAnimation 3s ease-in-out forwards;
+        }
+
+        @keyframes progressAnimation {
+            to { width: 75%; }
+        }
+
+        .progress-text {
+            font-size: 1rem;
+            opacity: 0.8;
+            font-weight: 500;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+
+        .feature {
+            padding: 30px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .feature h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .feature p {
+            font-size: 0.95rem;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+
+        .cta-section {
+            margin-top: 50px;
+        }
+
+        .notify-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 18px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .notify-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .social-links {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .social-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9rem;
+            opacity: 0.6;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 20px;
+                padding: 40px 30px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 30px 20px;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="background-animation"></div>
+    
     <div class="container">
-        <h1>☀️ Solar Panels Oldham ☀️</h1>
-        
-        <div class="status">
-            <span class="emoji">💥</span>
-            SECURE WEBHOOK v3.0 - DEPLOYMENT TESTING!
-            <span class="emoji">💥</span>
+        <div class="logo">
+            🚀
         </div>
         
-        <div class="test-info">
-            <h2>🔋 Test Website Powered Up!</h2>
-            <p>This is a test page to verify automatic deployment from GitHub to 20i hosting.</p>
-            <p><strong>Domain:</strong> solar-panels-oldham.co.uk</p>
-            <p><strong>Repository:</strong> /home/sites/34b/b/b9ed38cdb2/public_html</p>
+        <h1>Something Amazing is Coming</h1>
+        <p class="subtitle">We're working hard behind the scenes to bring you an incredible experience. Stay tuned!</p>
+        
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <div class="progress-text">Development Progress: 75%</div>
         </div>
         
-        <div class="test-info">
-            <h3>🌟 Testing Instructions:</h3>
-            <ol style="text-align: left; max-width: 500px; margin: 0 auto;">
-                <li>Edit this file on your local machine</li>
-                <li>Commit changes to Git</li>
-                <li>Push to GitHub main branch</li>
-                <li>Watch for automatic deployment!</li>
-                <li>Check GitHub webhook status</li>
-            </ol>
+        <div class="features">
+            <div class="feature">
+                <span class="feature-icon">⚡</span>
+                <h3>Lightning Fast</h3>
+                <p>Built with modern technologies for optimal performance and speed.</p>
+            </div>
+            
+            <div class="feature">
+                <span class="feature-icon">🎨</span>
+                <h3>Beautiful Design</h3>
+                <p>Crafted with attention to detail and user experience in mind.</p>
+            </div>
+            
+            <div class="feature">
+                <span class="feature-icon">📱</span>
+                <h3>Mobile First</h3>
+                <p>Responsive design that works seamlessly across all devices.</p>
+            </div>
         </div>
         
-        <div class="test-info">
-            <h3>🔐 Security Status:</h3>
-            <p>✅ New secret token configured</p>
-            <p>✅ Conflict resolution enabled</p>
-            <p>✅ Branch protection active</p>
-            <p>🔥 SECURE CONFIG FILES DEPLOYED!</p>
+        <div class="cta-section">
+            <button class="notify-btn" onclick="showNotification()">Notify Me When Ready</button>
         </div>
         
-        <div class="timestamp">
-            <p>📅 Created: July 6, 2025</p>
-            <p>🔄 Status: SECURE CONFIG TESTING - Dec 19, 2024 4:45 PM</p>
-            <p>🚀 Version: 3.0 - SECURITY ENHANCED</p>
+        <div class="social-links">
+            <a href="#" class="social-link">📧</a>
+            <a href="#" class="social-link">📱</a>
+            <a href="#" class="social-link">🌐</a>
         </div>
     </div>
+    
+    <div class="footer">
+        © 2024 - Coming Soon
+    </div>
+
+    <script>
+        function showNotification() {
+            // Create a simple notification
+            const notification = document.createElement('div');
+            notification.innerHTML = '✨ Thanks for your interest! We\'ll notify you soon.';
+            notification.style.cssText = `
+                position: fixed;
+                top: 30px;
+                right: 30px;
+                background: linear-gradient(45deg, #667eea, #764ba2);
+                color: white;
+                padding: 20px 30px;
+                border-radius: 15px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                z-index: 1000;
+                font-weight: 600;
+                animation: slideIn 0.3s ease-out;
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease-in';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+        
+        // Add some dynamic styles
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            
+            @keyframes slideOut {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Add some interactive effects
+        document.addEventListener('mousemove', (e) => {
+            const cursor = document.querySelector('.container');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            cursor.style.transform = `perspective(1000px) rotateY(${(x - 0.5) * 5}deg) rotateX(${(y - 0.5) * -5}deg)`;
+        });
+    </script>
 </body>
 </html> 
