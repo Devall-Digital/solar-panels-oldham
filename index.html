@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar Panels Oldham - Webhook Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #ffc837 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            text-align: center;
+            padding: 40px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        @keyframes glow {
+            from { text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5), 0 0 10px #ffc837; }
+            to { text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5), 0 0 20px #ffc837, 0 0 30px #ffc837; }
+        }
+        .status {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            margin: 20px 0;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        .test-info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .timestamp {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-top: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .emoji {
+            font-size: 2rem;
+            margin: 0 10px;
+            animation: bounce 1s infinite;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>☀️ Solar Panels Oldham ☀️</h1>
+        
+        <div class="status">
+            <span class="emoji">⚡</span>
+            WEBHOOK DEPLOYMENT TEST ACTIVE
+            <span class="emoji">⚡</span>
+        </div>
+        
+        <div class="test-info">
+            <h2>🔋 Test Website Powered Up!</h2>
+            <p>This is a test page to verify automatic deployment from GitHub to 20i hosting.</p>
+            <p><strong>Domain:</strong> solar-panels-oldham.co.uk</p>
+            <p><strong>Repository:</strong> /home/sites/34b/b/b9ed38cdb2/public_html</p>
+        </div>
+        
+        <div class="test-info">
+            <h3>🌟 Testing Instructions:</h3>
+            <ol style="text-align: left; max-width: 500px; margin: 0 auto;">
+                <li>Edit this file on your local machine</li>
+                <li>Commit changes to Git</li>
+                <li>Push to GitHub main branch</li>
+                <li>Watch for automatic deployment!</li>
+                <li>Check GitHub webhook status</li>
+            </ol>
+        </div>
+        
+        <div class="test-info">
+            <h3>🔐 Security Status:</h3>
+            <p>✅ New secret token configured</p>
+            <p>✅ Conflict resolution enabled</p>
+            <p>✅ Branch protection active</p>
+        </div>
+        
+        <div class="timestamp">
+            <p>📅 Created: July 6, 2025</p>
+            <p>🔄 Status: Ready for webhook testing</p>
+            <p>🚀 Version: 1.0</p>
+        </div>
+    </div>
+</body>
+</html> 

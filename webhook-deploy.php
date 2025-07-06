@@ -6,7 +6,7 @@
  */
 
 // Configuration
-$SECRET_TOKEN = '5BxmyiA1eqmxoRUXg0CNguolUZxAelvo';
+$SECRET_TOKEN = 'H7jK9pN3xF6qL2sC8vB5mZ4nR1eT3yW6';
 $REPO_PATH = '/home/sites/34b/b/b9ed38cdb2/public_html';
 $BRANCH = 'main';
 $LOG_FILE = 'deploy.log';
