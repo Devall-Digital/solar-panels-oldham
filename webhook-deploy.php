@@ -6,7 +6,8 @@
  */
 
 // Configuration
-$SECRET_TOKEN = 'H7jK9pN3xF6qL2sC8vB5mZ4nR1eT3yW6';
+// Load secret token from separate config file (not committed to GitHub)
+require_once 'webhook-config.php';
 $REPO_PATH = '/home/sites/34b/b/b9ed38cdb2/public_html';
 $BRANCH = 'main';
 $LOG_FILE = 'deploy.log';
