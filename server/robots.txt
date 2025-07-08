@@ -1,0 +1,42 @@
+# Solar Panels Oldham - Robots.txt
+# Search Engine Crawling Instructions
+
+User-agent: *
+Allow: /
+
+# Allow all search engines to crawl the site
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+# Disallow access to sensitive areas
+Disallow: /php/
+Disallow: /includes/
+Disallow: /server/
+Disallow: /.git/
+Disallow: /webhook-deploy.php
+Disallow: /*.log$
+Disallow: /*.bak$
+Disallow: /*.tmp$
+
+# Allow access to important pages
+Allow: /css/
+Allow: /js/
+Allow: /images/
+Allow: /favicon.ico
+Allow: /sitemap.xml
+
+# Crawl delay (optional - helps with server load)
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://solarpanelsoldham.co.uk/sitemap.xml
+
+# Additional sitemaps for different content types
+Sitemap: https://solarpanelsoldham.co.uk/sitemap-pages.xml
+Sitemap: https://solarpanelsoldham.co.uk/sitemap-images.xml
