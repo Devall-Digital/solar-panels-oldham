@@ -87,6 +87,9 @@ body {
     overflow-x: hidden;
     position: relative;
     cursor: none;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 /* Ensure cursor is visible on touch devices */
@@ -217,12 +220,18 @@ textarea:focus {
     margin: 0 auto;
     padding: 0 var(--space-xl);
     position: relative;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* Section Styles */
 section {
     padding: var(--space-5xl) 0;
     position: relative;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
 }
 
 section::before {
