@@ -92,6 +92,15 @@
         cursor: default;
     }
     
+    /* Ensure proper touch interactions */
+    .nav-link,
+    .btn,
+    .service-card,
+    .area-card {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
     /* Navigation Mobile */
     .navbar {
         padding: var(--space-md) 0;

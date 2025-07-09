@@ -89,6 +89,18 @@ body {
     cursor: none;
 }
 
+/* Ensure cursor is visible on touch devices */
+@media (hover: none) and (pointer: coarse) {
+    body {
+        cursor: default;
+    }
+    
+    .cursor-dot,
+    .cursor-outline {
+        display: none !important;
+    }
+}
+
 /* Custom Cursor */
 .cursor-dot,
 .cursor-outline {
@@ -96,6 +108,7 @@ body {
     pointer-events: none;
     z-index: 9999;
     mix-blend-mode: difference;
+    will-change: transform;
 }
 
 .cursor-dot {
@@ -168,6 +181,34 @@ a {
     text-decoration: none;
     transition: var(--transition-base);
     position: relative;
+}
+
+/* Focus states for accessibility */
+a:focus,
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+    outline: 2px solid var(--solar-glow);
+    outline-offset: 2px;
+}
+
+/* Skip to content link for accessibility */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: var(--solar-glow);
+    color: var(--pure-black);
+    padding: 8px;
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+    z-index: 10001;
+    transition: var(--transition-base);
+}
+
+.skip-link:focus {
+    top: 6px;
 }
 
 /* Container */
@@ -1548,3 +1589,36 @@ section::before {
 .relative { position: relative; }
 .absolute { position: absolute; }
 .fixed { position: fixed; }
+
+/* Print Styles */
+@media print {
+    * {
+        background: transparent !important;
+        color: black !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+    
+    body {
+        font-size: 12pt;
+        line-height: 1.4;
+    }
+    
+    .navbar,
+    .nav-toggle,
+    .cursor-dot,
+    .cursor-outline,
+    .back-to-top {
+        display: none !important;
+    }
+    
+    a[href]:after {
+        content: " (" attr(href) ")";
+    }
+    
+    .btn {
+        border: 1px solid black !important;
+        background: white !important;
+        color: black !important;
+    }
+}
