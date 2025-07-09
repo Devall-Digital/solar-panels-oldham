@@ -3,6 +3,9 @@
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
+    // Ensure content is visible first
+    showAllContent();
+    
     initCustomCursor();
     initNavigation();
     initHeroEffects();
@@ -17,6 +20,17 @@ document.addEventListener('DOMContentLoaded', function() {
     initCharts();
     initFAQ();
 });
+
+// Ensure all content is visible (fallback)
+function showAllContent() {
+    const hiddenElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .stagger-item');
+    hiddenElements.forEach(el => {
+        // Add active class immediately for critical content
+        if (el.closest('.services') || el.closest('.about') || el.closest('.local-areas')) {
+            el.classList.add('active');
+        }
+    });
+}
 
 // Custom Cursor
 function initCustomCursor() {

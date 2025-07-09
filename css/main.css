@@ -1699,3 +1699,34 @@ body.menu-open {
         color: black !important;
     }
 }
+
+/* Reveal Animations */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Fallback: Show content if JavaScript doesn't load */
+.no-js .reveal,
+.no-js .reveal-left,
+.no-js .reveal-right,
+.no-js .stagger-item {
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+/* Auto-show content after 3 seconds if JS hasn't activated */
+@keyframes auto-reveal {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+.reveal:not(.active) {
+    animation: auto-reveal 0.5s ease-out 3s forwards;
+}

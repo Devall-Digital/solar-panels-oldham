@@ -4,12 +4,14 @@
 (function() {
     'use strict';
 
-    // ===== ERROR HANDLING STATE =====
+    // Configuration
+    const maxErrors = 5; // Maximum errors before entering error mode
+    const errorCountThreshold = 10; // Threshold for showing user messages (increased)
     
+    // State
     let errorCount = 0;
-    let maxErrors = 5;
     let errorLog = [];
-    let isErrorMode = false;
+    let isErrorMode = false; // Disabled by default
 
     // ===== ERROR TYPES =====
     
@@ -83,9 +85,10 @@
         }
 
         // Check if we should enter error mode
-        if (errorCount >= maxErrors && !isErrorMode) {
-            enterErrorMode();
-        }
+        // Disable error mode for production
+        // if (errorCount >= maxErrors && !isErrorMode) {
+        //     enterErrorMode();
+        // }
 
         // Clean up old errors
         cleanupOldErrors();
@@ -123,7 +126,7 @@
     // Determine if we should show a user message
     function shouldShowUserMessage(type, errorData) {
         // Don't show messages for minor errors
-        if (errorCount > maxErrors) return false;
+        if (errorCount > errorCountThreshold) return false;
         
         // Show messages for critical errors
         const criticalErrors = [

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -105,6 +105,12 @@
     </script>
 </head>
 <body>
+    <script>
+        // Remove no-js class immediately if JavaScript is working
+        document.documentElement.classList.remove('no-js');
+        document.documentElement.classList.add('js');
+    </script>
+    
     <!-- Skip to main content for accessibility -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
     
@@ -1008,5 +1014,25 @@
     <script src="js/analytics.js"></script>
     <script src="js/accessibility.js"></script>
     <script src="js/error-handling.js"></script>
+    
+    <!-- Immediate Content Fix -->
+    <script>
+        // Ensure all content is visible immediately
+        document.addEventListener('DOMContentLoaded', function() {
+            // Force show all hidden content
+            const hiddenElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .stagger-item');
+            hiddenElements.forEach(el => {
+                el.classList.add('active');
+                el.style.opacity = '1';
+                el.style.transform = 'none';
+            });
+            
+            // Remove any performance mode notifications
+            setTimeout(() => {
+                const perfNotifications = document.querySelectorAll('.error-mode-notification');
+                perfNotifications.forEach(notification => notification.remove());
+            }, 100);
+        });
+    </script>
 </body>
 </html>
