@@ -62,7 +62,7 @@ textLines.forEach((line, index) => {
     });
     
     // Click effect
-    line.addEventListener('click', () => {
+    line.addEventListener('click', (event) => {
         // Brief scale animation
         line.style.transform = 'scale(0.95)';
         setTimeout(() => {
@@ -116,27 +116,44 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Background interaction based on mouse position
-document.addEventListener('mousemove', (e) => {
-    const x = e.clientX / window.innerWidth;
-    const y = e.clientY / window.innerHeight;
-    
-    // Subtle parallax effect on background pattern
-    const backgroundPattern = document.querySelector('.background-pattern');
-    const moveX = (x - 0.5) * 30;
-    const moveY = (y - 0.5) * 30;
-    backgroundPattern.style.transform = `translate(${moveX}px, ${moveY}px)`;
-    
-    // Adjust animation speeds based on mouse position
-    const pulseCircle = document.querySelector('.pulse-circle');
-    const rotatingBorder = document.querySelector('.rotating-border');
-    
-    const pulseSpeed = 2 + (x * 2); // 2-4 seconds
-    const rotateSpeed = 6 + (y * 4); // 6-10 seconds
-    
-    pulseCircle.style.animationDuration = `${pulseSpeed}s`;
-    rotatingBorder.style.animationDuration = `${rotateSpeed}s`;
-});
+// Background interaction based on mouse position (throttled for performance)
+let ticking = false;
+
+function throttledMouseMove(e) {
+    if (!ticking) {
+        requestAnimationFrame(() => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            // Subtle parallax effect on background pattern
+            const backgroundPattern = document.querySelector('.background-pattern');
+            if (backgroundPattern) {
+                const moveX = (x - 0.5) * 30;
+                const moveY = (y - 0.5) * 30;
+                backgroundPattern.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            }
+            
+            // Adjust animation speeds based on mouse position
+            const pulseCircle = document.querySelector('.pulse-circle');
+            const rotatingBorder = document.querySelector('.rotating-border');
+            
+            if (pulseCircle) {
+                const pulseSpeed = 2 + (x * 2); // 2-4 seconds
+                pulseCircle.style.animationDuration = `${pulseSpeed}s`;
+            }
+            
+            if (rotatingBorder) {
+                const rotateSpeed = 6 + (y * 4); // 6-10 seconds
+                rotatingBorder.style.animationDuration = `${rotateSpeed}s`;
+            }
+            
+            ticking = false;
+        });
+        ticking = true;
+    }
+}
+
+document.addEventListener('mousemove', throttledMouseMove);
 
 // Keyboard interactions
 document.addEventListener('keydown', (e) => {
@@ -200,18 +217,7 @@ window.addEventListener('load', () => {
     }, 2500);
 });
 
-// Performance optimization: Throttle mouse move events
-let ticking = false;
 
-function throttledMouseMove(e) {
-    if (!ticking) {
-        requestAnimationFrame(() => {
-            // Mouse move logic here
-            ticking = false;
-        });
-        ticking = true;
-    }
-}
 
 // Easter egg: Konami code
 let konamiCode = [];

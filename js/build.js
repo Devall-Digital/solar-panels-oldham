@@ -10,6 +10,7 @@ const BUILD_CONFIG = {
     sourceDir: './js',
     outputDir: './dist/js',
     files: [
+        'config.js',
         'performance.js',
         'accessibility.js', 
         'error-handling.js',
@@ -18,6 +19,7 @@ const BUILD_CONFIG = {
         'analytics.js'
     ],
     criticalFiles: [
+        'config.js',
         'performance.js',
         'main.js'
     ],
