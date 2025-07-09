@@ -269,23 +269,19 @@
     .hero {
         min-height: 100vh;
         width: 100%;
-        max-width: 100%;
         overflow-x: hidden;
     }
     
     .hero-container {
-        flex-direction: column;
+        grid-template-columns: 1fr;
         gap: var(--space-2xl);
         width: 100%;
-        max-width: 100%;
         padding: 0 var(--space-md);
-        box-sizing: border-box;
     }
     
     .hero-content {
         text-align: center;
         width: 100%;
-        max-width: 100%;
     }
     
     .hero-title {
@@ -336,16 +332,22 @@
     
     .hero-visual {
         width: 100%;
-        max-width: 100%;
+        position: relative;
+    }
+    
+    .hero-image {
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
     }
     
     .floating-card {
-        position: relative;
+        position: static;
         width: 100%;
-        max-width: 100%;
         margin-top: var(--space-2xl);
-        padding: var(--space-xl);
-        box-sizing: border-box;
+        padding: var(--space-lg);
+        left: 0;
+        bottom: auto;
     }
     
     /* Services Mobile */

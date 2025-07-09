@@ -3,249 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page Not Found | Solar Panels Oldham</title>
-    <meta name="description" content="The page you're looking for doesn't exist. Return to Solar Panels Oldham for premium solar installations in Oldham and Saddleworth.">
-    
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Page Not Found - Solar Panels Oldham</title>
+    <meta name="description" content="The page you're looking for cannot be found. Let us help you find what you need about solar panels in Oldham.">
+    <meta name="robots" content="noindex, follow">
     
     <!-- CSS -->
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/responsive.css">
     <link rel="stylesheet" href="/css/components.css">
     
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     
     <style>
-        .error-page {
+        .error-404 {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 2rem;
-            background: var(--pure-black);
+            padding: var(--space-2xl);
             position: relative;
             overflow: hidden;
         }
         
-        .error-page::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 20% 20%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(14, 165, 233, 0.1) 0%, transparent 50%);
-            animation: float 20s ease-in-out infinite;
-        }
-        
-        .error-content {
-            position: relative;
-            z-index: 10;
-            max-width: 600px;
-        }
-        
-        .error-number {
-            font-size: clamp(8rem, 20vw, 12rem);
-            font-weight: 900;
-            color: var(--pure-white);
-            margin-bottom: 1rem;
-            text-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-        
-        .error-title {
-            font-size: clamp(2rem, 5vw, 3rem);
-            font-weight: 700;
-            color: var(--pure-white);
-            margin-bottom: 1rem;
-        }
-        
-        .error-message {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 3rem;
-            line-height: 1.6;
-        }
-        
-        .error-actions {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        
-        .error-actions .btn {
-            min-width: 200px;
-        }
-        
-        .solar-pattern {
+        .error-404::before {
+            content: '404';
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 300px;
-            height: 300px;
-            opacity: 0.1;
-            background: 
-                linear-gradient(45deg, transparent 40%, var(--solar-glow) 50%, transparent 60%),
-                linear-gradient(-45deg, transparent 40%, var(--electric-pulse) 50%, transparent 60%);
-            background-size: 20px 20px;
-            animation: rotate 20s linear infinite;
+            font-size: clamp(10rem, 30vw, 20rem);
+            font-weight: 900;
+            opacity: 0.05;
+            letter-spacing: -0.05em;
+            z-index: 0;
         }
         
-        @keyframes glow {
-            from { text-shadow: 0 0 50px rgba(255, 215, 0, 0.3); }
-            to { text-shadow: 0 0 80px rgba(255, 215, 0, 0.6); }
+        .error-content {
+            max-width: 600px;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.8s ease-out;
         }
         
-        @keyframes rotate {
-            from { transform: translate(-50%, -50%) rotate(0deg); }
-            to { transform: translate(-50%, -50%) rotate(360deg); }
+        .error-icon {
+            font-size: 5rem;
+            margin-bottom: var(--space-xl);
+            opacity: 0.8;
         }
         
-        @media (max-width: 768px) {
-            .error-actions {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .error-actions .btn {
-                width: 100%;
-                max-width: 300px;
-            }
+        .error-content h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: var(--space-lg);
+        }
+        
+        .error-content p {
+            font-size: 1.25rem;
+            margin-bottom: var(--space-2xl);
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .error-actions {
+            display: flex;
+            gap: var(--space-lg);
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: var(--space-3xl);
+        }
+        
+        .quick-links {
+            margin-top: var(--space-3xl);
+            padding-top: var(--space-3xl);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .quick-links h3 {
+            font-size: 1.5rem;
+            margin-bottom: var(--space-xl);
+            font-weight: 600;
+        }
+        
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-md);
+            text-align: left;
+        }
+        
+        .link-item {
+            padding: var(--space-lg);
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-md);
+            transition: var(--transition-base);
+        }
+        
+        .link-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .link-item h4 {
+            font-size: 1.1rem;
+            margin-bottom: var(--space-xs);
+        }
+        
+        .link-item p {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin: 0;
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <h2>☀️ Solar Panels Oldham</h2>
-            </div>
-            
-            <div class="nav-menu" id="nav-menu">
-                <a href="/" class="nav-link">Home</a>
-                <a href="/#services" class="nav-link">Services</a>
-                <a href="/#technology" class="nav-link">Technology</a>
-                <a href="/#process" class="nav-link">Process</a>
-                <a href="/#calculator" class="nav-link">Calculator</a>
-                <a href="/#testimonials" class="nav-link">Reviews</a>
-                <a href="/#contact" class="nav-link">Contact</a>
-                <a href="tel:01611234567" class="nav-cta">📞 Call Now</a>
-            </div>
-            
-            <div class="nav-toggle" id="nav-toggle">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>
-        </div>
-    </nav>
-
-    <!-- 404 Error Page -->
-    <div class="error-page">
-        <div class="solar-pattern"></div>
-        
+    <section class="error-404">
         <div class="error-content">
-            <div class="error-number">404</div>
-            <h1 class="error-title">Page Not Found</h1>
-            <p class="error-message">
-                The page you're looking for doesn't exist. Don't worry though - our solar panels are still working perfectly! 
-                Let us help you find what you're looking for or get you a free solar quote.
-            </p>
+            <div class="error-icon">🔍</div>
+            <h1>Oops! Page Not Found</h1>
+            <p>We couldn't find the page you're looking for. It might have been moved or no longer exists.</p>
             
             <div class="error-actions">
                 <a href="/" class="btn btn-primary btn-large">
-                    ← Back to Home
+                    Back to Home
+                    <span class="btn-arrow">→</span>
                 </a>
-                <a href="/#quote" class="btn btn-secondary btn-large">
-                    Get Free Quote
-                </a>
-                <a href="/#contact" class="btn btn-outline btn-large">
+                <a href="/#contact" class="btn btn-secondary btn-large">
                     Contact Us
+                    <span class="btn-arrow">→</span>
                 </a>
             </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>☀️ Solar Panels Oldham</h3>
-                    <p>Premium solar installations across Oldham, Saddleworth, and Greater Manchester. Government-backed renewable energy solutions.</p>
-                    <div class="social-links">
-                        <a href="#" aria-label="Facebook">📘</a>
-                        <a href="#" aria-label="Twitter">🐦</a>
-                        <a href="#" aria-label="LinkedIn">💼</a>
-                        <a href="#" aria-label="Instagram">📷</a>
-                    </div>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Services</h4>
-                    <ul>
-                        <li><a href="/#services">Solar Panel Installation</a></li>
-                        <li><a href="/#services">Battery Storage Systems</a></li>
-                        <li><a href="/#services">Maintenance & Repair</a></li>
-                        <li><a href="/#quote">Free Consultations</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Areas Served</h4>
-                    <ul>
-                        <li>Oldham Town Center</li>
-                        <li>Saddleworth Villages</li>
-                        <li>Uppermill & Delph</li>
-                        <li>Dobcross & Greenfield</li>
-                        <li>Greater Manchester</li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Contact Info</h4>
-                    <ul>
-                        <li>📞 <a href="tel:01611234567">0161 123 4567</a></li>
-                        <li>✉️ <a href="mailto:info@solarpanelsoldham.co.uk">info@solarpanelsoldham.co.uk</a></li>
-                        <li>📍 Serving Oldham & Surrounding Areas</li>
-                        <li>🕒 Mon-Fri: 8AM-6PM</li>
-                    </ul>
+            
+            <div class="quick-links">
+                <h3>Popular Pages</h3>
+                <div class="links-grid">
+                    <a href="/#services" class="link-item">
+                        <h4>⚡ Our Services</h4>
+                        <p>Solar installation options</p>
+                    </a>
+                    <a href="/#quote" class="link-item">
+                        <h4>💰 Free Quote</h4>
+                        <p>Get your personalized quote</p>
+                    </a>
+                    <a href="/#calculator" class="link-item">
+                        <h4>🧮 Savings Calculator</h4>
+                        <p>Calculate your savings</p>
+                    </a>
+                    <a href="/#about" class="link-item">
+                        <h4>🏆 About Us</h4>
+                        <p>Why choose us</p>
+                    </a>
                 </div>
             </div>
             
-            <div class="footer-bottom">
-                <div class="footer-legal">
-                    <p>&copy; 2024 Solar Panels Oldham. All rights reserved.</p>
-                    <div class="legal-links">
-                        <a href="/privacy">Privacy Policy</a>
-                        <a href="/terms">Terms of Service</a>
-                        <a href="/cookies">Cookie Policy</a>
-                    </div>
-                </div>
-                
-                <div class="footer-certifications">
-                    <span>MCS Certified</span>
-                    <span>RECC Approved</span>
-                    <span>Tesla Certified</span>
-                </div>
+            <div style="margin-top: var(--space-2xl);">
+                <p style="font-size: 1rem;">Need immediate assistance?</p>
+                <a href="tel:01611234567" class="btn btn-outline" style="margin-top: var(--space-md);">
+                    📞 Call: 0161 123 4567
+                </a>
             </div>
         </div>
-    </footer>
-
-    <!-- JavaScript -->
-    <script src="js/config.js"></script>
-    <script src="js/performance.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/analytics.js"></script>
-    <script src="js/accessibility.js"></script>
-    <script src="js/error-handling.js"></script>
+    </section>
+    
+    <script>
+        // Track 404 errors in analytics
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'page_view', {
+                page_title: '404 Error',
+                page_location: window.location.href,
+                page_path: '/404'
+            });
+        }
+    </script>
 </body>
 </html>

@@ -7,16 +7,26 @@
     <meta name="description" content="Professional solar panel installation in Oldham, Saddleworth, Uppermill & Greater Manchester. Get your free quote today. Government-backed renewable energy solutions.">
     <meta name="keywords" content="solar panels Oldham, solar panels Saddleworth, solar installation Oldham, solar panels installation Oldham, solar energy Oldham, solar panels Uppermill, renewable energy Oldham, solar panels Greater Manchester">
     
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://solarpanelsoldham.co.uk/">
+    
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://solarpanelsoldham.co.uk/">
     <meta property="og:title" content="Solar Panels Oldham | Premium Solar Installation">
     <meta property="og:description" content="Professional solar panel installation in Oldham & Saddleworth. Get your free quote today.">
+    <meta property="og:image" content="https://solarpanelsoldham.co.uk/images/hero/solar-panels-modern-home.jpg">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:title" content="Solar Panels Oldham | Premium Solar Installation">
     <meta property="twitter:description" content="Professional solar panel installation in Oldham & Saddleworth. Get your free quote today.">
+    <meta property="twitter:image" content="https://solarpanelsoldham.co.uk/images/hero/solar-panels-modern-home.jpg">
     
     <!-- Schema.org markup for Google -->
     <script type="application/ld+json">
@@ -95,11 +105,16 @@
     </script>
 </head>
 <body>
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
     <!-- Navigation -->
-    <nav class="navbar">
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
         <div class="nav-container">
             <div class="nav-logo">
-                <h2>☀️ Solar Panels Oldham</h2>
+                <a href="/" aria-label="Solar Panels Oldham - Home">
+                    <h2>☀️ Solar Panels Oldham</h2>
+                </a>
             </div>
             
             <div class="nav-menu" id="nav-menu">
@@ -113,7 +128,7 @@
                 <a href="tel:01611234567" class="nav-cta">📞 Call Now</a>
             </div>
             
-            <div class="nav-toggle" id="nav-toggle">
+            <div class="nav-toggle" id="nav-toggle" role="button" aria-label="Toggle navigation menu" aria-expanded="false">
                 <span class="bar"></span>
                 <span class="bar"></span>
                 <span class="bar"></span>
@@ -121,6 +136,8 @@
         </div>
     </nav>
 
+    <!-- Main Content -->
+    <main id="main-content">
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="hero-container">
@@ -170,12 +187,15 @@
                 <div class="hero-image">
                     <img src="/images/hero/solar-panels-modern-home.jpg" 
                          alt="Modern solar panels installation on luxury home in Saddleworth" 
-                         loading="eager">
+                         loading="eager"
+                         width="1920"
+                         height="1080">
                 </div>
                 <div class="floating-card">
                     <h3>Instant Savings Calculator</h3>
                     <form class="quick-calc" id="quick-calc">
-                        <input type="number" placeholder="Monthly electricity bill (£)" min="50" max="500" required>
+                        <label for="quick-bill" class="visually-hidden">Monthly electricity bill in pounds</label>
+                        <input type="number" id="quick-bill" placeholder="Monthly electricity bill (£)" min="50" max="500" required aria-label="Monthly electricity bill amount">
                         <button type="submit" class="btn btn-accent">Calculate Savings</button>
                     </form>
                     <div class="calc-result" id="calc-result" style="display: none;">
@@ -515,7 +535,9 @@
                 </div>
                 
                 <div class="quote-form-container">
-                    <form class="quote-form" id="quote-form">
+                    <form class="quote-form" id="quote-form" action="/php/process-form.php" method="POST">
+                        <input type="hidden" name="form_type" value="quote">
+                        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token'] ?? ''; ?>">
                         <h3>Free Quote Request</h3>
                         
                         <div class="form-row">
@@ -863,7 +885,9 @@
                 </div>
                 
                 <div class="contact-form-section">
-                    <form class="contact-form" id="contact-form">
+                    <form class="contact-form" id="contact-form" action="/php/process-form.php" method="POST">
+                        <input type="hidden" name="form_type" value="contact">
+                        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token'] ?? ''; ?>">
                         <h3>Send Us a Message</h3>
                         
                         <div class="form-group">
@@ -907,8 +931,10 @@
         </div>
     </section>
 
+    </main>
+    
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer" role="contentinfo">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">

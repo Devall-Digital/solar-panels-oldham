@@ -1180,7 +1180,7 @@
 .footer {
     background: var(--pure-black);
     border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding: var(--space-4xl) 0 var(--space-2xl);
+    padding: clamp(3rem, 6vw, 4rem) 0 var(--space-2xl);
     position: relative;
     width: 100%;
     max-width: 100%;
@@ -1190,12 +1190,17 @@
 
 .footer-content {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
+    /* Responsive grid that adjusts automatically */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: var(--space-3xl);
     margin-bottom: var(--space-3xl);
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
+}
+
+/* Make the first column slightly larger on desktop */
+@media (min-width: 1024px) {
+    .footer-content {
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+    }
 }
 
 .footer-section h3,

@@ -76,6 +76,8 @@ html {
     font-size: 16px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Prevent horizontal scroll */
+    overflow-x: hidden;
 }
 
 body {
@@ -88,8 +90,8 @@ body {
     position: relative;
     cursor: none;
     width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
+    /* Remove max-width to prevent issues */
+    min-height: 100vh;
 }
 
 /* Ensure cursor is visible on touch devices */
@@ -226,12 +228,11 @@ textarea:focus {
 
 /* Section Styles */
 section {
-    padding: var(--space-5xl) 0;
+    /* Responsive padding that looks good on all screen sizes */
+    padding: clamp(3rem, 8vw, 6rem) 0;
     position: relative;
     width: 100%;
-    max-width: 100%;
     box-sizing: border-box;
-    overflow-x: hidden;
 }
 
 section::before {
@@ -700,13 +701,16 @@ body.menu-open {
     height: auto;
     display: block;
     filter: brightness(0.8) contrast(1.2);
+    /* Prevent layout shift */
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
 }
 
 /* Floating Calculator Card */
 .floating-card {
     position: absolute;
     bottom: -30px;
-    left: -30px;
+    left: 20px;
     background: var(--charcoal);
     border: 1px solid rgba(255, 255, 255, 0.1);
     padding: var(--space-2xl);
@@ -714,7 +718,8 @@ body.menu-open {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    min-width: 350px;
+    width: calc(100% - 40px);
+    max-width: 400px;
     animation: float 6s ease-in-out infinite;
 }
 
@@ -1642,6 +1647,25 @@ body.menu-open {
 .relative { position: relative; }
 .absolute { position: absolute; }
 .fixed { position: fixed; }
+
+/* Accessibility Utilities */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Focus visible for keyboard navigation */
+:focus-visible {
+    outline: 2px solid var(--solar-glow);
+    outline-offset: 2px;
+}
 
 /* Print Styles */
 @media print {

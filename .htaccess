@@ -1,0 +1,41 @@
+# Solar Panels Oldham - Safe Apache Configuration
+# Minimal configuration to avoid webhook and server issues
+
+# Enable compression (safe and widely supported)
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript
+</IfModule>
+
+# Basic browser caching (safe settings)
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 1 week"
+    ExpiresByType application/javascript "access plus 1 week"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+</IfModule>
+
+# Security headers (basic and safe)
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+</IfModule>
+
+# Custom 404 page
+ErrorDocument 404 /404.html
+
+# Prevent directory listing (security)
+Options -Indexes
+
+# Protect sensitive files (won't affect webhooks)
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# IMPORTANT: This .htaccess deliberately does NOT include:
+# - HTTPS redirects (can break webhooks)
+# - Complex rewrite rules (can cause 500 errors)
+# - WWW redirects (can interfere with deployment)
+# - Aggressive security settings (can block legitimate requests) 
