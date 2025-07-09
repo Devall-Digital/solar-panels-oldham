@@ -451,24 +451,26 @@ function initLoadingEffects() {
 
 // Mobile Menu
 function initMobileMenu() {
-    const navToggle = document.createElement('div');
-    navToggle.className = 'nav-toggle';
-    navToggle.innerHTML = `
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
-    `;
-    
-    const navContainer = document.querySelector('.nav-container');
+    const navToggle = document.getElementById('nav-toggle');
     const navMenu = document.querySelector('.nav-menu');
     
+    if (!navToggle || !navMenu) return;
+    
+    // Only initialize on mobile devices
     if (window.innerWidth <= 768) {
-        navContainer.appendChild(navToggle);
+        navToggle.style.display = 'flex';
         
         navToggle.addEventListener('click', () => {
             navMenu.classList.toggle('active');
             navToggle.classList.toggle('active');
             document.body.classList.toggle('menu-open');
+            
+            // Prevent body scroll when menu is open
+            if (navMenu.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
         });
         
         // Close menu on link click
@@ -478,9 +480,48 @@ function initMobileMenu() {
                 navMenu.classList.remove('active');
                 navToggle.classList.remove('active');
                 document.body.classList.remove('menu-open');
+                document.body.style.overflow = '';
             });
         });
+        
+        // Close menu on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+                navToggle.classList.remove('active');
+                document.body.classList.remove('menu-open');
+                document.body.style.overflow = '';
+            }
+        });
+        
+        // Close menu on outside click
+        document.addEventListener('click', (e) => {
+            if (navMenu.classList.contains('active') && 
+                !navMenu.contains(e.target) && 
+                !navToggle.contains(e.target)) {
+                navMenu.classList.remove('active');
+                navToggle.classList.remove('active');
+                document.body.classList.remove('menu-open');
+                document.body.style.overflow = '';
+            }
+        });
+    } else {
+        // Hide toggle on desktop
+        navToggle.style.display = 'none';
     }
+    
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768) {
+            navMenu.classList.remove('active');
+            navToggle.classList.remove('active');
+            document.body.classList.remove('menu-open');
+            document.body.style.overflow = '';
+            navToggle.style.display = 'none';
+        } else {
+            navToggle.style.display = 'flex';
+        }
+    });
 }
 
 // Utility Functions
