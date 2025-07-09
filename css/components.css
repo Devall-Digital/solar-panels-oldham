@@ -122,6 +122,7 @@
     background-size: 200% 100%;
     animation: skeleton-loading 1.5s infinite;
     border-radius: var(--radius-md);
+    will-change: background-position;
 }
 
 @keyframes skeleton-loading {
@@ -192,6 +193,7 @@
     transform: scale(0.9) translateY(20px);
     transition: var(--transition-base);
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    will-change: transform;
 }
 
 .modal-overlay.active .modal-container {
