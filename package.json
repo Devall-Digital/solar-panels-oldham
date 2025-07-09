@@ -2,21 +2,21 @@
   "name": "solar-panels-oldham",
   "version": "1.0.0",
   "description": "Solar Panels Oldham - High-performance lead generation website",
-  "main": "js/main.js",
+  "main": "assets/js/main.js",
   "scripts": {
-    "build": "node js/build.js",
-    "build:critical": "node js/build.js critical",
-    "build:non-critical": "node js/build.js non-critical",
-    "build:individual": "node js/build.js individual",
-    "build:complete": "node js/build.js complete",
-    "build:html": "node js/build.js html",
-    "build:report": "node js/build.js report",
+    "build": "node assets/js/build.js",
+    "build:css": "node assets/js/build.js css",
+    "build:js": "node assets/js/build.js js",
+    "build:images": "node assets/js/build.js images",
+    "build:html": "node assets/js/build.js html",
+    "build:server": "node assets/js/build.js server",
     "dev": "echo 'Development server not configured - use local server'",
     "test": "echo 'Tests not configured yet'",
     "lint": "echo 'Linting not configured yet'",
     "optimize": "npm run build && echo 'Optimization complete'",
-    "clean": "rm -rf dist/ && echo 'Cleaned dist directory'",
-    "analyze": "npm run build:report && echo 'Analysis complete - check dist/js/build-report.json'"
+    "clean": "rm -rf build/ && echo 'Cleaned build directory'",
+    "analyze": "npm run build && echo 'Analysis complete - check build/reports/'",
+    "deploy": "npm run build && echo 'Ready for deployment from build/dist/'"
   },
   "keywords": [
     "solar-panels",
@@ -47,18 +47,10 @@
   ],
   "config": {
     "build": {
-      "sourceDir": "./js",
-      "outputDir": "./dist/js",
-      "criticalFiles": [
-        "performance.js",
-        "main.js"
-      ],
-      "nonCriticalFiles": [
-        "accessibility.js",
-        "error-handling.js",
-        "forms.js",
-        "analytics.js"
-      ]
+      "sourceDir": "./assets",
+      "outputDir": "./public",
+      "buildDir": "./build/dist",
+      "reportsDir": "./build/reports"
     },
     "performance": {
       "targetBundleSize": "40KB",
@@ -72,18 +64,18 @@
     }
   },
   "files": [
-    "js/",
-    "css/",
-    "images/",
+    "assets/",
+    "public/",
+    "backend/",
+    "docs/",
     "*.html",
     "*.php",
-    "README.md",
-    "DEVELOPMENT_ROADMAP.md",
-    "JS_DEVELOPMENT_TRACKER.md"
+    "README.md"
   ],
   "directories": {
-    "source": "js/",
-    "output": "dist/js/",
+    "source": "assets/",
+    "output": "public/",
+    "build": "build/",
     "docs": "docs/"
   }
 }
