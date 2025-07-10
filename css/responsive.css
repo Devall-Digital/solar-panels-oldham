@@ -105,6 +105,36 @@
         display: none !important;
     }
     
+    /* 404 Error Page Responsive */
+    .error-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .error-actions .btn {
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    /* Coming Soon Page Responsive */
+    .coming-soon-main-text {
+        font-size: clamp(3rem, 15vw, 8rem);
+    }
+    
+    .coming-soon-pulse-circle {
+        width: 200px;
+        height: 200px;
+    }
+    
+    .coming-soon-rotating-border {
+        width: 250px;
+        height: 250px;
+    }
+    
+    .coming-soon-cursor-follower {
+        display: none;
+    }
+    
     body {
         cursor: default;
         overflow-x: hidden;
@@ -724,6 +754,15 @@
     h1 { font-size: clamp(2rem, 10vw, 3rem); }
     h2 { font-size: clamp(1.75rem, 8vw, 2.5rem); }
     h3 { font-size: clamp(1.5rem, 6vw, 2rem); }
+    
+    /* Coming Soon Page Small Mobile */
+    .coming-soon-main-text {
+        font-size: clamp(2.5rem, 18vw, 6rem);
+    }
+    
+    .coming-soon-line:nth-child(2) {
+        -webkit-text-stroke: 1px var(--pure-white);
+    }
     
     p {
         font-size: 0.95rem;
