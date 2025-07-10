@@ -88,6 +88,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- CSS -->
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="css/components.css">
@@ -543,7 +544,7 @@
                 <div class="quote-form-container">
                     <form class="quote-form" id="quote-form" action="/php/process-form.php" method="POST">
                         <input type="hidden" name="form_type" value="quote">
-                        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token'] ?? ''; ?>">
+                        <input type="hidden" name="csrf_token" value="">
                         <h3>Free Quote Request</h3>
                         
                         <div class="form-row">
@@ -893,7 +894,7 @@
                 <div class="contact-form-section">
                     <form class="contact-form" id="contact-form" action="/php/process-form.php" method="POST">
                         <input type="hidden" name="form_type" value="contact">
-                        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token'] ?? ''; ?>">
+                        <input type="hidden" name="csrf_token" value="">
                         <h3>Send Us a Message</h3>
                         
                         <div class="form-group">
@@ -1006,6 +1007,7 @@
     </footer>
 
     <!-- JavaScript -->
+    <script src="script.js"></script>
     <script src="js/config.js"></script>
     <script src="js/mobile-optimization.js"></script>
     <script src="js/performance-monitor.js"></script>
@@ -1018,6 +1020,52 @@
     <script src="js/error-handling.js"></script>
     
     <!-- Immediate Content Fix -->
+    <style>
+        /* Critical CSS to ensure content visibility */
+        .reveal, .reveal-left, .reveal-right, .stagger-item {
+            opacity: 1 !important;
+            transform: none !important;
+            visibility: visible !important;
+        }
+        
+        /* Fix any hidden content */
+        .hidden, [style*="display: none"] {
+            display: block !important;
+        }
+        
+        /* Ensure proper spacing */
+        section {
+            padding: var(--space-3xl) 0 !important;
+            min-height: auto !important;
+        }
+        
+        /* Fix container width issues */
+        .container {
+            width: 100% !important;
+            max-width: var(--container-max) !important;
+            margin: 0 auto !important;
+            padding: 0 var(--space-lg) !important;
+        }
+        
+        /* Ensure hero section is properly sized */
+        .hero {
+            min-height: 100vh !important;
+            display: flex !important;
+            align-items: center !important;
+        }
+        
+        /* Fix mobile layout issues */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 var(--space-md) !important;
+            }
+            
+            section {
+                padding: var(--space-2xl) 0 !important;
+            }
+        }
+    </style>
+    
     <script>
         // Ensure all content is visible immediately
         document.addEventListener('DOMContentLoaded', function() {
@@ -1034,6 +1082,11 @@
                 const perfNotifications = document.querySelectorAll('.error-mode-notification');
                 perfNotifications.forEach(notification => notification.remove());
             }, 100);
+            
+            // Fix any layout issues
+            setTimeout(() => {
+                window.dispatchEvent(new Event('resize'));
+            }, 500);
         });
     </script>
 </body>
