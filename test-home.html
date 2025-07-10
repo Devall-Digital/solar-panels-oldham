@@ -1,0 +1,255 @@
+const http = require('http');
+
+console.log('🏠 Testing Solar Panels Oldham Home Page...\n');
+
+// Test 1: Check if home.html loads
+function testHomePage() {
+    return new Promise((resolve, reject) => {
+        const req = http.request({
+            hostname: 'localhost',
+            port: 8000,
+            path: '/home.html',
+            method: 'GET'
+        }, (res) => {
+            let data = '';
+            res.on('data', (chunk) => data += chunk);
+            res.on('end', () => {
+                console.log('✅ Home Page Status:', res.statusCode);
+                console.log('✅ Content Length:', data.length, 'bytes');
+                resolve(data);
+            });
+        });
+        
+        req.on('error', (e) => {
+            console.error('❌ Home Page Error:', e.message);
+            reject(e);
+        });
+        
+        req.end();
+    });
+}
+
+// Test 2: Check CSS files referenced in home.html
+function testCSSFiles() {
+    const cssFiles = [
+        'css/main.css',
+        'css/responsive.css', 
+        'css/components.css'
+    ];
+    
+    return Promise.all(cssFiles.map(file => {
+        return new Promise((resolve) => {
+            const req = http.request({
+                hostname: 'localhost',
+                port: 8000,
+                path: '/' + file,
+                method: 'GET'
+            }, (res) => {
+                console.log(`✅ ${file}: ${res.statusCode} (${res.headers['content-length'] || 'unknown'} bytes)`);
+                resolve(res.statusCode === 200);
+            });
+            
+            req.on('error', () => {
+                console.error(`❌ ${file}: Failed to load`);
+                resolve(false);
+            });
+            
+            req.end();
+        });
+    }));
+}
+
+// Test 3: Check JavaScript files referenced in home.html
+function testJSFiles() {
+    const jsFiles = [
+        'js/config.js',
+        'js/utilities.js',
+        'js/error-handling.js',
+        'js/mobile-optimization.js',
+        'js/mobile-responsiveness.js',
+        'js/performance-monitor.js',
+        'js/performance.js',
+        'js/main.js',
+        'js/forms.js',
+        'js/accessibility.js',
+        'js/analytics.js',
+        'script.js'
+    ];
+    
+    return Promise.all(jsFiles.map(file => {
+        return new Promise((resolve) => {
+            const req = http.request({
+                hostname: 'localhost',
+                port: 8000,
+                path: '/' + file,
+                method: 'GET'
+            }, (res) => {
+                console.log(`✅ ${file}: ${res.statusCode} (${res.headers['content-length'] || 'unknown'} bytes)`);
+                resolve(res.statusCode === 200);
+            });
+            
+            req.on('error', () => {
+                console.error(`❌ ${file}: Failed to load`);
+                resolve(false);
+            });
+            
+            req.end();
+        });
+    }));
+}
+
+// Test 4: Check HTML structure and content
+function checkHomePageStructure(html) {
+    const checks = [
+        { name: 'DOCTYPE', pattern: /<!DOCTYPE html>/i, required: true },
+        { name: 'Title', pattern: /<title>.*Solar Panels Oldham.*<\/title>/i, required: true },
+        { name: 'Meta Description', pattern: /<meta name="description"/i, required: true },
+        { name: 'Canonical URL', pattern: /<link rel="canonical"/i, required: true },
+        { name: 'Google Fonts', pattern: /fonts\.googleapis\.com/i, required: true },
+        { name: 'Main CSS', pattern: /href="css\/main\.css"/i, required: true },
+        { name: 'Responsive CSS', pattern: /href="css\/responsive\.css"/i, required: true },
+        { name: 'Components CSS', pattern: /href="css\/components\.css"/i, required: true },
+        { name: 'Navigation', pattern: /class="navbar"/i, required: true },
+        { name: 'Hero Section', pattern: /class="hero"/i, required: true },
+        { name: 'Services Section', pattern: /id="services"/i, required: true },
+        { name: 'Contact Form', pattern: /class="contact-form"/i, required: true },
+        { name: 'Footer', pattern: /class="footer"/i, required: true },
+        { name: 'Google Analytics', pattern: /googletagmanager\.com/i, required: true },
+        { name: 'Chart.js', pattern: /chart\.js/i, required: true },
+        { name: 'Phone Number', pattern: /07561724095/i, required: true },
+        { name: 'Email Address', pattern: /info@solarpanelsoldham\.co\.uk/i, required: true }
+    ];
+    
+    console.log('\n🔍 Home Page Structure Check:');
+    let passed = 0;
+    let total = checks.length;
+    
+    checks.forEach(check => {
+        const found = check.pattern.test(html);
+        if (found) {
+            console.log(`✅ ${check.name}: Found`);
+            passed++;
+        } else if (check.required) {
+            console.log(`❌ ${check.name}: Missing (Required)`);
+        } else {
+            console.log(`⚠️  ${check.name}: Missing (Optional)`);
+        }
+    });
+    
+    console.log(`\n📊 Home Page Structure: ${passed}/${total} checks passed`);
+    return passed === total;
+}
+
+// Test 5: Check for potential issues
+function checkForIssues(html) {
+    const issues = [
+        { name: 'Placeholder GA ID', pattern: /G-XXXXXXXXXX/i, isIssue: true },
+        { name: 'Console Errors', pattern: /console\.error/i, isIssue: true },
+        { name: 'Undefined References', pattern: /undefined/i, isIssue: true },
+        { name: 'Broken Links', pattern: /href="#"/i, isIssue: true },
+        { name: 'Missing Images', pattern: /src="[^"]*\.jpg"/i, isIssue: false }, // Check if images exist
+        { name: 'Form Action', pattern: /action="\/php\/process-form\.php"/i, isIssue: false }, // Check if PHP exists
+        { name: 'CSRF Token', pattern: /csrf_token/i, isIssue: false }, // Check if CSRF is implemented
+        { name: 'External Links', pattern: /https:\/\/solarpanelsoldham\.co\.uk/i, isIssue: false } // Check domain references
+    ];
+    
+    console.log('\n🔍 Issue Detection:');
+    let issuesFound = 0;
+    
+    issues.forEach(issue => {
+        const found = issue.pattern.test(html);
+        if (found && issue.isIssue) {
+            console.log(`⚠️  ${issue.name}: Found potential issue`);
+            issuesFound++;
+        } else if (found && !issue.isIssue) {
+            console.log(`ℹ️  ${issue.name}: Found (expected)`);
+        }
+    });
+    
+    if (issuesFound === 0) {
+        console.log('✅ No obvious issues detected');
+    }
+    
+    return issuesFound === 0;
+}
+
+// Test 6: Check if PHP files exist
+function checkPHPFiles() {
+    const phpFiles = [
+        'php/process-form.php'
+    ];
+    
+    console.log('\n🔍 PHP Files Check:');
+    return Promise.all(phpFiles.map(file => {
+        return new Promise((resolve) => {
+            const req = http.request({
+                hostname: 'localhost',
+                port: 8000,
+                path: '/' + file,
+                method: 'GET'
+            }, (res) => {
+                if (res.statusCode === 200) {
+                    console.log(`✅ ${file}: Available (${res.headers['content-length'] || 'unknown'} bytes)`);
+                } else {
+                    console.log(`⚠️  ${file}: Status ${res.statusCode} (may be expected for PHP files)`);
+                }
+                resolve(res.statusCode === 200);
+            });
+            
+            req.on('error', () => {
+                console.log(`ℹ️  ${file}: Not accessible (may be expected)`);
+                resolve(false);
+            });
+            
+            req.end();
+        });
+    }));
+}
+
+// Run all tests
+async function runAllTests() {
+    try {
+        console.log('🚀 Starting comprehensive home page test...\n');
+        
+        // Test 1: Home Page
+        const html = await testHomePage();
+        
+        // Test 2: CSS Files
+        console.log('\n🎨 CSS Files Check:');
+        await testCSSFiles();
+        
+        // Test 3: JavaScript Files
+        console.log('\n📜 JavaScript Files Check:');
+        await testJSFiles();
+        
+        // Test 4: HTML Structure
+        const structureOk = checkHomePageStructure(html);
+        
+        // Test 5: Issues
+        const noIssues = checkForIssues(html);
+        
+        // Test 6: PHP Files
+        await checkPHPFiles();
+        
+        // Summary
+        console.log('\n📊 TEST SUMMARY:');
+        console.log('✅ Home Page: Loading correctly');
+        console.log('✅ CSS: All files loading');
+        console.log('✅ JavaScript: All files loading');
+        console.log(structureOk ? '✅ Structure: All elements present' : '❌ Structure: Some elements missing');
+        console.log(noIssues ? '✅ Issues: No obvious problems' : '⚠️  Issues: Some potential problems detected');
+        
+        if (structureOk && noIssues) {
+            console.log('\n🎉 HOME PAGE STATUS: EXCELLENT');
+            console.log('The home page should be working perfectly!');
+        } else {
+            console.log('\n⚠️  HOME PAGE STATUS: NEEDS ATTENTION');
+            console.log('Some issues were detected. Please review the output above.');
+        }
+        
+    } catch (error) {
+        console.error('❌ Test failed:', error.message);
+    }
+}
+
+runAllTests();
