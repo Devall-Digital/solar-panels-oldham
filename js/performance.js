@@ -13,7 +13,12 @@
         firstContentfulPaint: 0,
         largestContentfulPaint: 0,
         cumulativeLayoutShift: 0,
-        firstInputDelay: 0
+        firstInputDelay: 0,
+        mobileOptimizations: {
+            reducedAnimations: false,
+            lowEndDevice: false,
+            touchDevice: false
+        }
     };
 
     // Initialize performance monitoring
@@ -45,6 +50,9 @@
         
         // Monitor memory usage
         monitorMemoryUsage();
+        
+        // Initialize mobile optimizations
+        initMobileOptimizations();
     }
 
     // Track Core Web Vitals
@@ -135,23 +143,187 @@
                 if (memory.usedJSHeapSize > 50 * 1024 * 1024) { // 50MB threshold
                     console.warn('High memory usage detected:', 
                         Math.round(memory.usedJSHeapSize / 1024 / 1024) + 'MB');
+                    
+                    // Apply memory optimizations
+                    applyMemoryOptimizations();
                 }
             }, 30000); // Check every 30 seconds
         }
     }
 
-    // ===== LAZY LOADING =====
+    // Apply memory optimizations
+    function applyMemoryOptimizations() {
+        // Clear non-essential animations
+        const animatedElements = document.querySelectorAll('.hero::before, .hero::after, .floating-card');
+        animatedElements.forEach(el => {
+            if (el.style.animation) {
+                el.style.animation = 'none';
+            }
+        });
+        
+        // Reduce particle count
+        const particles = document.querySelectorAll('.particle');
+        if (particles.length > 20) {
+            particles.forEach((particle, index) => {
+                if (index > 20) {
+                    particle.remove();
+                }
+            });
+        }
+    }
 
-    // Lazy load images
+    // ===== MOBILE OPTIMIZATIONS =====
+    
+    function initMobileOptimizations() {
+        // Detect device capabilities
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        const isLowEndDevice = navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4;
+        const isSlowConnection = navigator.connection && 
+            (navigator.connection.effectiveType === 'slow-2g' || 
+             navigator.connection.effectiveType === '2g' ||
+             navigator.connection.effectiveType === '3g');
+        
+        performanceMetrics.mobileOptimizations.touchDevice = isTouchDevice;
+        performanceMetrics.mobileOptimizations.lowEndDevice = isLowEndDevice;
+        
+            // Apply optimizations based on device capabilities
+    if (isTouchDevice) {
+        applyTouchOptimizations();
+    }
+    
+    if (isLowEndDevice) {
+        applyLowEndDeviceOptimizations();
+    }
+    
+    if (isSlowConnection) {
+        applySlowConnectionOptimizations();
+    }
+    
+    // Monitor and adapt to performance changes
+    monitorFrameRate();
+    monitorBatteryLevel();
+        
+        // Monitor frame rate and apply dynamic optimizations
+        monitorFrameRate();
+    }
+    
+    function applyTouchOptimizations() {
+        // Disable hover effects on touch devices
+        document.body.classList.add('touch-device');
+        
+        // Optimize touch targets
+        const touchTargets = document.querySelectorAll('.btn, .nav-link, .service-card, .area-card');
+        touchTargets.forEach(target => {
+            target.style.minHeight = '48px';
+            target.style.minWidth = '48px';
+            target.style.touchAction = 'manipulation';
+        });
+        
+        // Remove custom cursor
+        const cursorElements = document.querySelectorAll('.cursor-dot, .cursor-outline');
+        cursorElements.forEach(el => el.remove());
+    }
+    
+    function applyLowEndDeviceOptimizations() {
+        document.body.classList.add('low-end-device');
+        
+        // Reduce animation complexity
+        const animatedElements = document.querySelectorAll('.hero::before, .hero::after, .floating-card');
+        animatedElements.forEach(el => {
+            if (el.style.animation) {
+                el.style.animation = 'none';
+            }
+        });
+        
+        // Disable particle effects
+        const particles = document.querySelectorAll('.particle');
+        particles.forEach(particle => particle.remove());
+        
+        // Reduce backdrop-filter usage
+        const backdropElements = document.querySelectorAll('[style*="backdrop-filter"]');
+        backdropElements.forEach(el => {
+            el.style.backdropFilter = 'none';
+            el.style.webkitBackdropFilter = 'none';
+        });
+    }
+    
+    function applySlowConnectionOptimizations() {
+        // Load lower quality images
+        const images = document.querySelectorAll('img[data-src-low]');
+        images.forEach(img => {
+            if (img.dataset.srcLow) {
+                img.src = img.dataset.srcLow;
+            }
+        });
+        
+        // Disable non-essential animations
+        const nonEssentialAnimations = document.querySelectorAll('.floating-card, .stat::before');
+        nonEssentialAnimations.forEach(el => {
+            if (el.style.animation) {
+                el.style.animation = 'none';
+            }
+        });
+    }
+    
+    function monitorFrameRate() {
+        let frameCount = 0;
+        let lastTime = performance.now();
+        
+        function countFrames() {
+            frameCount++;
+            const currentTime = performance.now();
+            
+            if (currentTime - lastTime >= 1000) {
+                const fps = Math.round((frameCount * 1000) / (currentTime - lastTime));
+                
+                if (fps < 30) {
+                    // Apply low performance optimizations
+                    document.body.classList.add('low-performance');
+                    applyLowPerformanceOptimizations();
+                } else {
+                    document.body.classList.remove('low-performance');
+                }
+                
+                frameCount = 0;
+                lastTime = currentTime;
+            }
+            
+            requestAnimationFrame(countFrames);
+        }
+        
+        requestAnimationFrame(countFrames);
+    }
+    
+    function applyLowPerformanceOptimizations() {
+        // Reduce animation complexity
+        const animatedElements = document.querySelectorAll('.hero::before, .hero::after, .floating-card, .stat::before');
+        animatedElements.forEach(el => {
+            if (el.style.animation) {
+                el.style.animation = 'none';
+            }
+        });
+        
+        // Disable particle effects
+        const particles = document.querySelectorAll('.particle');
+        particles.forEach(particle => particle.remove());
+        
+        // Reduce shadow complexity
+        const shadowElements = document.querySelectorAll('[style*="box-shadow"]');
+        shadowElements.forEach(el => {
+            el.style.boxShadow = 'none';
+        });
+    }
+
+    // ===== ENHANCED LAZY LOADING =====
+
+    // Lazy load images with intersection observer
     function initLazyLoading() {
         if ('IntersectionObserver' in window) {
             const imageObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         const img = entry.target;
-                        img.src = img.dataset.src;
-                        img.classList.remove('lazy');
-                        img.classList.add('loaded');
+                        loadImage(img);
                         observer.unobserve(img);
                     }
                 });
@@ -167,6 +339,47 @@
             // Fallback for older browsers
             loadAllImages();
         }
+    }
+
+    // Enhanced image loading with quality detection
+    function loadImage(img) {
+        const isLowEndDevice = navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4;
+        const isSlowConnection = navigator.connection && 
+            (navigator.connection.effectiveType === 'slow-2g' || 
+             navigator.connection.effectiveType === '2g');
+        
+        let src = img.dataset.src;
+        
+        // Use lower quality images for low-end devices or slow connections
+        if ((isLowEndDevice || isSlowConnection) && img.dataset.srcLow) {
+            src = img.dataset.srcLow;
+        }
+        
+        // Create a new image to preload
+        const tempImage = new Image();
+        tempImage.onload = () => {
+            img.src = src;
+            img.classList.remove('lazy');
+            img.classList.add('loaded');
+            
+            // Add fade-in effect
+            img.style.opacity = '0';
+            img.style.transition = 'opacity 0.3s ease';
+            setTimeout(() => {
+                img.style.opacity = '1';
+            }, 50);
+        };
+        
+        tempImage.onerror = () => {
+            // Fallback to original source if low-quality fails
+            if (src !== img.dataset.src) {
+                img.src = img.dataset.src;
+            }
+            img.classList.remove('lazy');
+            img.classList.add('loaded');
+        };
+        
+        tempImage.src = src;
     }
 
     // Fallback image loading
@@ -200,7 +413,7 @@
         document.head.appendChild(link);
     }
 
-    // ===== CODE OPTIMIZATION =====
+    // ===== PERFORMANCE UTILITIES =====
 
     // Debounce function for performance
     function debounce(func, wait, immediate) {
@@ -208,12 +421,12 @@
         return function executedFunction(...args) {
             const later = () => {
                 timeout = null;
-                if (!immediate) func.apply(this, args);
+                if (!immediate) func(...args);
             };
             const callNow = immediate && !timeout;
             clearTimeout(timeout);
             timeout = setTimeout(later, wait);
-            if (callNow) func.apply(this, args);
+            if (callNow) func(...args);
         };
     }
 
@@ -233,136 +446,122 @@
 
     // Optimize scroll events
     function optimizeScrollEvents() {
-        const scrollHandler = throttle(() => {
-            // Handle scroll events efficiently
-            const scrollTop = window.pageYOffset;
-            
+        let ticking = false;
+        
+        function updateScrollAnimations(scrollTop) {
             // Update scroll-based animations
-            updateScrollAnimations(scrollTop);
+            const parallaxElements = document.querySelectorAll('.parallax');
+            parallaxElements.forEach(element => {
+                const speed = element.dataset.speed || 0.5;
+                const yPos = -(scrollTop * speed);
+                element.style.transform = `translateY(${yPos}px)`;
+            });
+            
+            // Update scroll progress
+            const scrollProgress = (scrollTop / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            document.documentElement.style.setProperty('--scroll-progress', `${scrollProgress}%`);
+        }
+        
+        function trackScrollDepth(scrollTop) {
+            const scrollPercentage = (scrollTop / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
             
             // Track scroll depth for analytics
-            trackScrollDepth(scrollTop);
-        }, 16); // ~60fps
-
-        window.addEventListener('scroll', scrollHandler, { passive: true });
-    }
-
-    // Update scroll-based animations
-    function updateScrollAnimations(scrollTop) {
-        const animatedElements = document.querySelectorAll('[data-scroll-animation]');
-        
-        animatedElements.forEach(element => {
-            const rect = element.getBoundingClientRect();
-            const windowHeight = window.innerHeight;
-            
-            if (rect.top < windowHeight && rect.bottom > 0) {
-                const progress = (windowHeight - rect.top) / (windowHeight + rect.height);
-                element.style.setProperty('--scroll-progress', progress);
-            }
-        });
-    }
-
-    // Track scroll depth for analytics
-    function trackScrollDepth(scrollTop) {
-        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const scrollPercent = Math.round((scrollTop / docHeight) * 100);
-        
-        // Track scroll milestones
-        const milestones = [25, 50, 75, 90, 100];
-        milestones.forEach(milestone => {
-            if (scrollPercent >= milestone && !window.scrollMilestones) {
-                window.scrollMilestones = window.scrollMilestones || [];
-                if (!window.scrollMilestones.includes(milestone)) {
-                    window.scrollMilestones.push(milestone);
-                    
-                    if (typeof gtag !== 'undefined') {
-                        gtag('event', 'scroll_depth', {
-                            event_category: 'engagement',
-                            event_label: milestone + '%',
-                            value: milestone
-                        });
-                    }
+            if (typeof gtag !== 'undefined') {
+                if (scrollPercentage > 25 && !window.scroll25Tracked) {
+                    gtag('event', 'scroll', { event_category: 'engagement', event_label: '25%' });
+                    window.scroll25Tracked = true;
+                }
+                if (scrollPercentage > 50 && !window.scroll50Tracked) {
+                    gtag('event', 'scroll', { event_category: 'engagement', event_label: '50%' });
+                    window.scroll50Tracked = true;
+                }
+                if (scrollPercentage > 75 && !window.scroll75Tracked) {
+                    gtag('event', 'scroll', { event_category: 'engagement', event_label: '75%' });
+                    window.scroll75Tracked = true;
                 }
             }
+        }
+        
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset;
+            
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    updateScrollAnimations(scrollTop);
+                    trackScrollDepth(scrollTop);
+                    ticking = false;
+                });
+                ticking = true;
+            }
         });
     }
-
-    // ===== RESOURCE OPTIMIZATION =====
 
     // Preload critical resources
     function preloadCriticalResources() {
-        // Preload critical CSS
-        const criticalCSS = document.createElement('link');
-        criticalCSS.rel = 'preload';
-        criticalCSS.as = 'style';
-        criticalCSS.href = '/css/main.css';
-        document.head.appendChild(criticalCSS);
-
-        // Preload critical fonts
-        const criticalFonts = [
-            'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'
+        const criticalImages = [
+            '/images/hero/solar-panels-modern-home.jpg',
+            '/images/hero/solar-installation.jpg'
         ];
         
-        criticalFonts.forEach(font => {
+        criticalImages.forEach(src => {
             const link = document.createElement('link');
             link.rel = 'preload';
-            link.as = 'style';
-            link.href = font;
+            link.as = 'image';
+            link.href = src;
             document.head.appendChild(link);
         });
+        
+        // Preload critical fonts
+        const fontLink = document.createElement('link');
+        fontLink.rel = 'preload';
+        fontLink.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap';
+        fontLink.as = 'style';
+        document.head.appendChild(fontLink);
     }
 
-    // Defer non-critical JavaScript
+    // Defer non-critical scripts
     function deferNonCriticalScripts() {
         const nonCriticalScripts = [
-            '/js/analytics.js',
-            '/js/forms.js'
+            'js/analytics.js',
+            'js/forms.js'
         ];
-
-        // Load non-critical scripts after page load
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                nonCriticalScripts.forEach(src => {
-                    lazyLoadScript(src);
-                });
-            }, 1000);
+        
+        nonCriticalScripts.forEach(src => {
+            const script = document.createElement('script');
+            script.src = src;
+            script.defer = true;
+            document.head.appendChild(script);
         });
     }
 
     // ===== ERROR HANDLING =====
 
-    // Global error handler
     function initErrorHandling() {
-        window.addEventListener('error', (event) => {
-            console.error('JavaScript error:', event.error);
-            
-            // Report error to analytics
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'exception', {
-                    description: event.error.message,
-                    fatal: false
-                });
+        // Handle image loading errors
+        document.addEventListener('error', (e) => {
+            if (e.target.tagName === 'IMG') {
+                e.target.style.display = 'none';
+                console.warn('Image failed to load:', e.target.src);
+            }
+        }, true);
+        
+        // Handle script loading errors
+        window.addEventListener('error', (e) => {
+            if (e.target.tagName === 'SCRIPT') {
+                console.error('Script failed to load:', e.target.src);
             }
         });
-
-        window.addEventListener('unhandledrejection', (event) => {
-            console.error('Unhandled promise rejection:', event.reason);
-            
-            // Report error to analytics
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'exception', {
-                    description: 'Unhandled promise rejection: ' + event.reason,
-                    fatal: false
-                });
-            }
+        
+        // Handle unhandled promise rejections
+        window.addEventListener('unhandledrejection', (e) => {
+            console.error('Unhandled promise rejection:', e.reason);
         });
     }
 
     // ===== INITIALIZATION =====
 
-    // Initialize performance optimization
     function init() {
-        // Start performance monitoring
+        // Initialize performance monitoring
         initPerformanceMonitoring();
         
         // Initialize lazy loading
@@ -380,7 +579,8 @@
         // Initialize error handling
         initErrorHandling();
         
-        console.log('Performance optimization initialized');
+        // Add performance class to body
+        document.body.classList.add('performance-optimized');
     }
 
     // Initialize when DOM is ready
@@ -390,15 +590,14 @@
         init();
     }
 
-    // Export functions for use in other scripts
+    // Export functions for global use
     window.PerformanceOptimizer = {
         debounce,
         throttle,
         lazyLoadScript,
         lazyLoadCSS,
-        performanceMetrics,
-        initLazyLoading,
-        optimizeScrollEvents
+        preloadCriticalResources,
+        applyMobileOptimizations: initMobileOptimizations
     };
 
 })();
