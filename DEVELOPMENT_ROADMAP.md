@@ -90,7 +90,16 @@
 **Priority**: High - Search visibility
 
 #### Content Development
-- [ ] **Location-Specific Pages**
+**Note**: Currently maintaining single-page structure as requested. Additional pages will be created only when website completion is decided.
+
+- [ ] **Single Page Optimization**
+  - Optimize `home.html` for all target keywords
+  - Ensure all location-specific content is included
+  - Add comprehensive FAQ section
+  - Include all service information on single page
+  - Optimize for local SEO within single page structure
+
+- [ ] **Future Page Planning** (When ready to expand)
   - `/solar-panels-oldham/` - Main location page
   - `/solar-panels-saddleworth/` - Saddleworth focus
   - `/solar-panels-uppermill/` - Uppermill focus
@@ -98,18 +107,11 @@
   - `/solar-panels-dobcross/` - Dobcross focus
   - `/solar-panels-greenfield/` - Greenfield focus
 
-- [ ] **Service Pages**
+- [ ] **Future Service Pages** (When ready to expand)
   - `/solar-installation/` - Installation services
   - `/solar-maintenance/` - Maintenance services
   - `/battery-storage/` - Battery storage options
   - `/solar-repairs/` - Repair services
-
-- [ ] **Content Pages**
-  - `/about/` - Company information
-  - `/gallery/` - Installation gallery
-  - `/testimonials/` - Customer reviews
-  - `/faq/` - Frequently asked questions
-  - `/contact/` - Contact information
 
 #### SEO Implementation
 - [ ] **Local SEO Setup**

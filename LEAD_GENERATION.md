@@ -82,12 +82,13 @@
 - **Floating elements**: Quick contact buttons
 
 ### Contact Details to Include
-- **Business Phone**: 0161 XXX XXXX (Oldham area code)
-- **Mobile**: 07XXX XXX XXX (for urgent inquiries)
-- **Email**: info@solarpanelsoldham.co.uk
+- **Business Phone**: 07561724095 (mobile number)
+- **Email**: info@solarpanelsoldham.co.uk (to be created)
+- **Quote Requests**: quotes@solarpanelsoldham.co.uk (to be created)
+- **Support**: support@solarpanelsoldham.co.uk (to be created)
 - **Address**: Oldham, Greater Manchester
 - **Hours**: Mon-Fri 8am-6pm, Sat 9am-4pm
-- **Emergency**: 24/7 support number
+- **Emergency**: 07561724095 (same number for urgent inquiries)
 
 ## 🔄 LEAD PROCESSING & QUALIFICATION
 
