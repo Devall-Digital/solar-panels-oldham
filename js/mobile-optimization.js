@@ -89,6 +89,27 @@
             parallaxElements.forEach(el => {
                 el.removeAttribute('data-parallax');
             });
+            
+            // Disable floating animations
+            const floatingElements = document.querySelectorAll('.floating-card, .hero-image');
+            floatingElements.forEach(el => {
+                el.style.animation = 'none';
+                el.style.transform = 'none';
+            });
+            
+            // Disable complex hover effects
+            const hoverElements = document.querySelectorAll('.service-card, .area-card, .tech-card');
+            hoverElements.forEach(el => {
+                el.style.transition = 'none';
+            });
+            
+            // Optimize images for mobile
+            const images = document.querySelectorAll('img');
+            images.forEach(img => {
+                if (img.dataset.mobileSrc) {
+                    img.src = img.dataset.mobileSrc;
+                }
+            });
         },
         
         optimizeScrollPerformance: function() {

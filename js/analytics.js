@@ -10,8 +10,8 @@ function initializeGoogleAnalytics() {
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     
-    // Replace GA_MEASUREMENT_ID with your actual measurement ID
-    gtag('config', 'GA_MEASUREMENT_ID', {
+    // Replace G-XXXXXXXXXX with your actual measurement ID
+gtag('config', 'G-XXXXXXXXXX', {
         // Enhanced ecommerce for lead tracking
         custom_map: {
             'custom_parameter_1': 'lead_source',
@@ -165,7 +165,7 @@ function trackPageView(page = null) {
         pageData.custom_page_name = page;
     }
     
-    gtag('config', 'GA_MEASUREMENT_ID', pageData);
+    gtag('config', 'G-XXXXXXXXXX', pageData);
 }
 
 // ===== USER BEHAVIOR TRACKING =====
