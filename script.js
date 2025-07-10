@@ -1,35 +1,61 @@
-// Custom cursor follower
+// Custom cursor follower (mobile-optimized)
 const cursorFollower = document.querySelector('.cursor-follower');
 let mouseX = 0;
 let mouseY = 0;
 let cursorX = 0;
 let cursorY = 0;
+let animationId = null;
 
-// Show cursor after page loads
-setTimeout(() => {
-    cursorFollower.style.opacity = '1';
-}, 2000);
+// Check if mobile device and disable cursor if needed
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+const isLowEndDevice = (navigator.deviceMemory || 4) < 4 || (navigator.hardwareConcurrency || 4) < 4;
 
-// Mouse movement tracking
-document.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-});
+if (isMobile || isLowEndDevice) {
+    // Disable cursor on mobile/low-end devices
+    if (cursorFollower) {
+        cursorFollower.style.display = 'none';
+    }
+} else {
+    // Show cursor after page loads (desktop only)
+    setTimeout(() => {
+        if (cursorFollower) {
+            cursorFollower.style.opacity = '1';
+        }
+    }, 2000);
 
-// Smooth cursor following animation
-function animateCursor() {
-    const speed = 0.15;
+    // Mouse movement tracking (desktop only)
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+    });
+
+    // Smooth cursor following animation with conflict prevention
+    function animateCursor() {
+        if (!cursorFollower) return;
+        
+        const speed = 0.15;
+        
+        cursorX += (mouseX - cursorX) * speed;
+        cursorY += (mouseY - cursorY) * speed;
+        
+        cursorFollower.style.left = cursorX - 10 + 'px';
+        cursorFollower.style.top = cursorY - 10 + 'px';
+        
+        animationId = requestAnimationFrame(animateCursor);
+    }
+
+    // Start animation only if not already running
+    if (!animationId) {
+        animateCursor();
+    }
     
-    cursorX += (mouseX - cursorX) * speed;
-    cursorY += (mouseY - cursorY) * speed;
-    
-    cursorFollower.style.left = cursorX - 10 + 'px';
-    cursorFollower.style.top = cursorY - 10 + 'px';
-    
-    requestAnimationFrame(animateCursor);
+    // Clean up animation on page unload
+    window.addEventListener('beforeunload', () => {
+        if (animationId) {
+            cancelAnimationFrame(animationId);
+        }
+    });
 }
-
-animateCursor();
 
 // Enhanced hover effects for text lines
 const textLines = document.querySelectorAll('.line');
@@ -116,44 +142,52 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Background interaction based on mouse position (throttled for performance)
+// Background interaction based on mouse position (mobile-optimized)
 let ticking = false;
+let mouseMoveAnimationId = null;
 
 function throttledMouseMove(e) {
     if (!ticking) {
-        requestAnimationFrame(() => {
+        ticking = true;
+        
+        mouseMoveAnimationId = requestAnimationFrame(() => {
             const x = e.clientX / window.innerWidth;
             const y = e.clientY / window.innerHeight;
             
-            // Subtle parallax effect on background pattern
-            const backgroundPattern = document.querySelector('.background-pattern');
-            if (backgroundPattern) {
-                const moveX = (x - 0.5) * 30;
-                const moveY = (y - 0.5) * 30;
-                backgroundPattern.style.transform = `translate(${moveX}px, ${moveY}px)`;
-            }
-            
-            // Adjust animation speeds based on mouse position
-            const pulseCircle = document.querySelector('.pulse-circle');
-            const rotatingBorder = document.querySelector('.rotating-border');
-            
-            if (pulseCircle) {
-                const pulseSpeed = 2 + (x * 2); // 2-4 seconds
-                pulseCircle.style.animationDuration = `${pulseSpeed}s`;
-            }
-            
-            if (rotatingBorder) {
-                const rotateSpeed = 6 + (y * 4); // 6-10 seconds
-                rotatingBorder.style.animationDuration = `${rotateSpeed}s`;
+            // Only apply effects on desktop
+            if (!isMobile && !isLowEndDevice) {
+                // Subtle parallax effect on background pattern
+                const backgroundPattern = document.querySelector('.background-pattern');
+                if (backgroundPattern) {
+                    const moveX = (x - 0.5) * 30;
+                    const moveY = (y - 0.5) * 30;
+                    backgroundPattern.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                }
+                
+                // Adjust animation speeds based on mouse position
+                const pulseCircle = document.querySelector('.pulse-circle');
+                const rotatingBorder = document.querySelector('.rotating-border');
+                
+                if (pulseCircle) {
+                    const pulseSpeed = 2 + (x * 2); // 2-4 seconds
+                    pulseCircle.style.animationDuration = `${pulseSpeed}s`;
+                }
+                
+                if (rotatingBorder) {
+                    const rotateSpeed = 6 + (y * 4); // 6-10 seconds
+                    rotatingBorder.style.animationDuration = `${rotateSpeed}s`;
+                }
             }
             
             ticking = false;
         });
-        ticking = true;
     }
 }
 
-document.addEventListener('mousemove', throttledMouseMove);
+// Only add mouse move listener on desktop
+if (!isMobile && !isLowEndDevice) {
+    document.addEventListener('mousemove', throttledMouseMove);
+}
 
 // Keyboard interactions
 document.addEventListener('keydown', (e) => {
@@ -175,32 +209,49 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-// Touch device support
+// Touch device support (mobile-optimized)
 let touchStartX = 0;
 let touchStartY = 0;
+let touchAnimationId = null;
 
-document.addEventListener('touchstart', (e) => {
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-});
+// Only enable touch effects on desktop (not mobile)
+if (!isMobile && !isLowEndDevice) {
+    document.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+    });
 
-document.addEventListener('touchmove', (e) => {
-    e.preventDefault();
-    const touchX = e.touches[0].clientX;
-    const touchY = e.touches[0].clientY;
-    const deltaX = touchX - touchStartX;
-    const deltaY = touchY - touchStartY;
-    
-    // Create touch-based tilt effect
-    const tiltX = deltaY / 10;
-    const tiltY = deltaX / 10;
-    
-    container.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
-});
+    document.addEventListener('touchmove', (e) => {
+        // Only prevent default for specific elements to avoid conflicts
+        if (e.target.closest('.cursor-follower, .particle, .pulse-circle')) {
+            e.preventDefault();
+        }
+        
+        const touchX = e.touches[0].clientX;
+        const touchY = e.touches[0].clientY;
+        const deltaX = touchX - touchStartX;
+        const deltaY = touchY - touchStartY;
+        
+        // Create touch-based tilt effect with throttling
+        if (!touchAnimationId) {
+            touchAnimationId = requestAnimationFrame(() => {
+                const tiltX = deltaY / 10;
+                const tiltY = deltaX / 10;
+                
+                if (container) {
+                    container.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+                }
+                touchAnimationId = null;
+            });
+        }
+    });
 
-document.addEventListener('touchend', () => {
-    container.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
-});
+    document.addEventListener('touchend', () => {
+        if (container) {
+            container.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+        }
+    });
+}
 
 // Preload animation sequence
 window.addEventListener('load', () => {

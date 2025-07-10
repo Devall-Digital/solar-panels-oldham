@@ -34,7 +34,12 @@ function showAllContent() {
 
 // Custom Cursor
 function initCustomCursor() {
-    if (window.innerWidth < 768) return; // Disable on mobile
+    // Check if mobile optimizer is available and mobile is detected
+    if (window.MobileOptimizer && (window.MobileOptimizer.isMobile || window.MobileOptimizer.isLowEndDevice)) {
+        return; // Disable on mobile/low-end devices
+    }
+    
+    if (window.innerWidth < 768) return; // Disable on small screens
     
     const cursor = document.createElement('div');
     const cursorDot = document.createElement('div');
@@ -46,13 +51,14 @@ function initCustomCursor() {
     let mouseX = 0, mouseY = 0;
     let cursorX = 0, cursorY = 0;
     let dotX = 0, dotY = 0;
+    let animationId = null;
     
     document.addEventListener('mousemove', (e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
     });
     
-    // Smooth cursor animation
+    // Smooth cursor animation with conflict prevention
     function animateCursor() {
         // Outline follows with delay
         cursorX += (mouseX - cursorX) * 0.1;
@@ -66,9 +72,20 @@ function initCustomCursor() {
         cursorDot.style.left = dotX + 'px';
         cursorDot.style.top = dotY + 'px';
         
-        requestAnimationFrame(animateCursor);
+        animationId = requestAnimationFrame(animateCursor);
     }
-    animateCursor();
+    
+    // Start animation only if not already running
+    if (!animationId) {
+        animateCursor();
+    }
+    
+    // Clean up animation on page unload
+    window.addEventListener('beforeunload', () => {
+        if (animationId) {
+            cancelAnimationFrame(animationId);
+        }
+    });
     
     // Cursor hover effects
     const hoverElements = document.querySelectorAll('a, button, input, textarea, select, .interactive');
@@ -206,16 +223,18 @@ function initHeroEffects() {
         }, 30);
     });
     
-    // Hero parallax on mouse move
-    hero.addEventListener('mousemove', (e) => {
-        const x = (e.clientX / window.innerWidth - 0.5) * 20;
-        const y = (e.clientY / window.innerHeight - 0.5) * 20;
-        
-        const heroImage = hero.querySelector('.hero-image');
-        if (heroImage) {
-            heroImage.style.transform = `translate(${x}px, ${y}px)`;
-        }
-    });
+    // Hero parallax on mouse move (mobile-optimized)
+    if (!window.MobileOptimizer || (!window.MobileOptimizer.isMobile && !window.MobileOptimizer.isLowEndDevice)) {
+        hero.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 20;
+            const y = (e.clientY / window.innerHeight - 0.5) * 20;
+            
+            const heroImage = hero.querySelector('.hero-image');
+            if (heroImage) {
+                heroImage.style.transform = `translate(${x}px, ${y}px)`;
+            }
+        });
+    }
     
     // Floating animation for cards
     const floatingElements = document.querySelectorAll('.floating-card, .stat-card');
@@ -564,8 +583,13 @@ function throttle(func, limit) {
     };
 }
 
-// Create Particles Effect
+// Create Particles Effect (mobile-optimized)
 function createParticles() {
+    // Check if mobile optimizer is available and mobile is detected
+    if (window.MobileOptimizer && (window.MobileOptimizer.isMobile || window.MobileOptimizer.isLowEndDevice)) {
+        return; // Don't create particles on mobile/low-end devices
+    }
+    
     const hero = document.querySelector('.hero');
     if (!hero) return;
     
@@ -580,8 +604,11 @@ function createParticles() {
     particlesContainer.style.pointerEvents = 'none';
     hero.appendChild(particlesContainer);
     
+    // Create fewer particles on lower-end devices
+    const particleCount = window.MobileOptimizer && window.MobileOptimizer.isLowEndDevice ? 10 : 50;
+    
     // Create particles
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
         particle.className = 'particle';
         particle.style.position = 'absolute';
@@ -593,8 +620,9 @@ function createParticles() {
         particle.style.top = Math.random() * 100 + '%';
         particle.style.filter = 'blur(1px)';
         
-        // Random animation
-        const duration = Math.random() * 20 + 10;
+        // Random animation with reduced complexity on lower-end devices
+        const duration = window.MobileOptimizer && window.MobileOptimizer.isLowEndDevice ? 
+            Math.random() * 10 + 5 : Math.random() * 20 + 10;
         const delay = Math.random() * 5;
         particle.style.animation = `particleFloat ${duration}s ${delay}s infinite ease-in-out`;
         
