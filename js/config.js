@@ -4,7 +4,7 @@
 window.SolarConfig = {
     // Google Analytics Configuration
     analytics: {
-        measurementId: 'GA_MEASUREMENT_ID', // Replace with actual GA4 measurement ID
+        measurementId: 'G-XXXXXXXXXX', // Replace with actual GA4 measurement ID when available
         conversionId: 'AW-CONVERSION_ID', // Replace with actual conversion ID
         conversionLabel: 'CONVERSION_LABEL', // Replace with actual conversion label
         enabled: true

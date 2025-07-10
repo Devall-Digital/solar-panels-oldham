@@ -206,9 +206,10 @@ document.addEventListener('DOMContentLoaded', function() {
         submitForm(submissionData, form, submitButton);
     }
     
-    // Submit form to server
+    // Submit form to server with fallback
     async function submitForm(data, form, submitButton) {
         try {
+            // Try server submission first
             const response = await fetch('/php/contact-form.php', {
                 method: 'POST',
                 headers: {
@@ -217,50 +218,72 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: JSON.stringify(data)
             });
             
-            const result = await response.json();
-            
-            if (result.success) {
-                showSuccessMessage(form, result.message || 'Thank you! We\'ll be in touch soon.');
-                form.reset();
-                
-                // Track successful submission
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'form_submit_success', {
-                        'form_type': data.formType,
-                        'event_category': 'lead_generation'
-                    });
-                }
-                
-                // Redirect to thank you page after delay
-                setTimeout(() => {
-                    if (data.formType === 'quote') {
-                        window.location.href = '/thank-you-quote.html';
-                    } else {
-                        window.location.href = '/thank-you-contact.html';
+            if (response.ok) {
+                const result = await response.json();
+                if (result.success) {
+                    showSuccessMessage(form, result.message || 'Thank you! We\'ll be in touch soon.');
+                    form.reset();
+                    
+                    // Track successful submission
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'form_submit_success', {
+                            'form_type': data.formType,
+                            'event_category': 'lead_generation'
+                        });
                     }
-                }, 2000);
-                
-            } else {
-                throw new Error(result.message || 'Form submission failed');
+                    return;
+                }
             }
+            
+            // Fallback: Use email submission
+            await submitFormViaEmail(data, form, submitButton);
             
         } catch (error) {
             console.error('Form submission error:', error);
-            showErrorMessage(form, 'Sorry, there was an error submitting your form. Please try again or call us directly.');
             
-            // Track failed submission
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'form_submit_error', {
-                    'form_type': data.formType,
-                    'error_message': error.message,
-                    'event_category': 'errors'
-                });
+            // Fallback: Use email submission
+            try {
+                await submitFormViaEmail(data, form, submitButton);
+            } catch (emailError) {
+                console.error('Email fallback error:', emailError);
+                showErrorMessage(form, 'Sorry, there was an error sending your message. Please contact us directly at 07561 724 095.');
             }
-            
         } finally {
             // Remove loading state
             submitButton.classList.remove('loading');
             submitButton.disabled = false;
+        }
+    }
+    
+    // Fallback email submission
+    async function submitFormViaEmail(data, form, submitButton) {
+        const emailBody = `
+            New ${data.formType} form submission from solar-panels-oldham.co.uk
+            
+            Name: ${data.name || 'Not provided'}
+            Email: ${data.email || 'Not provided'}
+            Phone: ${data.phone || 'Not provided'}
+            Subject: ${data.subject || 'Not provided'}
+            Message: ${data.message || 'Not provided'}
+            
+            Submitted: ${new Date().toLocaleString()}
+            URL: ${window.location.href}
+        `;
+        
+        const mailtoLink = `mailto:info@solarpanelsoldham.co.uk?subject=New ${data.formType} submission&body=${encodeURIComponent(emailBody)}`;
+        
+        // Show success message with email fallback
+        showSuccessMessage(form, 'Thank you! Your message has been prepared. Please click OK to send via email.');
+        
+        // Open email client
+        window.open(mailtoLink, '_blank');
+        
+        // Track the submission
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'form_submit_email_fallback', {
+                'form_type': data.formType,
+                'event_category': 'lead_generation'
+            });
         }
     }
     

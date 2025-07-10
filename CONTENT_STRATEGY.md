@@ -110,27 +110,31 @@
 
 ## 🏠 LOCAL CONTENT STRATEGY
 
-### Location-Specific Pages
-**Oldham Main Page** (`/solar-panels-oldham/`):
+### Location-Specific Content (Single Page Structure)
+**Current Approach**: All location-specific content is included within the single `home.html` page.
+
+**Oldham Content Section**:
 - Focus on Oldham town center and surrounding areas
 - Local weather considerations
 - Oldham-specific case studies
 - Local planning regulations
 - Community solar initiatives
 
-**Saddleworth Page** (`/solar-panels-saddleworth/`):
+**Saddleworth Content Section**:
 - Rural property considerations
 - Saddleworth-specific benefits
 - Local installation examples
 - Area-specific savings calculations
 - Community testimonials
 
-**Uppermill Page** (`/solar-panels-uppermill/`):
+**Uppermill Content Section**:
 - Village-specific content
 - Local property types
 - Uppermill case studies
 - Area-specific regulations
 - Local success stories
+
+**Note**: When ready to expand to multiple pages, these sections can be moved to individual location pages.
 
 ### Local Content Elements
 - **Area References**: Specific street names, landmarks, neighborhoods

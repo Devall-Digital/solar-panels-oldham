@@ -35,7 +35,7 @@
         "@type": "LocalBusiness",
         "name": "Solar Panels Oldham",
         "image": "https://solarpanelsoldham.co.uk/images/hero/solar-panels-modern-home.jpg",
-        "telephone": "0161-123-4567",
+        "telephone": "07561724095",
         "address": {
             "@type": "PostalAddress",
             "streetAddress": "Solar Installation Services",
@@ -87,17 +87,23 @@
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- CSS -->
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/responsive.css">
-    <link rel="stylesheet" href="css/components.css">
+    <!-- CSS - Optimized Loading -->
+    <link rel="preload" href="css/main.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="css/responsive.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="css/components.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- Fallback for browsers that don't support preload -->
+    <noscript>
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/responsive.css">
+        <link rel="stylesheet" href="css/components.css">
+    </noscript>
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     
     <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
 </head>
 <body>
 
@@ -122,7 +128,7 @@
                 <a href="#calculator" class="nav-link">Calculator</a>
                 <a href="#testimonials" class="nav-link">Reviews</a>
                 <a href="#contact" class="nav-link">Contact</a>
-                <a href="tel:01611234567" class="nav-cta">📞 Call Now</a>
+                <a href="tel:07561724095" class="nav-cta">📞 Call Now</a>
             </div>
             
             <div class="nav-toggle" id="nav-toggle" role="button" aria-label="Toggle navigation menu" aria-expanded="false">
@@ -170,8 +176,8 @@
                         Get Free Quote
                         <span class="btn-arrow">→</span>
                     </a>
-                    <a href="tel:01611234567" class="btn btn-secondary btn-large">
-                        📞 Call: 0161 123 4567
+                    <a href="tel:07561724095" class="btn btn-secondary btn-large">
+                        📞 Call: 07561 724 095
                     </a>
                 </div>
                 
@@ -186,7 +192,9 @@
                          alt="Modern solar panels installation on luxury home in Saddleworth" 
                          loading="eager"
                          width="1920"
-                         height="1080">
+                         height="1080"
+                         decoding="async"
+                         fetchpriority="high">
                 </div>
                 <div class="floating-card">
                     <h3>Instant Savings Calculator</h3>
@@ -850,7 +858,7 @@
                             <div class="method-icon">📞</div>
                             <div>
                                 <h4>Call Us</h4>
-                                <p><a href="tel:01611234567">0161 123 4567</a></p>
+                                <p><a href="tel:07561724095">07561 724 095</a></p>
                                 <small>Mon-Fri 8AM-6PM</small>
                             </div>
                         </div>
@@ -877,7 +885,7 @@
                     <div class="emergency-contact">
                         <h4>Emergency Service</h4>
                         <p>24/7 support for existing customers</p>
-                        <a href="tel:07800123456" class="btn btn-outline">📞 Emergency: 07800 123 456</a>
+                        <a href="tel:07561724095" class="btn btn-outline">📞 Emergency: 07561 724 095</a>
                     </div>
                 </div>
                 
@@ -969,7 +977,7 @@
                 <div class="footer-section">
                     <h4>Contact Info</h4>
                     <ul>
-                        <li>📞 <a href="tel:01611234567">0161 123 4567</a></li>
+                        <li>📞 <a href="tel:07561724095">07561 724 095</a></li>
                         <li>✉️ <a href="mailto:info@solarpanelsoldham.co.uk">info@solarpanelsoldham.co.uk</a></li>
                         <li>📍 Serving Oldham & Surrounding Areas</li>
                         <li>🕒 Mon-Fri: 8AM-6PM</li>
@@ -996,20 +1004,33 @@
         </div>
     </footer>
 
-    <!-- JavaScript -->
-    <script src="js/utilities.js"></script>
-    <script src="js/mobile-responsiveness.js"></script>
-    <script src="script.js"></script>
+    <!-- JavaScript - Optimized Loading -->
+    <!-- Core utilities and configuration -->
     <script src="js/config.js"></script>
+    <script src="js/utilities.js"></script>
+    <script src="js/error-handling.js"></script>
+    
+    <!-- Mobile optimization (load early) -->
     <script src="js/mobile-optimization.js"></script>
+    <script src="js/mobile-responsiveness.js"></script>
+    
+    <!-- Performance monitoring -->
     <script src="js/performance-monitor.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="js/performance.js"></script>
+    
+    <!-- Main functionality -->
     <script src="js/main.js"></script>
     <script src="js/forms.js"></script>
-    <script src="js/analytics.js"></script>
     <script src="js/accessibility.js"></script>
-    <script src="js/error-handling.js"></script>
+    
+    <!-- External libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Analytics (load last) -->
+    <script src="js/analytics.js"></script>
+    
+    <!-- Legacy script (if needed) -->
+    <script src="script.js"></script>
     
 
 </body>

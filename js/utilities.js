@@ -17,7 +17,7 @@
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'GA_MEASUREMENT_ID');
+            gtag('config', 'G-XXXXXXXXXX');
             
             // Track 404 errors
             if (window.location.pathname === '/404.html' || window.location.pathname === '/404') {
@@ -34,7 +34,7 @@
             if (window.location.pathname.includes('thank-you')) {
                 if (typeof gtag !== 'undefined') {
                     gtag('event', 'conversion', {
-                        send_to: 'GA_MEASUREMENT_ID/conversion'
+                        send_to: 'G-XXXXXXXXXX/conversion'
                     });
                 }
             }

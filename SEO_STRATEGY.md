@@ -28,7 +28,7 @@
 - **Business Name**: Solar Panels Oldham
 - **Category**: Solar Panel Installation
 - **Address**: Oldham, Greater Manchester
-- **Phone**: 0161 XXX XXXX (local number)
+- **Phone**: 07561724095 (mobile number)
 - **Website**: www.solarpanelsoldham.co.uk
 - **Hours**: Mon-Fri 8am-6pm, Sat 9am-4pm
 
@@ -120,7 +120,7 @@
     "addressLocality": "Oldham",
     "addressRegion": "Greater Manchester"
   },
-  "telephone": "0161 XXX XXXX",
+          "telephone": "07561724095",
   "serviceArea": {
     "@type": "GeoCircle",
     "geoMidpoint": {
