@@ -13,6 +13,45 @@ html, body {
     box-sizing: border-box;
 }
 
+/* Enhanced Mobile Touch Targets - CRITICAL */
+button, 
+.btn, 
+.nav-link, 
+.service-card, 
+.area-card, 
+.testimonial-card, 
+.faq-question,
+input[type="submit"],
+input[type="button"],
+select,
+textarea {
+    min-height: 44px;
+    min-width: 44px;
+    touch-action: manipulation;
+}
+
+/* Prevent zoom on input focus for iOS */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    input, select, textarea {
+        font-size: 16px;
+    }
+}
+
+/* Enhanced mobile performance */
+@media (max-width: 768px) {
+    * {
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    /* Optimize animations for mobile */
+    .hero::before,
+    .hero::after,
+    .service-card::before,
+    .area-card::before {
+        will-change: transform;
+    }
+}
+
 /* Large Tablets & Small Laptops (1024px and below) */
 @media (max-width: 1024px) {
     /* Container adjustments */
@@ -912,6 +951,23 @@ html, body {
         width: 100%;
         box-sizing: border-box;
         overflow-x: hidden;
+    }
+    
+    /* Enhanced touch targets for very small screens */
+    .btn {
+        padding: var(--space-md) var(--space-lg);
+        font-size: 1rem;
+    }
+    
+    .nav-link {
+        padding: var(--space-md) var(--space-lg);
+        font-size: 1.1rem;
+    }
+    
+    /* Optimize form elements for small screens */
+    input, select, textarea {
+        font-size: 16px;
+        padding: var(--space-md) var(--space-lg);
     }
 }
 
