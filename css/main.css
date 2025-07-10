@@ -78,6 +78,9 @@ html {
     -moz-osx-font-smoothing: grayscale;
     /* Prevent horizontal scroll */
     overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 body {
@@ -90,8 +93,9 @@ body {
     position: relative;
     cursor: none;
     width: 100%;
-    /* Remove max-width to prevent issues */
+    max-width: 100%;
     min-height: 100vh;
+    box-sizing: border-box;
 }
 
 /* Ensure cursor is visible on touch devices */

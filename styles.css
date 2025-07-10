@@ -16,6 +16,9 @@ body {
     color: var(--pure-white);
     overflow: hidden;
     height: 100vh;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     /* Remove cursor: none to prevent conflicts with main.css */
     cursor: default;
 }
