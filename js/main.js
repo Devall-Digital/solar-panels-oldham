@@ -553,59 +553,42 @@ function throttle(func, limit) {
 // Create Particles Effect
 function createParticles() {
     const hero = document.querySelector('.hero');
-    if (!hero) return;
+    if (!hero || window.SolarConfig?.environment?.isMobile) return; // Skip on mobile for performance
     
     const particlesContainer = document.createElement('div');
     particlesContainer.className = 'particles-container';
-    particlesContainer.style.position = 'absolute';
-    particlesContainer.style.top = '0';
-    particlesContainer.style.left = '0';
-    particlesContainer.style.width = '100%';
-    particlesContainer.style.height = '100%';
-    particlesContainer.style.overflow = 'hidden';
-    particlesContainer.style.pointerEvents = 'none';
+    particlesContainer.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden;pointer-events:none;';
     hero.appendChild(particlesContainer);
     
-    // Create particles
-    for (let i = 0; i < 50; i++) {
+    // Reduced particle count for better performance
+    const particleCount = window.SolarConfig?.environment?.isMobile ? 15 : 30;
+    
+    for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
         particle.className = 'particle';
-        particle.style.position = 'absolute';
-        particle.style.width = Math.random() * 4 + 1 + 'px';
-        particle.style.height = particle.style.width;
-        particle.style.background = Math.random() > 0.5 ? 'rgba(255, 215, 0, 0.5)' : 'rgba(14, 165, 233, 0.5)';
-        particle.style.borderRadius = '50%';
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.top = Math.random() * 100 + '%';
-        particle.style.filter = 'blur(1px)';
-        
-        // Random animation
-        const duration = Math.random() * 20 + 10;
-        const delay = Math.random() * 5;
-        particle.style.animation = `particleFloat ${duration}s ${delay}s infinite ease-in-out`;
-        
+        particle.style.cssText = `
+            position:absolute;
+            width:${Math.random() * 3 + 1}px;
+            height:${Math.random() * 3 + 1}px;
+            background:${Math.random() > 0.5 ? 'rgba(255,215,0,0.4)' : 'rgba(14,165,233,0.4)'};
+            border-radius:50%;
+            left:${Math.random() * 100}%;
+            top:${Math.random() * 100}%;
+            filter:blur(0.5px);
+            animation:particleFloat ${Math.random() * 15 + 10}s ${Math.random() * 3}s infinite ease-in-out;
+        `;
         particlesContainer.appendChild(particle);
     }
     
-    // Add CSS animation
+    // Add CSS animation only once
     if (!document.querySelector('#particle-styles')) {
         const style = document.createElement('style');
         style.id = 'particle-styles';
         style.textContent = `
             @keyframes particleFloat {
-                0%, 100% {
-                    transform: translate(0, 0) scale(0.5);
-                    opacity: 0;
-                }
-                10% {
-                    opacity: 1;
-                }
-                90% {
-                    opacity: 1;
-                }
-                100% {
-                    transform: translate(${Math.random() * 200 - 100}px, -100vh) scale(1);
-                }
+                0%,100% {transform:translate(0,0) scale(0.5);opacity:0}
+                10%,90% {opacity:1}
+                100% {transform:translate(${Math.random() * 150 - 75}px,-100vh) scale(1)}
             }
         `;
         document.head.appendChild(style);
@@ -706,11 +689,24 @@ function initCostCalculator() {
 // Initialize Charts
 function initCharts() {
     const canvas = document.getElementById('savings-chart');
-    if (!canvas || typeof Chart === 'undefined') return;
+    if (!canvas) return;
     
+    // Lazy load Chart.js if not already loaded
+    if (typeof Chart === 'undefined') {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+        script.onload = () => createChart(canvas);
+        document.head.appendChild(script);
+        return;
+    }
+    
+    createChart(canvas);
+}
+
+function createChart(canvas) {
     const ctx = canvas.getContext('2d');
     
-    // Create gradient
+    // Simplified gradient
     const gradient = ctx.createLinearGradient(0, 0, 0, 300);
     gradient.addColorStop(0, 'rgba(255, 215, 0, 0.8)');
     gradient.addColorStop(1, 'rgba(14, 165, 233, 0.8)');
@@ -721,19 +717,19 @@ function initCharts() {
             labels: ['Year 1', 'Year 5', 'Year 10', 'Year 15', 'Year 20', 'Year 25'],
             datasets: [
                 {
-                    label: 'Cumulative Cost Without Solar',
+                    label: 'Without Solar',
                     data: [1800, 10000, 25000, 45000, 70000, 100000],
                     borderColor: '#EF4444',
                     backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                    borderWidth: 3,
+                    borderWidth: 2,
                     tension: 0.4
                 },
                 {
-                    label: 'Cumulative Cost With Solar',
+                    label: 'With Solar',
                     data: [12000, 13000, 14000, 15000, 16000, 17000],
                     borderColor: '#0EA5E9',
                     backgroundColor: 'rgba(14, 165, 233, 0.1)',
-                    borderWidth: 3,
+                    borderWidth: 2,
                     tension: 0.4
                 }
             ]
@@ -744,19 +740,12 @@ function initCharts() {
             plugins: {
                 legend: {
                     display: true,
-                    labels: {
-                        color: '#ffffff',
-                        font: {
-                            size: 12
-                        }
-                    }
+                    labels: { color: '#ffffff', font: { size: 12 } }
                 },
                 tooltip: {
                     backgroundColor: 'rgba(0, 0, 0, 0.8)',
                     titleColor: '#ffffff',
                     bodyColor: '#ffffff',
-                    borderColor: 'rgba(255, 255, 255, 0.1)',
-                    borderWidth: 1,
                     callbacks: {
                         label: function(context) {
                             return context.dataset.label + ': £' + context.parsed.y.toLocaleString();
@@ -766,24 +755,14 @@ function initCharts() {
             },
             scales: {
                 x: {
-                    grid: {
-                        color: 'rgba(255, 255, 255, 0.05)',
-                        borderColor: 'rgba(255, 255, 255, 0.1)'
-                    },
-                    ticks: {
-                        color: 'rgba(255, 255, 255, 0.7)'
-                    }
+                    grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                    ticks: { color: 'rgba(255, 255, 255, 0.7)' }
                 },
                 y: {
-                    grid: {
-                        color: 'rgba(255, 255, 255, 0.05)',
-                        borderColor: 'rgba(255, 255, 255, 0.1)'
-                    },
-                    ticks: {
+                    grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                    ticks: { 
                         color: 'rgba(255, 255, 255, 0.7)',
-                        callback: function(value) {
-                            return '£' + value.toLocaleString();
-                        }
+                        callback: function(value) { return '£' + value.toLocaleString(); }
                     }
                 }
             }
