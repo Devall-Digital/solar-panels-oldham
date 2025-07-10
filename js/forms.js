@@ -192,12 +192,19 @@ document.addEventListener('DOMContentLoaded', function() {
         submitButton.classList.add('loading');
         submitButton.disabled = true;
         
-        // Prepare submission data
-        const submissionData = Object.fromEntries(formData.entries());
-        submissionData.formType = formType;
-        submissionData.timestamp = new Date().toISOString();
-        submissionData.userAgent = navigator.userAgent;
-        submissionData.url = window.location.href;
+        // For static HTML, redirect to thank you page
+        setTimeout(() => {
+            // Store form data in sessionStorage for potential use
+            const submissionData = Object.fromEntries(formData.entries());
+            submissionData.formType = formType;
+            submissionData.timestamp = new Date().toISOString();
+            
+            // Store in sessionStorage
+            sessionStorage.setItem('formSubmission', JSON.stringify(submissionData));
+            
+            // Redirect to thank you page
+            window.location.href = '/thank-you.html';
+        }, 1000);
         
         // Track form submission
         trackFormSubmission(formType, submissionData);

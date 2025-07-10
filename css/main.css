@@ -1730,3 +1730,21 @@ body.menu-open {
 .reveal:not(.active) {
     animation: auto-reveal 0.5s ease-out 3s forwards;
 }
+
+/* Immediate fallback: Show content if no JavaScript or if JS fails */
+.reveal,
+.reveal-left,
+.reveal-right,
+.stagger-item {
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+/* Only hide if JavaScript is working and element hasn't been activated */
+.js .reveal:not(.active),
+.js .reveal-left:not(.active),
+.js .reveal-right:not(.active),
+.js .stagger-item:not(.active) {
+    opacity: 0;
+    transform: translateY(30px);
+}

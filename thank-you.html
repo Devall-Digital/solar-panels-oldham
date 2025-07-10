@@ -16,7 +16,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     
     <style>
         .thank-you-section {
@@ -67,7 +67,7 @@
         <div class="thank-you-content">
             <div class="thank-you-icon">✅</div>
             <h1>Thank You!</h1>
-            <p>We've received your message and appreciate your interest in solar energy solutions. Our team will review your inquiry and get back to you within 24 hours.</p>
+            <p id="thank-you-message">We've received your message and appreciate your interest in solar energy solutions. Our team will review your inquiry and get back to you within 24 hours.</p>
             
             <div class="thank-you-actions">
                 <a href="/" class="btn btn-primary btn-large">
@@ -92,6 +92,28 @@
     </section>
     
     <script>
+        // Show personalized message based on form type
+        document.addEventListener('DOMContentLoaded', function() {
+            const formData = sessionStorage.getItem('formSubmission');
+            const messageElement = document.getElementById('thank-you-message');
+            
+            if (formData) {
+                try {
+                    const data = JSON.parse(formData);
+                    if (data.formType === 'quote') {
+                        messageElement.innerHTML = `Thank you for your quote request! We've received your details and our solar experts will prepare a personalized quote for your <strong>${data.propertyType || 'property'}</strong> in <strong>${data.address || 'Oldham'}</strong>. We'll be in touch within 24 hours with your custom solar solution.`;
+                    } else if (data.formType === 'contact') {
+                        messageElement.innerHTML = `Thank you for contacting us! We've received your message about <strong>${data.subject || 'solar panels'}</strong> and our team will get back to you within 24 hours.`;
+                    }
+                    
+                    // Clear the stored data
+                    sessionStorage.removeItem('formSubmission');
+                } catch (e) {
+                    console.log('Could not parse form data');
+                }
+            }
+        });
+        
         // Redirect to home after 10 seconds
         setTimeout(() => {
             window.location.href = '/';

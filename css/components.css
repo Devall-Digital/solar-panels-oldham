@@ -1432,8 +1432,8 @@
 
 /* Reveal Animations */
 .reveal {
-    opacity: 0;
-    transform: translateY(30px);
+    opacity: 1;
+    transform: translateY(0);
     transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -1443,8 +1443,8 @@
 }
 
 .reveal-left {
-    opacity: 0;
-    transform: translateX(-50px);
+    opacity: 1;
+    transform: translateX(0);
     transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -1454,8 +1454,8 @@
 }
 
 .reveal-right {
-    opacity: 0;
-    transform: translateX(50px);
+    opacity: 1;
+    transform: translateX(0);
     transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -1464,16 +1464,38 @@
     transform: translateX(0);
 }
 
+/* Only hide if JavaScript is working and element hasn't been activated */
+.js .reveal:not(.active) {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.js .reveal-left:not(.active) {
+    opacity: 0;
+    transform: translateX(-50px);
+}
+
+.js .reveal-right:not(.active) {
+    opacity: 0;
+    transform: translateX(50px);
+}
+
 /* Stagger Animation */
 .stagger-item {
-    opacity: 0;
-    transform: translateY(20px);
+    opacity: 1;
+    transform: translateY(0);
     transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .stagger-item.active {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* Only hide if JavaScript is working and element hasn't been activated */
+.js .stagger-item:not(.active) {
+    opacity: 0;
+    transform: translateY(20px);
 }
 
 .stagger-item:nth-child(1) { transition-delay: 0.1s; }
