@@ -2454,4 +2454,190 @@
     }
 }
 
+/* Advanced Micro-Interactions */
+.micro-interaction {
+    position: relative;
+    overflow: hidden;
+}
+
+.micro-interaction::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+    transition: left 0.6s ease;
+}
+
+.micro-interaction:hover::before {
+    left: 100%;
+}
+
+/* Enhanced Testimonial Cards */
+.testimonial-card-enhanced {
+    position: relative;
+    overflow: hidden;
+}
+
+.testimonial-card-enhanced::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--solar-glow), var(--electric-pulse));
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.testimonial-card-enhanced:hover::before {
+    transform: scaleX(1);
+}
+
+/* Floating Action Button */
+.fab {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 60px;
+    height: 60px;
+    background: var(--solar-glow);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--pure-black);
+    font-size: 1.5rem;
+    box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
+    transition: var(--transition-base);
+    z-index: 1000;
+    cursor: pointer;
+}
+
+.fab:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 30px rgba(255, 215, 0, 0.5);
+}
+
+/* Enhanced Loading States */
+.loading-pulse {
+    position: relative;
+    overflow: hidden;
+}
+
+.loading-pulse::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    animation: loading-pulse 1.5s infinite;
+}
+
+@keyframes loading-pulse {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* Advanced Card Hover Effects */
+.card-3d {
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+.card-3d:hover {
+    transform: rotateY(5deg) rotateX(5deg);
+}
+
+/* Enhanced Button States */
+.btn-magnetic {
+    position: relative;
+    transition: transform 0.2s ease;
+}
+
+.btn-magnetic:hover {
+    transform: translateY(-2px);
+}
+
+.btn-magnetic:active {
+    transform: translateY(0);
+}
+
+/* Smooth Scroll Indicators */
+.scroll-indicator {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 1001;
+}
+
+.scroll-indicator::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: linear-gradient(90deg, var(--solar-glow), var(--electric-pulse));
+    width: 0%;
+    transition: width 0.1s ease;
+}
+
+/* Advanced Text Effects */
+.text-shimmer {
+    background: linear-gradient(90deg, var(--pure-white), var(--solar-glow), var(--pure-white));
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+/* Enhanced Image Hover Effects */
+.image-hover-zoom {
+    overflow: hidden;
+}
+
+.image-hover-zoom img {
+    transition: transform 0.3s ease;
+}
+
+.image-hover-zoom:hover img {
+    transform: scale(1.1);
+}
+
+/* Advanced Navigation Effects */
+.nav-link-advanced {
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-link-advanced::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--solar-glow);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+}
+
+.nav-link-advanced:hover::before {
+    transform: translateX(0);
+}
+
 /* Quote Section - Dramatic Split Design */
