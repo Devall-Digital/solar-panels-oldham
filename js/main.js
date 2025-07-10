@@ -6,19 +6,22 @@ document.addEventListener('DOMContentLoaded', function() {
     // Ensure content is visible first
     showAllContent();
     
-    initCustomCursor();
-    initNavigation();
-    initHeroEffects();
-    initScrollEffects();
-    initParallax();
-    initRevealAnimations();
-    initInteractiveElements();
-    initBackToTop();
-    initLoadingEffects();
-    initMobileMenu();
-    initCostCalculator();
-    initCharts();
-    initFAQ();
+    // Wait for mobile responsiveness module to initialize
+    setTimeout(() => {
+        initCustomCursor();
+        initNavigation();
+        initHeroEffects();
+        initScrollEffects();
+        initParallax();
+        initRevealAnimations();
+        initInteractiveElements();
+        initBackToTop();
+        initLoadingEffects();
+        initMobileMenu();
+        initCostCalculator();
+        initCharts();
+        initFAQ();
+    }, 100);
 });
 
 // Ensure all content is visible (fallback)
@@ -489,6 +492,13 @@ function initMobileMenu() {
     
     if (!navToggle || !navMenu) return;
     
+    // Use mobile responsiveness module if available
+    if (window.MobileResponsiveness) {
+        // Mobile menu is handled by MobileResponsiveness module
+        return;
+    }
+    
+    // Fallback mobile menu implementation
     // Only initialize on mobile devices
     if (window.innerWidth <= 768) {
         navToggle.style.display = 'flex';
