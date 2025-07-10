@@ -1,8 +1,7 @@
 /* Solar Panels Oldham - Coming Soon Page */
 /* Moved from root styles.css to proper CSS directory */
 
-/* Import CSS custom properties from main.css */
-@import url('main.css');
+/* CSS custom properties are now loaded from main.css via HTML link */
 
 * {
     margin: 0;
