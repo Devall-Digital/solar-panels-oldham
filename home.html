@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Solar Panels Oldham">
     <title>Solar Panels Oldham | Premium Solar Installation | Saddleworth & Greater Manchester</title>
     <meta name="description" content="Professional solar panel installation in Oldham, Saddleworth, Uppermill & Greater Manchester. Get your free quote today. Government-backed renewable energy solutions.">
     <meta name="keywords" content="solar panels Oldham, solar panels Saddleworth, solar installation Oldham, solar panels installation Oldham, solar energy Oldham, solar panels Uppermill, renewable energy Oldham, solar panels Greater Manchester">
@@ -78,9 +80,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- CSS -->
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/responsive.css">
-    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="styles.css">
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -95,6 +95,9 @@
     </script>
 </head>
 <body>
+    <!-- Skip to main content link for accessibility -->
+    <a href="#home" class="skip-link">Skip to main content</a>
+    
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
@@ -123,8 +126,10 @@
 
 
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero">
         <div class="hero-container">
             <div class="hero-content">
                 <h1 class="hero-title">
@@ -741,7 +746,7 @@
     </section>
 
     <!-- FAQ Section -->
-    <section id="faq" class="faq-section">
+    <section id="faq" class="faq-section" itemscope itemtype="https://schema.org/FAQPage">
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">Frequently Asked Questions</h2>
@@ -751,13 +756,15 @@
             </div>
             
             <div class="faq-container">
-                <div class="faq-item reveal">
+                <div class="faq-item reveal" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
                     <button class="faq-question">
-                        <span>How much can I save with solar panels in Oldham?</span>
+                        <span itemprop="name">How much can I save with solar panels in Oldham?</span>
                         <span class="faq-icon">+</span>
                     </button>
-                    <div class="faq-answer">
-                        <p>Homeowners in Oldham typically save between £1,500-£3,000 annually on electricity bills. Properties in Saddleworth with larger systems can save even more. Your exact savings depend on your roof size, energy usage, and system capacity. Most customers see a complete return on investment within 6-8 years.</p>
+                    <div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                        <div itemprop="text">
+                            <p>Homeowners in Oldham typically save between £1,500-£3,000 annually on electricity bills. Properties in Saddleworth with larger systems can save even more. Your exact savings depend on your roof size, energy usage, and system capacity. Most customers see a complete return on investment within 6-8 years.</p>
+                        </div>
                     </div>
                 </div>
                 
@@ -974,15 +981,9 @@
             </div>
         </div>
     </footer>
+    </main>
 
     <!-- JavaScript -->
-    <script src="js/config.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="js/performance.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/forms.js"></script>
-    <script src="js/analytics.js"></script>
-    <script src="js/accessibility.js"></script>
-    <script src="js/error-handling.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
