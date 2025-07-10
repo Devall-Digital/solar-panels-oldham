@@ -108,6 +108,21 @@ body {
     .cursor-outline {
         display: none !important;
     }
+    
+    /* Optimize touch interactions */
+    .btn,
+    .nav-link,
+    .service-card,
+    .area-card {
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+    }
+    
+    /* Reduce motion for better performance */
+    * {
+        animation-duration: 0.3s !important;
+        transition-duration: 0.2s !important;
+    }
 }
 
 /* Custom Cursor */
