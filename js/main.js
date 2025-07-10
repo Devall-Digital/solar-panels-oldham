@@ -1,4 +1,4 @@
-/* Solar Panels Oldham - Main JavaScript */
+/* Solar Panels Oldham - Enhanced Main JavaScript */
 /* Ultra Modern Interactions & Effects */
 
 // Initialize when DOM is loaded
@@ -16,9 +16,12 @@ document.addEventListener('DOMContentLoaded', function() {
     initCostCalculator();
     initCharts();
     initFAQ();
+    initParticleSystem();
+    initSmoothScrolling();
+    initFormEnhancements();
 });
 
-// Custom Cursor
+// Enhanced Custom Cursor
 function initCustomCursor() {
     if (window.innerWidth < 768) return; // Disable on mobile
     
@@ -38,17 +41,17 @@ function initCustomCursor() {
         mouseY = e.clientY;
     });
     
-    // Smooth cursor animation
+    // Smooth cursor animation with improved performance
     function animateCursor() {
         // Outline follows with delay
-        cursorX += (mouseX - cursorX) * 0.1;
-        cursorY += (mouseY - cursorY) * 0.1;
+        cursorX += (mouseX - cursorX) * 0.08;
+        cursorY += (mouseY - cursorY) * 0.08;
         cursor.style.left = cursorX + 'px';
         cursor.style.top = cursorY + 'px';
         
         // Dot follows directly
-        dotX += (mouseX - dotX) * 0.2;
-        dotY += (mouseY - dotY) * 0.2;
+        dotX += (mouseX - dotX) * 0.15;
+        dotY += (mouseY - dotY) * 0.15;
         cursorDot.style.left = dotX + 'px';
         cursorDot.style.top = dotY + 'px';
         
@@ -56,16 +59,18 @@ function initCustomCursor() {
     }
     animateCursor();
     
-    // Cursor hover effects
-    const hoverElements = document.querySelectorAll('a, button, input, textarea, select, .interactive');
+    // Enhanced cursor hover effects
+    const hoverElements = document.querySelectorAll('a, button, input, textarea, select, .interactive, .service-card, .btn');
     hoverElements.forEach(el => {
         el.addEventListener('mouseenter', () => {
             document.body.classList.add('cursor-hover');
-            cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
+            cursor.style.transform = 'translate(-50%, -50%) scale(1.8)';
+            cursorDot.style.transform = 'translate(-50%, -50%) scale(1.5)';
         });
         el.addEventListener('mouseleave', () => {
             document.body.classList.remove('cursor-hover');
             cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+            cursorDot.style.transform = 'translate(-50%, -50%) scale(1)';
         });
     });
     
@@ -83,24 +88,28 @@ function initCustomCursor() {
     });
 }
 
-// Navigation Effects
+// Enhanced Navigation Effects
 function initNavigation() {
     const navbar = document.querySelector('.navbar');
     const navLinks = document.querySelectorAll('.nav-link');
     let lastScroll = 0;
     
-    // Navbar scroll effects
+    // Enhanced navbar scroll effects
     window.addEventListener('scroll', () => {
         const currentScroll = window.pageYOffset;
         
-        // Add scrolled class
+        // Add scrolled class with enhanced styling
         if (currentScroll > 50) {
             navbar.classList.add('scrolled');
+            navbar.style.background = 'rgba(0, 0, 0, 0.95)';
+            navbar.style.backdropFilter = 'blur(20px)';
         } else {
             navbar.classList.remove('scrolled');
+            navbar.style.background = 'rgba(0, 0, 0, 0.8)';
+            navbar.style.backdropFilter = 'blur(10px)';
         }
         
-        // Hide/show on scroll
+        // Hide/show on scroll with smooth transition
         if (currentScroll > lastScroll && currentScroll > 300) {
             navbar.style.transform = 'translateY(-100%)';
         } else {
@@ -110,7 +119,7 @@ function initNavigation() {
         lastScroll = currentScroll;
     });
     
-    // Smooth scroll for nav links
+    // Enhanced smooth scroll for nav links
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
@@ -126,21 +135,29 @@ function initNavigation() {
                     behavior: 'smooth'
                 });
                 
-                // Update active state
-                navLinks.forEach(l => l.classList.remove('active'));
+                // Update active state with animation
+                navLinks.forEach(l => {
+                    l.classList.remove('active');
+                    l.style.transform = 'scale(1)';
+                });
                 link.classList.add('active');
+                link.style.transform = 'scale(1.1)';
+                
+                setTimeout(() => {
+                    link.style.transform = 'scale(1)';
+                }, 200);
             }
         });
     });
     
-    // Update active nav on scroll
+    // Update active nav on scroll with enhanced detection
     const sections = document.querySelectorAll('section[id]');
     window.addEventListener('scroll', () => {
         let current = '';
         sections.forEach(section => {
-            const sectionTop = section.offsetTop;
+            const sectionTop = section.offsetTop - 200;
             const sectionHeight = section.clientHeight;
-            if (window.pageYOffset >= sectionTop - 200) {
+            if (window.pageYOffset >= sectionTop && window.pageYOffset < sectionTop + sectionHeight) {
                 current = section.getAttribute('id');
             }
         });
@@ -154,17 +171,17 @@ function initNavigation() {
     });
 }
 
-// Hero Section Effects
+// Enhanced Hero Section Effects
 function initHeroEffects() {
     const hero = document.querySelector('.hero');
     const heroTitle = document.querySelector('.hero-title');
     const heroStats = document.querySelectorAll('.stat');
     
-    // Create animated particles
-    createParticles();
+    // Create enhanced animated particles
+    createEnhancedParticles();
     
-    // Animated counter for stats
-    heroStats.forEach(stat => {
+    // Enhanced animated counter for stats
+    heroStats.forEach((stat, index) => {
         const number = stat.querySelector('.stat-number');
         const finalValue = number.textContent;
         const isPercentage = finalValue.includes('%');
@@ -172,194 +189,175 @@ function initHeroEffects() {
         const isYear = finalValue.includes('yr');
         let numericValue = parseInt(finalValue.replace(/[^0-9]/g, ''));
         
-        // Animate number on page load
-        let currentValue = 0;
-        const increment = numericValue / 50;
-        const timer = setInterval(() => {
-            currentValue += increment;
-            if (currentValue >= numericValue) {
-                currentValue = numericValue;
-                clearInterval(timer);
-            }
-            
-            let displayValue = Math.floor(currentValue);
-            if (isCurrency) displayValue = '£' + displayValue + '+';
-            else if (isPercentage) displayValue = displayValue + '%';
-            else if (isYear) displayValue = displayValue + 'yr';
-            else displayValue = displayValue + '+';
-            
-            number.textContent = displayValue;
-        }, 30);
+        // Animate number on page load with staggered timing
+        setTimeout(() => {
+            let currentValue = 0;
+            const increment = numericValue / 60;
+            const timer = setInterval(() => {
+                currentValue += increment;
+                if (currentValue >= numericValue) {
+                    currentValue = numericValue;
+                    clearInterval(timer);
+                    // Add completion effect
+                    stat.style.transform = 'scale(1.05)';
+                    setTimeout(() => {
+                        stat.style.transform = 'scale(1)';
+                    }, 200);
+                }
+                
+                let displayValue = Math.floor(currentValue);
+                if (isCurrency) displayValue = '£' + displayValue + '+';
+                else if (isPercentage) displayValue = displayValue + '%';
+                else if (isYear) displayValue = displayValue + 'yr';
+                else displayValue = displayValue + '+';
+                
+                number.textContent = displayValue;
+            }, 20);
+        }, index * 200);
     });
     
-    // Hero parallax on mouse move
+    // Enhanced hero parallax on mouse move
     hero.addEventListener('mousemove', (e) => {
-        const x = (e.clientX / window.innerWidth - 0.5) * 20;
-        const y = (e.clientY / window.innerHeight - 0.5) * 20;
+        const x = (e.clientX / window.innerWidth - 0.5) * 30;
+        const y = (e.clientY / window.innerHeight - 0.5) * 30;
         
         const heroImage = hero.querySelector('.hero-image');
+        const heroContent = hero.querySelector('.hero-content');
+        
         if (heroImage) {
-            heroImage.style.transform = `translate(${x}px, ${y}px)`;
+            heroImage.style.transform = `translate(${x}px, ${y}px) scale(1.02)`;
+        }
+        
+        if (heroContent) {
+            heroContent.style.transform = `translate(${-x * 0.5}px, ${-y * 0.5}px)`;
         }
     });
     
-    // Floating animation for cards
-    const floatingElements = document.querySelectorAll('.floating-card, .stat-card');
-    floatingElements.forEach((el, index) => {
-        el.style.animationDelay = `${index * 0.2}s`;
+    // Reset transform on mouse leave
+    hero.addEventListener('mouseleave', () => {
+        const heroImage = hero.querySelector('.hero-image');
+        const heroContent = hero.querySelector('.hero-content');
+        
+        if (heroImage) {
+            heroImage.style.transform = 'translate(0, 0) scale(1.02)';
+        }
+        
+        if (heroContent) {
+            heroContent.style.transform = 'translate(0, 0)';
+        }
     });
 }
 
-// Scroll Effects
+// Enhanced Scroll Effects
 function initScrollEffects() {
-    // Scroll progress indicator
-    const progressBar = document.createElement('div');
-    progressBar.className = 'scroll-progress';
-    document.body.appendChild(progressBar);
+    const scrollElements = document.querySelectorAll('.scroll-reveal, .scroll-reveal-left, .scroll-reveal-right');
     
-    window.addEventListener('scroll', () => {
-        const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const scrolled = (window.scrollY / windowHeight) * 100;
-        progressBar.style.width = scrolled + '%';
-    });
+    const elementInView = (el, dividend = 1) => {
+        const elementTop = el.getBoundingClientRect().top;
+        return (
+            elementTop <=
+            (window.innerHeight || document.documentElement.clientHeight) / dividend
+        );
+    };
     
-    // Smooth scroll for all anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
+    const displayScrollElement = (element) => {
+        element.classList.add('revealed');
+        element.style.opacity = '1';
+        element.style.transform = 'translateY(0)';
+    };
+    
+    const hideScrollElement = (element) => {
+        element.classList.remove('revealed');
+    };
+    
+    const handleScrollAnimation = () => {
+        scrollElements.forEach((el) => {
+            if (elementInView(el, 1.25)) {
+                displayScrollElement(el);
+            } else {
+                hideScrollElement(el);
             }
         });
+    };
+    
+    window.addEventListener('scroll', () => {
+        handleScrollAnimation();
     });
+    
+    // Initial check
+    handleScrollAnimation();
 }
 
-// Parallax Effects
+// Enhanced Parallax Effects
 function initParallax() {
-    // Create parallax elements
-    const parallaxContainer = document.createElement('div');
-    parallaxContainer.style.position = 'fixed';
-    parallaxContainer.style.top = '0';
-    parallaxContainer.style.left = '0';
-    parallaxContainer.style.width = '100%';
-    parallaxContainer.style.height = '100%';
-    parallaxContainer.style.pointerEvents = 'none';
-    parallaxContainer.style.zIndex = '1';
-    document.body.appendChild(parallaxContainer);
+    const parallaxElements = document.querySelectorAll('.parallax-element');
     
-    // Add floating shapes
-    for (let i = 0; i < 5; i++) {
-        const shape = document.createElement('div');
-        shape.className = 'parallax-element';
-        
-        if (i % 2 === 0) {
-            shape.classList.add('parallax-circle');
-        } else {
-            shape.classList.add('parallax-square');
-        }
-        
-        shape.style.left = Math.random() * 100 + '%';
-        shape.style.top = Math.random() * 100 + '%';
-        parallaxContainer.appendChild(shape);
-    }
-    
-    // Parallax on scroll
     window.addEventListener('scroll', () => {
         const scrolled = window.pageYOffset;
-        const parallaxElements = document.querySelectorAll('.parallax-element');
         
-        parallaxElements.forEach((el, index) => {
-            const speed = 0.5 + (index * 0.1);
-            el.style.transform = `translateY(${scrolled * speed}px) rotate(${scrolled * 0.1}deg)`;
+        parallaxElements.forEach(element => {
+            const speed = element.dataset.speed || 0.5;
+            const yPos = -(scrolled * speed);
+            element.style.transform = `translateY(${yPos}px)`;
         });
     });
 }
 
-// Reveal Animations
+// Enhanced Reveal Animations
 function initRevealAnimations() {
-    const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .stagger-item');
+    const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
     
     function checkReveals() {
-        reveals.forEach(reveal => {
+        reveals.forEach(element => {
             const windowHeight = window.innerHeight;
-            const elementTop = reveal.getBoundingClientRect().top;
+            const elementTop = element.getBoundingClientRect().top;
             const elementVisible = 150;
             
             if (elementTop < windowHeight - elementVisible) {
-                reveal.classList.add('active');
+                element.classList.add('active');
+                
+                // Add staggered animation for child elements
+                const staggerItems = element.querySelectorAll('.stagger-item');
+                staggerItems.forEach((item, index) => {
+                    setTimeout(() => {
+                        item.classList.add('active');
+                    }, index * 100);
+                });
             }
         });
     }
     
     window.addEventListener('scroll', checkReveals);
-    checkReveals(); // Check on load
-    
-    // Add reveal classes to elements
-    document.querySelectorAll('.service-card').forEach((el, i) => {
-        el.classList.add('reveal');
-        el.style.transitionDelay = `${i * 0.1}s`;
-    });
-    
-    document.querySelectorAll('.area-card').forEach((el, i) => {
-        el.classList.add('reveal');
-        el.style.transitionDelay = `${i * 0.1}s`;
-    });
-    
-    document.querySelectorAll('.testimonial-card').forEach((el, i) => {
-        el.classList.add('reveal');
-        el.style.transitionDelay = `${i * 0.1}s`;
-    });
+    checkReveals(); // Initial check
 }
 
-// Interactive Elements
+// Enhanced Interactive Elements
 function initInteractiveElements() {
-    // Magnetic buttons
-    const magneticButtons = document.querySelectorAll('.btn');
-    
-    magneticButtons.forEach(btn => {
-        btn.addEventListener('mousemove', (e) => {
-            const rect = btn.getBoundingClientRect();
-            const x = e.clientX - rect.left - rect.width / 2;
-            const y = e.clientY - rect.top - rect.height / 2;
-            
-            btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+    // Enhanced button hover effects
+    const buttons = document.querySelectorAll('.btn');
+    buttons.forEach(button => {
+        button.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-3px) scale(1.05)';
         });
         
-        btn.addEventListener('mouseleave', () => {
-            btn.style.transform = '';
+        button.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
         });
-    });
-    
-    // Hover effects for cards
-    const cards = document.querySelectorAll('.service-card, .area-card, .testimonial-card, .stat-card');
-    
-    cards.forEach(card => {
-        card.addEventListener('mouseenter', function(e) {
+        
+        // Add click ripple effect
+        button.addEventListener('click', function(e) {
+            const ripple = document.createElement('span');
             const rect = this.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
             
-            const ripple = document.createElement('div');
-            ripple.style.position = 'absolute';
-            ripple.style.width = '0';
-            ripple.style.height = '0';
-            ripple.style.borderRadius = '50%';
-            ripple.style.background = 'rgba(255, 255, 255, 0.1)';
+            ripple.style.width = ripple.style.height = size + 'px';
             ripple.style.left = x + 'px';
             ripple.style.top = y + 'px';
-            ripple.style.transform = 'translate(-50%, -50%)';
-            ripple.style.transition = 'width 0.6s, height 0.6s';
+            ripple.classList.add('ripple');
             
             this.appendChild(ripple);
-            
-            setTimeout(() => {
-                ripple.style.width = '300px';
-                ripple.style.height = '300px';
-            }, 10);
             
             setTimeout(() => {
                 ripple.remove();
@@ -367,40 +365,45 @@ function initInteractiveElements() {
         });
     });
     
-    // Quick calculator interaction
-    const quickCalc = document.getElementById('quick-calc');
-    if (quickCalc) {
-        quickCalc.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const monthlyBill = parseFloat(e.target[0].value);
-            const annualSaving = monthlyBill * 12 * 0.7; // 70% savings estimate
-            const systemCost = 8000; // Average system cost
-            const paybackYears = (systemCost / annualSaving).toFixed(1);
-            
-            const resultDiv = document.getElementById('calc-result');
-            const savingsSpan = document.getElementById('savings-amount');
-            const paybackSpan = document.getElementById('payback-years');
-            
-            savingsSpan.textContent = Math.round(annualSaving);
-            paybackSpan.textContent = paybackYears;
-            
-            resultDiv.style.display = 'block';
-            resultDiv.classList.add('reveal');
-            setTimeout(() => resultDiv.classList.add('active'), 10);
+    // Enhanced card hover effects
+    const cards = document.querySelectorAll('.service-card, .tech-card, .testimonial-card');
+    cards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-10px) scale(1.02)';
+            this.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.3)';
         });
-    }
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+            this.style.boxShadow = '';
+        });
+    });
+    
+    // Enhanced form input effects
+    const inputs = document.querySelectorAll('input, textarea, select');
+    inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+            this.parentElement.classList.add('focused');
+        });
+        
+        input.addEventListener('blur', function() {
+            if (!this.value) {
+                this.parentElement.classList.remove('focused');
+            }
+        });
+    });
 }
 
-// Back to Top Button
+// Enhanced Back to Top
 function initBackToTop() {
     const backToTop = document.createElement('button');
-    backToTop.className = 'back-to-top';
     backToTop.innerHTML = '↑';
+    backToTop.className = 'back-to-top';
+    backToTop.setAttribute('aria-label', 'Back to top');
     document.body.appendChild(backToTop);
     
     window.addEventListener('scroll', () => {
-        if (window.pageYOffset > 500) {
+        if (window.pageYOffset > 300) {
             backToTop.classList.add('visible');
         } else {
             backToTop.classList.remove('visible');
@@ -415,116 +418,326 @@ function initBackToTop() {
     });
 }
 
-// Loading Effects
+// Enhanced Loading Effects
 function initLoadingEffects() {
-    // Add loading state to forms
-    const forms = document.querySelectorAll('form');
-    
-    forms.forEach(form => {
-        form.addEventListener('submit', function(e) {
-            const submitBtn = this.querySelector('button[type="submit"]');
-            if (submitBtn && !submitBtn.classList.contains('loading')) {
-                submitBtn.classList.add('loading');
-                submitBtn.disabled = true;
-            }
+    // Add loading animation to images
+    const images = document.querySelectorAll('img');
+    images.forEach(img => {
+        img.addEventListener('load', function() {
+            this.style.opacity = '1';
+            this.style.transform = 'scale(1)';
         });
+        
+        img.style.opacity = '0';
+        img.style.transform = 'scale(0.9)';
+        img.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
     });
     
-    // Page load animation
-    window.addEventListener('load', () => {
-        document.body.classList.add('loaded');
-        
-        // Animate hero elements
-        const heroElements = document.querySelectorAll('.hero-content > *, .hero-visual > *');
-        heroElements.forEach((el, i) => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(30px)';
-            el.style.transition = 'all 0.8s ease-out';
-            
-            setTimeout(() => {
-                el.style.opacity = '1';
-                el.style.transform = 'translateY(0)';
-            }, i * 100);
-        });
+    // Add skeleton loading for content
+    const skeletonElements = document.querySelectorAll('.skeleton');
+    skeletonElements.forEach(element => {
+        element.classList.add('loading');
+        setTimeout(() => {
+            element.classList.remove('loading');
+        }, 2000);
     });
 }
 
-// Mobile Menu
+// Enhanced Mobile Menu
 function initMobileMenu() {
-    const navToggle = document.getElementById('nav-toggle');
+    const navToggle = document.querySelector('.nav-toggle');
     const navMenu = document.querySelector('.nav-menu');
+    const body = document.body;
     
-    if (!navToggle || !navMenu) return;
-    
-    // Only initialize on mobile devices
-    if (window.innerWidth <= 768) {
-        navToggle.style.display = 'flex';
-        
+    if (navToggle && navMenu) {
         navToggle.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
             navToggle.classList.toggle('active');
-            document.body.classList.toggle('menu-open');
+            navMenu.classList.toggle('active');
+            body.classList.toggle('menu-open');
             
-            // Prevent body scroll when menu is open
-            if (navMenu.classList.contains('active')) {
-                document.body.style.overflow = 'hidden';
-            } else {
-                document.body.style.overflow = '';
-            }
-        });
-        
-        // Close menu on link click
-        const navLinks = navMenu.querySelectorAll('a');
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                navMenu.classList.remove('active');
-                navToggle.classList.remove('active');
-                document.body.classList.remove('menu-open');
-                document.body.style.overflow = '';
+            // Enhanced animation for menu items
+            const navLinks = navMenu.querySelectorAll('.nav-link');
+            navLinks.forEach((link, index) => {
+                if (navMenu.classList.contains('active')) {
+                    link.style.animationDelay = `${index * 0.1}s`;
+                    link.style.animation = 'slideInRight 0.3s ease forwards';
+                } else {
+                    link.style.animation = 'none';
+                }
             });
         });
         
-        // Close menu on escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && navMenu.classList.contains('active')) {
-                navMenu.classList.remove('active');
+        // Close menu when clicking on a link
+        const navLinks = navMenu.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
                 navToggle.classList.remove('active');
-                document.body.classList.remove('menu-open');
-                document.body.style.overflow = '';
-            }
-        });
-        
-        // Close menu on outside click
-        document.addEventListener('click', (e) => {
-            if (navMenu.classList.contains('active') && 
-                !navMenu.contains(e.target) && 
-                !navToggle.contains(e.target)) {
                 navMenu.classList.remove('active');
-                navToggle.classList.remove('active');
-                document.body.classList.remove('menu-open');
-                document.body.style.overflow = '';
-            }
+                body.classList.remove('menu-open');
+            });
         });
-    } else {
-        // Hide toggle on desktop
-        navToggle.style.display = 'none';
+    }
+}
+
+// Enhanced Cost Calculator
+function initCostCalculator() {
+    const calculator = document.getElementById('quick-calc');
+    const billSlider = document.getElementById('bill-slider');
+    const billValue = document.getElementById('bill-value');
+    
+    if (calculator) {
+        calculator.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const monthlyBill = parseFloat(this.querySelector('input').value);
+            calculateSavings(monthlyBill);
+        });
     }
     
-    // Handle window resize
-    window.addEventListener('resize', () => {
-        if (window.innerWidth > 768) {
-            navMenu.classList.remove('active');
-            navToggle.classList.remove('active');
-            document.body.classList.remove('menu-open');
-            document.body.style.overflow = '';
-            navToggle.style.display = 'none';
-        } else {
-            navToggle.style.display = 'flex';
+    if (billSlider && billValue) {
+        billSlider.addEventListener('input', function() {
+            billValue.textContent = this.value;
+            const monthlyBill = parseFloat(this.value);
+            calculateSavings(monthlyBill);
+        });
+    }
+    
+    function calculateSavings(monthlyBill) {
+        const annualBill = monthlyBill * 12;
+        const solarEfficiency = 0.85; // 85% efficiency
+        const annualSavings = annualBill * solarEfficiency;
+        const installationCost = 8000; // Average installation cost
+        const paybackYears = installationCost / annualSavings;
+        
+        // Animate the results
+        animateValue(document.getElementById('savings-amount'), Math.round(annualSavings));
+        animateValue(document.getElementById('payback-years'), paybackYears.toFixed(1));
+        
+        // Show results with animation
+        const resultElement = document.getElementById('calc-result');
+        resultElement.classList.add('show');
+        
+        // Add success animation
+        resultElement.style.animation = 'fadeInUp 0.5s ease-out';
+    }
+    
+    function animateValue(element, value) {
+        if (!element) return;
+        
+        const startValue = 0;
+        const duration = 1000;
+        const startTime = performance.now();
+        
+        function updateValue(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            
+            const currentValue = Math.round(startValue + (value - startValue) * progress);
+            element.textContent = currentValue;
+            
+            if (progress < 1) {
+                requestAnimationFrame(updateValue);
+            }
         }
+        
+        requestAnimationFrame(updateValue);
+    }
+}
+
+// Enhanced Charts
+function initCharts() {
+    const chartCanvas = document.getElementById('savings-chart');
+    if (chartCanvas) {
+        createEnhancedChart(chartCanvas);
+    }
+}
+
+function createEnhancedChart(canvas) {
+    const ctx = canvas.getContext('2d');
+    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, 'rgba(255, 215, 0, 0.8)');
+    gradient.addColorStop(1, 'rgba(255, 215, 0, 0.1)');
+    
+    // Chart configuration
+    const config = {
+        type: 'line',
+        data: {
+            labels: ['Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5'],
+            datasets: [{
+                label: 'Cumulative Savings',
+                data: [2000, 4200, 6600, 9200, 12000],
+                borderColor: '#FFD700',
+                backgroundColor: gradient,
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    ticks: {
+                        color: 'rgba(255, 255, 255, 0.7)'
+                    }
+                },
+                x: {
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    ticks: {
+                        color: 'rgba(255, 255, 255, 0.7)'
+                    }
+                }
+            }
+        }
+    };
+    
+    new Chart(ctx, config);
+}
+
+// Enhanced FAQ
+function initFAQ() {
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        const answer = item.querySelector('.faq-answer');
+        
+        question.addEventListener('click', () => {
+            const isActive = item.classList.contains('active');
+            
+            // Close all other items
+            faqItems.forEach(otherItem => {
+                otherItem.classList.remove('active');
+                const otherAnswer = otherItem.querySelector('.faq-answer');
+                if (otherAnswer) {
+                    otherAnswer.style.maxHeight = '0';
+                }
+            });
+            
+            // Toggle current item
+            if (!isActive) {
+                item.classList.add('active');
+                if (answer) {
+                    answer.style.maxHeight = answer.scrollHeight + 'px';
+                }
+            }
+        });
     });
 }
 
-// Utility Functions
+// Enhanced Particle System
+function initParticleSystem() {
+    const hero = document.querySelector('.hero');
+    if (!hero) return;
+    
+    const particleCount = 50;
+    const particles = [];
+    
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.cssText = `
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(255, 215, 0, 0.6);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float ${Math.random() * 10 + 10}s linear infinite;
+            left: ${Math.random() * 100}%;
+            top: ${Math.random() * 100}%;
+            animation-delay: ${Math.random() * 10}s;
+        `;
+        
+        hero.appendChild(particle);
+        particles.push(particle);
+    }
+}
+
+// Enhanced Smooth Scrolling
+function initSmoothScrolling() {
+    const links = document.querySelectorAll('a[href^="#"]');
+    
+    links.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            
+            if (targetElement) {
+                const offsetTop = targetElement.offsetTop - 100;
+                
+                window.scrollTo({
+                    top: offsetTop,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+}
+
+// Enhanced Form Enhancements
+function initFormEnhancements() {
+    const forms = document.querySelectorAll('form');
+    
+    forms.forEach(form => {
+        const inputs = form.querySelectorAll('input, textarea, select');
+        
+        inputs.forEach(input => {
+            // Add floating label effect
+            if (input.type !== 'submit' && input.type !== 'button') {
+                input.addEventListener('focus', function() {
+                    this.parentElement.classList.add('focused');
+                });
+                
+                input.addEventListener('blur', function() {
+                    if (!this.value) {
+                        this.parentElement.classList.remove('focused');
+                    }
+                });
+                
+                // Check if input has value on load
+                if (input.value) {
+                    input.parentElement.classList.add('focused');
+                }
+            }
+        });
+        
+        // Add form submission enhancement
+        form.addEventListener('submit', function(e) {
+            const submitBtn = this.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.innerHTML = 'Sending...';
+                submitBtn.disabled = true;
+                
+                // Simulate form submission
+                setTimeout(() => {
+                    submitBtn.innerHTML = 'Sent!';
+                    submitBtn.style.background = '#10B981';
+                    
+                    setTimeout(() => {
+                        submitBtn.innerHTML = 'Submit';
+                        submitBtn.disabled = false;
+                        submitBtn.style.background = '';
+                    }, 2000);
+                }, 1500);
+            }
+        });
+    });
+}
+
+// Utility functions
 function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
@@ -550,300 +763,72 @@ function throttle(func, limit) {
     };
 }
 
-// Create Particles Effect
-function createParticles() {
+// Enhanced particle creation
+function createEnhancedParticles() {
     const hero = document.querySelector('.hero');
-    if (!hero || window.SolarConfig?.environment?.isMobile) return; // Skip on mobile for performance
+    if (!hero) return;
     
-    const particlesContainer = document.createElement('div');
-    particlesContainer.className = 'particles-container';
-    particlesContainer.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden;pointer-events:none;';
-    hero.appendChild(particlesContainer);
-    
-    // Reduced particle count for better performance
-    const particleCount = window.SolarConfig?.environment?.isMobile ? 15 : 30;
+    const particleCount = 30;
     
     for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
-        particle.className = 'particle';
+        particle.className = 'enhanced-particle';
         particle.style.cssText = `
-            position:absolute;
-            width:${Math.random() * 3 + 1}px;
-            height:${Math.random() * 3 + 1}px;
-            background:${Math.random() > 0.5 ? 'rgba(255,215,0,0.4)' : 'rgba(14,165,233,0.4)'};
-            border-radius:50%;
-            left:${Math.random() * 100}%;
-            top:${Math.random() * 100}%;
-            filter:blur(0.5px);
-            animation:particleFloat ${Math.random() * 15 + 10}s ${Math.random() * 3}s infinite ease-in-out;
+            position: absolute;
+            width: ${Math.random() * 4 + 1}px;
+            height: ${Math.random() * 4 + 1}px;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.8) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: enhancedFloat ${Math.random() * 20 + 15}s linear infinite;
+            left: ${Math.random() * 100}%;
+            top: ${Math.random() * 100}%;
+            animation-delay: ${Math.random() * 10}s;
+            z-index: 1;
         `;
-        particlesContainer.appendChild(particle);
-    }
-    
-    // Add CSS animation only once
-    if (!document.querySelector('#particle-styles')) {
-        const style = document.createElement('style');
-        style.id = 'particle-styles';
-        style.textContent = `
-            @keyframes particleFloat {
-                0%,100% {transform:translate(0,0) scale(0.5);opacity:0}
-                10%,90% {opacity:1}
-                100% {transform:translate(${Math.random() * 150 - 75}px,-100vh) scale(1)}
-            }
-        `;
-        document.head.appendChild(style);
+        
+        hero.appendChild(particle);
     }
 }
 
-// Performance optimization
-const optimizedScroll = throttle(() => {
-    window.dispatchEvent(new Event('optimizedScroll'));
-}, 100);
-
-window.addEventListener('scroll', optimizedScroll);
-
-// Cost Calculator Functionality
-function initCostCalculator() {
-    const billSlider = document.getElementById('bill-slider');
-    const billValue = document.getElementById('bill-value');
-    const increaseSlider = document.getElementById('increase-slider');
-    const increaseValue = document.getElementById('increase-value');
-    const systemSize = document.getElementById('system-size');
-    
-    // Result elements
-    const withoutSolar = document.getElementById('without-solar');
-    const withSolar = document.getElementById('with-solar');
-    const totalSavings = document.getElementById('total-savings');
-    
-    if (!billSlider || !increaseSlider) return;
-    
-    function calculateSavings() {
-        const monthlyBill = parseFloat(billSlider.value);
-        const annualIncrease = parseFloat(increaseSlider.value) / 100;
-        const years = 25;
-        
-        // Calculate system size based on monthly bill
-        let systemKw = 4;
-        if (monthlyBill > 100) systemKw = 6;
-        if (monthlyBill > 150) systemKw = 8;
-        if (monthlyBill > 200) systemKw = 10;
-        if (monthlyBill > 300) systemKw = 12;
-        
-        systemSize.textContent = `${systemKw}kW System`;
-        
-        // Calculate 25-year cost without solar (with annual increases)
-        let totalWithoutSolar = 0;
-        let currentBill = monthlyBill * 12;
-        for (let i = 0; i < years; i++) {
-            totalWithoutSolar += currentBill;
-            currentBill *= (1 + annualIncrease);
+// Add enhanced float animation
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes enhancedFloat {
+        0% {
+            transform: translateY(100vh) rotate(0deg);
+            opacity: 0;
         }
-        
-        // Calculate with solar (system cost + reduced bills)
-        const systemCost = systemKw * 1500; // £1500 per kW rough estimate
-        const annualSavings = monthlyBill * 12 * 0.8; // 80% savings
-        const totalWithSolar = systemCost + (monthlyBill * 12 * 0.2 * years); // 20% remaining bills
-        
-        // Update displays with animation
-        animateValue(withoutSolar, Math.round(totalWithoutSolar));
-        animateValue(withSolar, Math.round(totalWithSolar));
-        animateValue(totalSavings, Math.round(totalWithoutSolar - totalWithSolar));
-        
-        // Update chart if it exists
-        if (window.savingsChart) {
-            updateSavingsChart(monthlyBill, annualIncrease);
+        10% {
+            opacity: 1;
+        }
+        90% {
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(-100px) rotate(360deg);
+            opacity: 0;
         }
     }
     
-    function animateValue(element, value) {
-        const current = parseInt(element.textContent.replace(/,/g, ''));
-        const duration = 500;
-        const increment = (value - current) / (duration / 16);
-        let temp = current;
-        
-        const timer = setInterval(() => {
-            temp += increment;
-            if ((increment > 0 && temp >= value) || (increment < 0 && temp <= value)) {
-                temp = value;
-                clearInterval(timer);
-            }
-            element.textContent = Math.round(temp).toLocaleString();
-        }, 16);
+    .ripple {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(0);
+        animation: ripple-animation 0.6s linear;
+        pointer-events: none;
     }
     
-    // Update values on slider change
-    billSlider.addEventListener('input', function() {
-        billValue.textContent = this.value;
-        calculateSavings();
-    });
-    
-    increaseSlider.addEventListener('input', function() {
-        increaseValue.textContent = this.value;
-        calculateSavings();
-    });
-    
-    // Initial calculation
-    calculateSavings();
-}
-
-// Initialize Charts
-function initCharts() {
-    const canvas = document.getElementById('savings-chart');
-    if (!canvas) return;
-    
-    // Lazy load Chart.js if not already loaded
-    if (typeof Chart === 'undefined') {
-        const script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
-        script.onload = () => createChart(canvas);
-        document.head.appendChild(script);
-        return;
-    }
-    
-    createChart(canvas);
-}
-
-function createChart(canvas) {
-    const ctx = canvas.getContext('2d');
-    
-    // Simplified gradient
-    const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-    gradient.addColorStop(0, 'rgba(255, 215, 0, 0.8)');
-    gradient.addColorStop(1, 'rgba(14, 165, 233, 0.8)');
-    
-    window.savingsChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['Year 1', 'Year 5', 'Year 10', 'Year 15', 'Year 20', 'Year 25'],
-            datasets: [
-                {
-                    label: 'Without Solar',
-                    data: [1800, 10000, 25000, 45000, 70000, 100000],
-                    borderColor: '#EF4444',
-                    backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                    borderWidth: 2,
-                    tension: 0.4
-                },
-                {
-                    label: 'With Solar',
-                    data: [12000, 13000, 14000, 15000, 16000, 17000],
-                    borderColor: '#0EA5E9',
-                    backgroundColor: 'rgba(14, 165, 233, 0.1)',
-                    borderWidth: 2,
-                    tension: 0.4
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: true,
-                    labels: { color: '#ffffff', font: { size: 12 } }
-                },
-                tooltip: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                    titleColor: '#ffffff',
-                    bodyColor: '#ffffff',
-                    callbacks: {
-                        label: function(context) {
-                            return context.dataset.label + ': £' + context.parsed.y.toLocaleString();
-                        }
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    grid: { color: 'rgba(255, 255, 255, 0.05)' },
-                    ticks: { color: 'rgba(255, 255, 255, 0.7)' }
-                },
-                y: {
-                    grid: { color: 'rgba(255, 255, 255, 0.05)' },
-                    ticks: { 
-                        color: 'rgba(255, 255, 255, 0.7)',
-                        callback: function(value) { return '£' + value.toLocaleString(); }
-                    }
-                }
-            }
-        }
-    });
-}
-
-function updateSavingsChart(monthlyBill, annualIncrease) {
-    if (!window.savingsChart) return;
-    
-    const years = [1, 5, 10, 15, 20, 25];
-    const withoutSolar = [];
-    const withSolar = [];
-    
-    let totalWithoutSolar = 0;
-    let currentBill = monthlyBill * 12;
-    
-    // Calculate system cost
-    let systemKw = 4;
-    if (monthlyBill > 100) systemKw = 6;
-    if (monthlyBill > 150) systemKw = 8;
-    if (monthlyBill > 200) systemKw = 10;
-    if (monthlyBill > 300) systemKw = 12;
-    const systemCost = systemKw * 1500;
-    
-    // Calculate data points
-    for (let year = 1; year <= 25; year++) {
-        totalWithoutSolar += currentBill;
-        currentBill *= (1 + annualIncrease);
-        
-        if (years.includes(year)) {
-            withoutSolar.push(Math.round(totalWithoutSolar));
-            withSolar.push(Math.round(systemCost + (monthlyBill * 12 * 0.2 * year)));
+    @keyframes ripple-animation {
+        to {
+            transform: scale(4);
+            opacity: 0;
         }
     }
     
-    // Update chart data
-    window.savingsChart.data.datasets[0].data = withoutSolar;
-    window.savingsChart.data.datasets[1].data = withSolar;
-    window.savingsChart.update();
-}
-
-// FAQ Accordion
-function initFAQ() {
-    const faqItems = document.querySelectorAll('.faq-item');
-    
-    faqItems.forEach(item => {
-        const question = item.querySelector('.faq-question');
-        const answer = item.querySelector('.faq-answer');
-        
-        question.addEventListener('click', () => {
-            const isActive = item.classList.contains('active');
-            
-            // Close all other items
-            faqItems.forEach(otherItem => {
-                if (otherItem !== item) {
-                    otherItem.classList.remove('active');
-                }
-            });
-            
-            // Toggle current item
-            item.classList.toggle('active');
-            
-            // Smooth height animation
-            if (!isActive) {
-                const height = answer.scrollHeight;
-                answer.style.maxHeight = height + 'px';
-            } else {
-                answer.style.maxHeight = '0';
-            }
-        });
-    });
-}
-
-// Export functions for use in other scripts
-window.solarPanelsOldham = {
-    debounce,
-    throttle,
-    initCustomCursor,
-    initRevealAnimations,
-    initCostCalculator,
-    initCharts,
-    initFAQ
-};
+    .enhanced-particle {
+        filter: blur(0.5px);
+    }
+`;
+document.head.appendChild(style);
