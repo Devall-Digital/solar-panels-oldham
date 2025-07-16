@@ -224,6 +224,8 @@
 
 ## 🎯 SEO CONTENT OPTIMIZATION
 
+*For comprehensive SEO strategy and technical implementation, see `SEO_STRATEGY.md`*
+
 ### Keyword Integration
 **Primary Keywords**:
 - "solar panels Oldham"

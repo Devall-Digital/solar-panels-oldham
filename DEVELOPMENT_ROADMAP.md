@@ -13,6 +13,8 @@
 
 ## 🏗️ CURRENT TECHNICAL ARCHITECTURE
 
+*For detailed current development status, see `DEVELOPMENT_STATUS.md`*
+
 ### File Structure Analysis
 ```
 /
