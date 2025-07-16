@@ -155,6 +155,8 @@
 
 ## 📊 CONTENT STRATEGY
 
+*For detailed content strategy and copywriting guidelines, see `CONTENT_STRATEGY.md`*
+
 ### Content Pillars
 1. **Solar Installation Guide** - Comprehensive how-to content
 2. **Local Solar Benefits** - Area-specific advantages
