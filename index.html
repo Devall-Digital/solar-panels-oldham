@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow">
+    <meta name="robots" content="index, follow">
     <meta name="author" content="Solar Panels Oldham">
-    <title>Coming Soon | Solar Panels Oldham</title>
-    <meta name="description" content="Solar Panels Oldham - Coming Soon. Professional solar panel installation services in Oldham, Saddleworth & Greater Manchester.">
+    <title>Solar Panels Oldham | Coming Soon | Professional Solar Installation</title>
+    <meta name="description" content="Solar Panels Oldham - Coming Soon. Professional solar panel installation services in Oldham, Saddleworth & Greater Manchester. Get early access and exclusive offers.">
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -26,9 +26,6 @@
             background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
             color: #ffffff;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             overflow-x: hidden;
             position: relative;
         }
@@ -56,11 +53,16 @@
         }
         
         .container {
-            text-align: center;
-            max-width: 800px;
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 2rem;
             position: relative;
             z-index: 2;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
         }
         
         .logo {
@@ -95,6 +97,121 @@
             line-height: 1.6;
         }
         
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin: 2rem 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FFD700, #FFA500);
+            border-radius: 3px;
+            animation: progress 3s ease-in-out infinite;
+            width: 85%;
+        }
+        
+        @keyframes progress {
+            0%, 100% { width: 85%; }
+            50% { width: 95%; }
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin: 3rem 0;
+        }
+        
+        .lead-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+        }
+        
+        .lead-section h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #FFD700;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #FFD700;
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #cccccc;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000000;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.3);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 215, 0, 0.1);
+            border-color: #FFD700;
+        }
+        
         .features {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -109,6 +226,7 @@
             border-radius: 15px;
             padding: 1.5rem;
             transition: all 0.3s ease;
+            text-align: center;
         }
         
         .feature:hover {
@@ -143,6 +261,7 @@
             border-radius: 15px;
             padding: 2rem;
             margin: 2rem 0;
+            text-align: center;
         }
         
         .contact-info h3 {
@@ -177,38 +296,99 @@
             color: #FFA500;
         }
         
-        .progress-bar {
-            width: 100%;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
-            margin: 2rem 0;
-            overflow: hidden;
+        .preview-section {
+            text-align: center;
+            margin: 3rem 0;
         }
         
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #FFD700, #FFA500);
-            border-radius: 3px;
-            animation: progress 3s ease-in-out infinite;
-            width: 75%;
-        }
-        
-        @keyframes progress {
-            0%, 100% { width: 75%; }
-            50% { width: 85%; }
+        .preview-warning {
+            background: rgba(255, 165, 0, 0.1);
+            border: 1px solid rgba(255, 165, 0, 0.3);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            color: #FFA500;
         }
         
         .footer {
             margin-top: 3rem;
+            text-align: center;
             font-size: 0.9rem;
             color: #888888;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            margin: 5% auto;
+            padding: 2rem;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+        
+        .modal-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-title {
+            color: #FFD700;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .modal-body {
+            color: #cccccc;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        
+        .close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            color: #cccccc;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .close:hover {
+            color: #FFD700;
         }
         
         /* Responsive Design */
         @media (max-width: 768px) {
             .container {
                 padding: 1rem;
+            }
+            
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
             }
             
             .features {
@@ -226,6 +406,11 @@
             
             .contact-details {
                 gap: 0.8rem;
+            }
+            
+            .modal-content {
+                margin: 10% auto;
+                padding: 1.5rem;
             }
         }
         
@@ -250,21 +435,163 @@
                 font-size: 0.85rem;
             }
         }
+        
+        /* Success/Error Messages */
+        .message {
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            display: none;
+        }
+        
+        .message.success {
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            color: #00ff00;
+        }
+        
+        .message.error {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            color: #ff6666;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="logo">☀️ Solar Panels Oldham</div>
+        <div class="header">
+            <div class="logo">☀️ Solar Panels Oldham</div>
+            
+            <h1 class="coming-soon-title">Coming Soon</h1>
+            
+            <p class="subtitle">
+                We're building the most advanced solar panel installation website in Oldham & Saddleworth. 
+                Get early access and exclusive offers while we prepare our cutting-edge platform.
+            </p>
+            
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            
+            <p style="color: #FFD700; font-weight: 600; margin-top: 1rem;">
+                🚀 Launch Date: January 2025
+            </p>
+        </div>
         
-        <h1 class="coming-soon-title">Coming Soon</h1>
-        
-        <p class="subtitle">
-            We're working hard to bring you the most advanced solar panel installation website in Oldham & Saddleworth. 
-            Our new platform will feature cutting-edge technology, instant quotes, and seamless customer experience.
-        </p>
-        
-        <div class="progress-bar">
-            <div class="progress-fill"></div>
+        <div class="main-content">
+            <div class="lead-section">
+                <h3>🚀 Get Early Access</h3>
+                <p style="color: #cccccc; margin-bottom: 1.5rem;">
+                    Be the first to know when we launch and get exclusive early-bird offers!
+                </p>
+                
+                <form id="early-access-form">
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input type="text" id="name" name="name" required placeholder="Your full name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required placeholder="your@email.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" placeholder="0161 123 4567">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="area">Service Area</label>
+                        <select id="area" name="area">
+                            <option value="">Select your area</option>
+                            <option value="oldham">Oldham</option>
+                            <option value="saddleworth">Saddleworth</option>
+                            <option value="uppermill">Uppermill</option>
+                            <option value="delph">Delph</option>
+                            <option value="dobcross">Dobcross</option>
+                            <option value="greenfield">Greenfield</option>
+                            <option value="greater-manchester">Greater Manchester</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="interest">What interests you most?</label>
+                        <select id="interest" name="interest">
+                            <option value="">Select your interest</option>
+                            <option value="solar-panels">Solar Panels</option>
+                            <option value="battery-storage">Battery Storage</option>
+                            <option value="complete-system">Complete Solar System</option>
+                            <option value="quote">Get a Quote</option>
+                            <option value="information">General Information</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        Get Early Access & Exclusive Offers
+                    </button>
+                </form>
+                
+                <div id="form-message" class="message"></div>
+            </div>
+            
+            <div class="lead-section">
+                <h3>💡 Quick Quote Request</h3>
+                <p style="color: #cccccc; margin-bottom: 1.5rem;">
+                    Get a preliminary quote while we build our advanced calculator.
+                </p>
+                
+                <form id="quick-quote-form">
+                    <div class="form-group">
+                        <label for="quote-name">Name *</label>
+                        <input type="text" id="quote-name" name="name" required placeholder="Your name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="quote-email">Email *</label>
+                        <input type="email" id="quote-email" name="email" required placeholder="your@email.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="quote-phone">Phone *</label>
+                        <input type="tel" id="quote-phone" name="phone" required placeholder="0161 123 4567">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="property-type">Property Type</label>
+                        <select id="property-type" name="propertyType">
+                            <option value="">Select property type</option>
+                            <option value="detached">Detached House</option>
+                            <option value="semi-detached">Semi-Detached House</option>
+                            <option value="terraced">Terraced House</option>
+                            <option value="bungalow">Bungalow</option>
+                            <option value="flat">Flat/Apartment</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="monthly-bill">Monthly Electricity Bill</label>
+                        <select id="monthly-bill" name="monthlyBill">
+                            <option value="">Select monthly bill</option>
+                            <option value="100-150">£100 - £150</option>
+                            <option value="150-200">£150 - £200</option>
+                            <option value="200-300">£200 - £300</option>
+                            <option value="300+">£300+</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Additional Information</label>
+                        <textarea id="message" name="message" rows="3" placeholder="Tell us about your requirements..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        Get Quick Quote
+                    </button>
+                </form>
+                
+                <div id="quote-message" class="message"></div>
+            </div>
         </div>
         
         <div class="features">
@@ -293,6 +620,15 @@
             </div>
         </div>
         
+        <div class="preview-section">
+            <div class="preview-warning">
+                ⚠️ <strong>Work in Progress:</strong> Our full website is under development
+            </div>
+            <button id="preview-btn" class="btn btn-secondary">
+                👀 Preview Full Website (Beta)
+            </button>
+        </div>
+        
         <div class="contact-info">
             <h3>Get In Touch</h3>
             <div class="contact-details">
@@ -313,5 +649,163 @@
             <p>MCS Certified • Government Approved • 25 Year Warranty</p>
         </div>
     </div>
+    
+    <!-- Preview Modal -->
+    <div id="preview-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-header">
+                <h3 class="modal-title">⚠️ Work in Progress</h3>
+            </div>
+            <div class="modal-body">
+                <p><strong>Our full website is still under development.</strong></p>
+                <p>You're about to view a beta version that may have incomplete features or temporary content. This is for preview purposes only.</p>
+                <p><strong>What you'll see:</strong></p>
+                <ul style="text-align: left; margin: 1rem 0;">
+                    <li>Complete website design and layout</li>
+                    <li>All sections and functionality</li>
+                    <li>Some placeholder content</li>
+                    <li>Working contact forms</li>
+                </ul>
+                <p><strong>Note:</strong> This is not the final version and may change before launch.</p>
+            </div>
+            <div class="modal-actions">
+                <button id="continue-preview" class="btn btn-primary">Continue to Preview</button>
+                <button id="cancel-preview" class="btn btn-secondary">Stay Here</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Form handling
+        document.getElementById('early-access-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            formData.append('form_type', 'early-access');
+            
+            // Show loading state
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+            
+            // Submit to PHP processor
+            fetch('php/coming-soon-leads.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showMessage('form-message', data.message, 'success');
+                    this.reset();
+                } else {
+                    showMessage('form-message', data.message, 'error');
+                }
+            })
+            .catch(error => {
+                showMessage('form-message', 'An error occurred. Please try again.', 'error');
+            })
+            .finally(() => {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            });
+        });
+        
+        document.getElementById('quick-quote-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            formData.append('form_type', 'quick-quote');
+            
+            // Show loading state
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+            
+            // Submit to PHP processor
+            fetch('php/coming-soon-leads.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showMessage('quote-message', data.message, 'success');
+                    this.reset();
+                } else {
+                    showMessage('quote-message', data.message, 'error');
+                }
+            })
+            .catch(error => {
+                showMessage('quote-message', 'An error occurred. Please try again.', 'error');
+            })
+            .finally(() => {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            });
+        });
+        
+        function showMessage(elementId, message, type) {
+            const element = document.getElementById(elementId);
+            element.textContent = message;
+            element.className = `message ${type}`;
+            element.style.display = 'block';
+            
+            setTimeout(() => {
+                element.style.display = 'none';
+            }, 5000);
+        }
+        
+        // Modal handling
+        const modal = document.getElementById('preview-modal');
+        const previewBtn = document.getElementById('preview-btn');
+        const closeBtn = document.querySelector('.close');
+        const continueBtn = document.getElementById('continue-preview');
+        const cancelBtn = document.getElementById('cancel-preview');
+        
+        previewBtn.onclick = function() {
+            modal.style.display = 'block';
+        }
+        
+        closeBtn.onclick = function() {
+            modal.style.display = 'none';
+        }
+        
+        cancelBtn.onclick = function() {
+            modal.style.display = 'none';
+        }
+        
+        continueBtn.onclick = function() {
+            // Redirect to the full website preview
+            window.location.href = 'home.html';
+        }
+        
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+        
+        // Add some interactive effects
+        document.querySelectorAll('.feature').forEach(feature => {
+            feature.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px) scale(1.02)';
+            });
+            
+            feature.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+        
+        // Animate progress bar on scroll
+        const progressBar = document.querySelector('.progress-fill');
+        let progress = 85;
+        
+        setInterval(() => {
+            progress = progress === 85 ? 95 : 85;
+            progressBar.style.width = progress + '%';
+        }, 3000);
+    </script>
 </body>
 </html> 
