@@ -415,20 +415,18 @@ const HomePage = class {
     getTemplate() {
         return `
             <!-- Navigation -->
-            <nav class="fixed top-0 left-0 right-0 z-50">
-                <div class="container">
-                    <div class="flex">
-                        <div class="font-bold text-xl text-primary">Solar Panels Oldham</div>
-                        <div class="hidden md:flex" style="gap: var(--spacing-8);">
-                            <a href="#home" class="nav-link">Home</a>
-                            <a href="#services" class="nav-link">Services</a>
-                            <a href="#calculator" class="nav-link">Calculator</a>
-                            <a href="#contact" class="nav-link">Contact</a>
-                        </div>
-                        <button class="btn-primary" data-action="show-quote-form">
-                            Get Quote
-                        </button>
+            <nav class="fixed top-0 left-0 right-0" style="z-index: 100;">
+                <div class="container" style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem;">
+                    <div style="font-weight: 700; font-size: 1.25rem; color: var(--primary);">Solar Panels Oldham</div>
+                    <div class="nav-links" style="display: flex; align-items: center; gap: 2rem;">
+                        <a href="#home" class="nav-link">Home</a>
+                        <a href="#services" class="nav-link">Services</a>
+                        <a href="#calculator" class="nav-link">Calculator</a>
+                        <a href="#contact" class="nav-link">Contact</a>
                     </div>
+                    <button class="btn-primary" data-action="show-quote-form">
+                        Get Quote
+                    </button>
                 </div>
             </nav>
 

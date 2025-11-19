@@ -660,6 +660,13 @@ nav .flex {
     transform: scaleX(1);
 }
 
+/* Hide nav links on mobile */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none !important;
+    }
+}
+
 /* ==========================================================================
    Modal Styles
    ========================================================================== */
