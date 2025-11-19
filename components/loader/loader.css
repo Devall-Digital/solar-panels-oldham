@@ -1,0 +1,221 @@
+/**
+ * Component: Loading Animation Styles
+ * Module: Components
+ * Purpose: Solar-themed loading animation styles
+ * Dependencies: /assets/css/variables.css
+ * Author: Initial Setup Agent
+ * Date: November 2024
+ */
+
+/* ==========================================================================
+   Loading Container
+   ========================================================================== */
+
+.loading-animation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    padding: var(--space-8);
+}
+
+.app-loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: var(--z-modal);
+}
+
+/* ==========================================================================
+   Solar Loader
+   ========================================================================== */
+
+.solar-loader {
+    position: relative;
+    width: 120px;
+    height: 120px;
+}
+
+/* Sun (center) */
+.sun {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    margin: -20px 0 0 -20px;
+    background: var(--primary);
+    border-radius: 50%;
+    box-shadow: 
+        0 0 20px rgba(var(--primary-rgb), 0.5),
+        0 0 40px rgba(var(--primary-rgb), 0.3);
+    animation: sunPulse 2s ease-in-out infinite;
+}
+
+@keyframes sunPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 
+            0 0 20px rgba(var(--primary-rgb), 0.5),
+            0 0 40px rgba(var(--primary-rgb), 0.3);
+    }
+    50% {
+        transform: scale(1.1);
+        box-shadow: 
+            0 0 30px rgba(var(--primary-rgb), 0.7),
+            0 0 60px rgba(var(--primary-rgb), 0.5);
+    }
+}
+
+/* Solar panels */
+.panel {
+    position: absolute;
+    width: 30px;
+    height: 40px;
+    background: var(--secondary);
+    border-radius: var(--radius-sm);
+    opacity: 0.8;
+    
+    /* Panel grid lines */
+    background-image: 
+        linear-gradient(to bottom, transparent 48%, var(--secondary-dark) 48%, var(--secondary-dark) 52%, transparent 52%),
+        linear-gradient(to right, transparent 48%, var(--secondary-dark) 48%, var(--secondary-dark) 52%, transparent 52%);
+    background-size: 10px 10px;
+    
+    animation: panelOrbit 3s linear infinite;
+}
+
+.panel-1 {
+    top: 0;
+    left: 50%;
+    margin-left: -15px;
+    transform-origin: center 60px;
+}
+
+.panel-2 {
+    top: 50%;
+    right: 0;
+    margin-top: -20px;
+    transform-origin: -25px center;
+    animation-delay: -1s;
+}
+
+.panel-3 {
+    bottom: 0;
+    left: 50%;
+    margin-left: -15px;
+    transform-origin: center -25px;
+    animation-delay: -2s;
+}
+
+@keyframes panelOrbit {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ==========================================================================
+   Loading Text
+   ========================================================================== */
+
+.loading-text {
+    margin-top: var(--space-8);
+    color: var(--light-darker);
+    font-size: var(--text-sm);
+    text-align: center;
+    animation: fadeInOut 2s ease-in-out infinite;
+}
+
+@keyframes fadeInOut {
+    0%, 100% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+/* ==========================================================================
+   Active State
+   ========================================================================== */
+
+.loading-animation.active {
+    animation: fadeIn var(--duration-normal) var(--ease-out);
+}
+
+/* ==========================================================================
+   Size Variants
+   ========================================================================== */
+
+.loading-animation.small .solar-loader {
+    width: 60px;
+    height: 60px;
+}
+
+.loading-animation.small .sun {
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+}
+
+.loading-animation.small .panel {
+    width: 15px;
+    height: 20px;
+}
+
+.loading-animation.small .panel-1 {
+    transform-origin: center 30px;
+}
+
+.loading-animation.small .panel-2 {
+    transform-origin: -12px center;
+}
+
+.loading-animation.small .panel-3 {
+    transform-origin: center -12px;
+}
+
+/* ==========================================================================
+   Inline Loading
+   ========================================================================== */
+
+.loading-inline {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.loading-inline .spinner {
+    width: 1em;
+    height: 1em;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+/* ==========================================================================
+   Reduced Motion
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .sun,
+    .panel,
+    .loading-text {
+        animation: none !important;
+    }
+    
+    .sun {
+        box-shadow: 0 0 20px rgba(var(--primary-rgb), 0.5);
+    }
+}

@@ -1,0 +1,462 @@
+/**
+ * Component: Progress Form Styles
+ * Module: Components
+ * Purpose: Styles for multi-step forms with progress indication
+ * Dependencies: /assets/css/variables.css
+ * Author: Initial Setup Agent
+ * Date: November 2024
+ */
+
+/* ==========================================================================
+   Form Container
+   ========================================================================== */
+
+.progress-form {
+    position: relative;
+    max-width: var(--container-md);
+    margin: 0 auto;
+    background: var(--dark-light);
+    border-radius: var(--radius-2xl);
+    padding: var(--space-8);
+    box-shadow: var(--shadow-xl);
+}
+
+/* ==========================================================================
+   Progress Bar
+   ========================================================================== */
+
+.form-progress {
+    margin-bottom: var(--space-8);
+}
+
+.progress-bar {
+    height: 6px;
+    background: var(--dark-lighter);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    margin-bottom: var(--space-4);
+    position: relative;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--gradient-primary);
+    border-radius: var(--radius-full);
+    transition: width var(--duration-slow) var(--ease-out);
+    box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.5);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Animated stripes */
+.progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.15) 25%,
+        transparent 25%,
+        transparent 50%,
+        rgba(255, 255, 255, 0.15) 50%,
+        rgba(255, 255, 255, 0.15) 75%,
+        transparent 75%,
+        transparent
+    );
+    background-size: 20px 20px;
+    animation: progressStripes 1s linear infinite;
+}
+
+/* Progress steps */
+.progress-steps {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+}
+
+.step {
+    font-size: var(--text-sm);
+    color: var(--dark-lighter);
+    font-weight: var(--font-medium);
+    transition: all var(--duration-normal) var(--ease-out);
+    position: relative;
+    padding-left: var(--space-6);
+}
+
+.step::before {
+    content: attr(data-step);
+    position: absolute;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    background: var(--dark-lighter);
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--text-xs);
+    transition: all var(--duration-normal) var(--ease-out);
+}
+
+.step.active {
+    color: var(--primary);
+}
+
+.step.active::before {
+    background: var(--primary);
+    color: var(--dark);
+    transform: scale(1.2);
+}
+
+.step.completed {
+    color: var(--light);
+}
+
+.step.completed::before {
+    background: var(--accent);
+    color: var(--dark);
+    content: '✓';
+}
+
+/* Celebration animation */
+.progress-bar.celebrate .progress-fill {
+    animation: celebrate 1s ease-out;
+}
+
+@keyframes celebrate {
+    0%, 100% {
+        transform: scaleY(1);
+    }
+    50% {
+        transform: scaleY(1.2);
+    }
+}
+
+/* ==========================================================================
+   Form Screens
+   ========================================================================== */
+
+.form-screens {
+    position: relative;
+    min-height: 300px;
+}
+
+.form-screen {
+    display: none;
+    opacity: 0;
+    transform: translateX(20px);
+}
+
+.form-screen.active {
+    display: block;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.form-screen.enter {
+    animation: screenEnter var(--duration-normal) var(--ease-out);
+}
+
+.form-screen.exit {
+    animation: screenExit var(--duration-normal) var(--ease-out);
+}
+
+@keyframes screenEnter {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes screenExit {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+}
+
+/* Shake animation for validation */
+.form-screen.shake {
+    animation: shake var(--duration-fast) var(--ease-out);
+}
+
+/* Screen title */
+.screen-title {
+    font-size: var(--text-2xl);
+    margin-bottom: var(--space-6);
+    color: var(--light);
+}
+
+/* ==========================================================================
+   Form Groups and Fields
+   ========================================================================== */
+
+.form-group {
+    margin-bottom: var(--space-6);
+}
+
+.form-field {
+    position: relative;
+    margin-bottom: var(--space-4);
+}
+
+.form-field label {
+    display: block;
+    margin-bottom: var(--space-2);
+    color: var(--light);
+    font-weight: var(--font-medium);
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+    width: 100%;
+    background: var(--dark);
+    border: 2px solid var(--dark-lighter);
+    color: var(--light);
+    transition: all var(--duration-normal) var(--ease-out);
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+    border-color: var(--primary);
+    background: rgba(var(--primary-rgb), 0.05);
+}
+
+/* Error state */
+.form-field.has-error input,
+.form-field.has-error select,
+.form-field.has-error textarea {
+    border-color: var(--error);
+}
+
+.field-error {
+    display: block;
+    font-size: var(--text-sm);
+    color: var(--error);
+    margin-top: var(--space-1);
+    opacity: 0;
+    transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.form-field.has-error .field-error {
+    opacity: 1;
+}
+
+/* ==========================================================================
+   Form Navigation
+   ========================================================================== */
+
+.form-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--space-8);
+    gap: var(--space-4);
+}
+
+.btn-back,
+.btn-next,
+.btn-submit {
+    min-width: 120px;
+}
+
+.btn-back {
+    background: transparent;
+    border-color: var(--dark-lighter);
+    color: var(--light);
+}
+
+.btn-back:hover {
+    background: var(--dark-lighter);
+    transform: translateX(-3px);
+}
+
+.btn-next {
+    margin-left: auto;
+}
+
+.btn-submit {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-submit .spinner {
+    display: none;
+    margin-left: var(--space-2);
+}
+
+.btn-submit.loading .spinner {
+    display: inline-block;
+}
+
+.btn-submit.loading .btn-text {
+    opacity: 0.7;
+}
+
+/* ==========================================================================
+   Success State
+   ========================================================================== */
+
+.form-success {
+    text-align: center;
+    padding: var(--space-12) var(--space-4);
+}
+
+.success-animation {
+    margin-bottom: var(--space-6);
+}
+
+.checkmark {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+}
+
+.checkmark-circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 2;
+    stroke-miterlimit: 10;
+    stroke: var(--accent);
+    fill: none;
+    transition: stroke-dashoffset 0.6s var(--ease-out);
+}
+
+.checkmark-check {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    stroke: var(--accent);
+    fill: none;
+    transition: stroke-dashoffset 0.3s var(--ease-out) 0.3s;
+}
+
+.checkmark.draw .checkmark-circle {
+    stroke-dashoffset: 0;
+}
+
+.checkmark.draw .checkmark-check {
+    stroke-dashoffset: 0;
+}
+
+.success-title {
+    font-size: var(--text-3xl);
+    color: var(--accent);
+    margin-bottom: var(--space-4);
+}
+
+.success-message {
+    font-size: var(--text-lg);
+    color: var(--light-darker);
+}
+
+/* ==========================================================================
+   Confetti Effect
+   ========================================================================== */
+
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    top: -10px;
+    z-index: var(--z-modal);
+    animation: confettiFall 2s linear forwards;
+}
+
+@keyframes confettiFall {
+    to {
+        transform: translateY(calc(100vh + 10px)) rotate(720deg);
+    }
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .progress-form {
+        padding: var(--space-4);
+        border-radius: var(--radius-xl);
+    }
+    
+    .progress-steps {
+        font-size: var(--text-xs);
+    }
+    
+    .step {
+        padding-left: var(--space-5);
+    }
+    
+    .screen-title {
+        font-size: var(--text-xl);
+    }
+    
+    .form-nav {
+        flex-direction: column;
+    }
+    
+    .btn-back,
+    .btn-next,
+    .btn-submit {
+        width: 100%;
+    }
+    
+    .btn-back {
+        order: 2;
+    }
+    
+    .btn-next,
+    .btn-submit {
+        order: 1;
+    }
+}
+
+@media (min-width: 768px) {
+    .form-group {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: var(--space-4);
+    }
+    
+    .form-group .form-field:only-child {
+        grid-column: 1 / -1;
+    }
+}
+
+/* ==========================================================================
+   Reduced Motion
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .progress-fill,
+    .step,
+    .step::before,
+    .form-screen,
+    .field-error {
+        transition: none !important;
+    }
+    
+    .form-screen.enter,
+    .form-screen.exit,
+    .form-screen.shake,
+    .progress-bar.celebrate .progress-fill {
+        animation: none !important;
+    }
+    
+    .confetti {
+        display: none;
+    }
+}

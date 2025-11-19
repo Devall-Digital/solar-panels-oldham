@@ -1,0 +1,15 @@
+# Storage Security Configuration
+# Prevent all direct access to storage files
+
+# Deny all access
+Order deny,allow
+Deny from all
+
+# Prevent directory browsing
+Options -Indexes
+
+# Block all file types
+<FilesMatch ".*">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>

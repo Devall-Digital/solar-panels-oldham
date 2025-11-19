@@ -1,0 +1,308 @@
+/**
+ * Component: Hero Section Styles
+ * Module: Components
+ * Purpose: Styles for the hero section with particles and animations
+ * Dependencies: /assets/css/variables.css
+ * Author: Initial Setup Agent
+ * Date: November 2024
+ */
+
+/* ==========================================================================
+   Hero Section Container
+   ========================================================================== */
+
+.hero-section {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: var(--gradient-dark);
+}
+
+/* Particle container */
+.hero-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.particles-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Hero content */
+.hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: var(--space-8) var(--space-4);
+    max-width: var(--container-lg);
+    margin: 0 auto;
+}
+
+/* ==========================================================================
+   Hero Typography
+   ========================================================================== */
+
+.hero-title {
+    margin-bottom: var(--space-6);
+    animation: fadeInUp var(--duration-slow) var(--ease-out);
+}
+
+.hero-title-line1,
+.hero-title-line2 {
+    display: block;
+    font-size: clamp(var(--text-3xl), 6vw, var(--text-6xl));
+    font-weight: var(--font-extrabold);
+    line-height: var(--leading-tight);
+    color: var(--light);
+    letter-spacing: var(--tracking-tight);
+}
+
+.hero-accent {
+    display: inline-block;
+    color: var(--primary);
+    position: relative;
+    animation: glow 3s ease-in-out infinite;
+}
+
+/* Glowing text effect */
+@keyframes glow {
+    0%, 100% {
+        text-shadow: 
+            0 0 10px rgba(var(--primary-rgb), 0.5),
+            0 0 20px rgba(var(--primary-rgb), 0.3),
+            0 0 30px rgba(var(--primary-rgb), 0.2);
+    }
+    50% {
+        text-shadow: 
+            0 0 20px rgba(var(--primary-rgb), 0.8),
+            0 0 40px rgba(var(--primary-rgb), 0.6),
+            0 0 60px rgba(var(--primary-rgb), 0.4);
+    }
+}
+
+.hero-subtitle {
+    font-size: clamp(var(--text-lg), 2.5vw, var(--text-xl));
+    color: var(--light-darker);
+    margin-bottom: var(--space-8);
+    animation: fadeInUp var(--duration-slow) var(--ease-out);
+    animation-delay: 200ms;
+    animation-fill-mode: both;
+}
+
+/* ==========================================================================
+   Hero Stats
+   ========================================================================== */
+
+.hero-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--space-6);
+    margin-bottom: var(--space-8);
+    animation: fadeInUp var(--duration-slow) var(--ease-out);
+    animation-delay: 400ms;
+    animation-fill-mode: both;
+}
+
+.stat-item {
+    text-align: center;
+    padding: var(--space-4);
+    background: rgba(var(--primary-rgb), 0.1);
+    border-radius: var(--radius-xl);
+    border: 1px solid rgba(var(--primary-rgb), 0.2);
+    backdrop-filter: blur(var(--blur-sm));
+    transition: var(--transition-all);
+}
+
+.stat-item:hover {
+    transform: translateY(-5px);
+    background: rgba(var(--primary-rgb), 0.15);
+    border-color: rgba(var(--primary-rgb), 0.4);
+    box-shadow: 0 10px 30px -10px rgba(var(--primary-rgb), 0.3);
+}
+
+.stat-number {
+    display: block;
+    font-size: var(--text-3xl);
+    font-weight: var(--font-bold);
+    color: var(--primary);
+    margin-bottom: var(--space-2);
+    transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.stat-number.count-complete {
+    animation: pulse 0.6s ease-out;
+}
+
+.stat-label {
+    font-size: var(--text-sm);
+    color: var(--light-darker);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+}
+
+/* ==========================================================================
+   Hero CTA
+   ========================================================================== */
+
+.hero-cta {
+    animation: fadeInUp var(--duration-slow) var(--ease-out);
+    animation-delay: 600ms;
+    animation-fill-mode: both;
+}
+
+.hero-cta .btn-primary {
+    font-size: var(--text-lg);
+    padding: var(--space-4) var(--space-8);
+    position: relative;
+    overflow: hidden;
+    transform: translateZ(0);
+    transition: all var(--duration-normal) var(--ease-out);
+    box-shadow: 0 4px 15px rgba(var(--primary-rgb), 0.3);
+}
+
+.hero-cta .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 25px rgba(var(--primary-rgb), 0.5);
+}
+
+.hero-cta .btn-primary:active {
+    transform: translateY(-1px);
+}
+
+/* Button shine effect */
+.btn-shine {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    transition: none;
+}
+
+@keyframes shine {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+/* Ripple effect */
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.6);
+    transform: scale(0);
+    animation: ripple 0.6s ease-out;
+    pointer-events: none;
+}
+
+@keyframes ripple {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .hero-section {
+        min-height: 100vh;
+        min-height: 100dvh; /* Dynamic viewport height */
+    }
+    
+    .hero-content {
+        padding: var(--space-6) var(--space-4);
+    }
+    
+    .hero-stats {
+        grid-template-columns: 1fr;
+        gap: var(--space-4);
+    }
+    
+    .stat-item {
+        padding: var(--space-3);
+    }
+    
+    .hero-cta .btn-primary {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+@media (min-width: 768px) {
+    .hero-title-line1,
+    .hero-title-line2 {
+        font-size: var(--text-5xl);
+    }
+    
+    .hero-subtitle {
+        font-size: var(--text-xl);
+    }
+    
+    .stat-number {
+        font-size: var(--text-4xl);
+    }
+}
+
+@media (min-width: 1024px) {
+    .hero-content {
+        padding: var(--space-12) var(--space-6);
+    }
+    
+    .hero-title-line1,
+    .hero-title-line2 {
+        font-size: var(--text-6xl);
+    }
+    
+    .hero-subtitle {
+        font-size: var(--text-2xl);
+    }
+    
+    .hero-stats {
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+/* ==========================================================================
+   Reduced Motion
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-section * {
+        animation-duration: 0s !important;
+        animation-delay: 0s !important;
+    }
+    
+    .particles-canvas {
+        display: none;
+    }
+    
+    .btn-shine {
+        display: none;
+    }
+}

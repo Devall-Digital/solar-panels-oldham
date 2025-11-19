@@ -1,0 +1,273 @@
+/**
+ * Component: Solar Calculator Module Styles
+ * Module: Calculator
+ * Purpose: Styles for the interactive solar calculator
+ * Dependencies: /assets/css/variables.css
+ * Author: Initial Setup Agent
+ * Date: November 2024
+ */
+
+/* ==========================================================================
+   Calculator Module Container
+   ========================================================================== */
+
+.calculator-module {
+    min-height: 100vh;
+    padding: var(--space-16) 0;
+    background: var(--gradient-dark);
+}
+
+.module-header {
+    text-align: center;
+    margin-bottom: var(--space-12);
+}
+
+.module-title {
+    font-size: var(--text-5xl);
+    margin-bottom: var(--space-4);
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.module-subtitle {
+    font-size: var(--text-xl);
+    color: var(--light-darker);
+}
+
+/* ==========================================================================
+   Calculator Styles (Enhanced from component)
+   ========================================================================== */
+
+.solar-calculator {
+    background: var(--dark-light);
+    border-radius: var(--radius-2xl);
+    padding: var(--space-8);
+    box-shadow: var(--shadow-2xl);
+    border: 1px solid rgba(var(--primary-rgb), 0.1);
+}
+
+/* ==========================================================================
+   Result Cards - Enhanced
+   ========================================================================== */
+
+.calc-results {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-4);
+    margin-bottom: var(--space-8);
+}
+
+.result-card {
+    background: var(--dark);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+    text-align: center;
+    border: 1px solid var(--dark-lighter);
+    transition: all var(--duration-normal) var(--ease-smooth);
+    transform-origin: center;
+}
+
+.result-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    border-color: rgba(var(--primary-rgb), 0.3);
+    box-shadow: 0 10px 30px -10px rgba(var(--primary-rgb), 0.3);
+}
+
+.result-card.saving {
+    background: rgba(var(--primary-rgb), 0.05);
+    border-color: rgba(var(--primary-rgb), 0.2);
+}
+
+.result-card.roi {
+    background: rgba(var(--accent-rgb), 0.05);
+    border-color: rgba(var(--accent-rgb), 0.2);
+}
+
+.result-icon {
+    font-size: var(--text-3xl);
+    margin-bottom: var(--space-3);
+    display: inline-block;
+    animation: float 3s ease-in-out infinite;
+}
+
+.result-value {
+    font-size: var(--text-3xl);
+    font-weight: var(--font-bold);
+    color: var(--primary);
+    margin-bottom: var(--space-2);
+    font-variant-numeric: tabular-nums;
+}
+
+.result-card.roi .result-value {
+    color: var(--accent);
+}
+
+/* Celebrate animation */
+.result-card.celebrate {
+    animation: celebrateBounce 0.6s var(--ease-bounce);
+}
+
+@keyframes celebrateBounce {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+/* ==========================================================================
+   Calculator Chart
+   ========================================================================== */
+
+.calc-chart {
+    background: var(--dark);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+    margin-bottom: var(--space-8);
+    border: 1px solid var(--dark-lighter);
+}
+
+#savings-chart {
+    width: 100%;
+    height: 300px;
+    max-width: 100%;
+}
+
+/* ==========================================================================
+   Breakdown Section
+   ========================================================================== */
+
+.calc-breakdown {
+    background: rgba(var(--primary-rgb), 0.05);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+    margin-bottom: var(--space-8);
+    border: 1px solid rgba(var(--primary-rgb), 0.1);
+}
+
+.calc-breakdown h3 {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-4);
+    color: var(--primary);
+}
+
+.breakdown-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-4);
+}
+
+.breakdown-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-3);
+    background: var(--dark);
+    border-radius: var(--radius-md);
+}
+
+.breakdown-label {
+    color: var(--light-darker);
+    font-size: var(--text-sm);
+}
+
+.breakdown-value {
+    font-weight: var(--font-semibold);
+    color: var(--light);
+    font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   Calculator CTA Section
+   ========================================================================== */
+
+.calc-cta {
+    text-align: center;
+}
+
+.btn-large {
+    font-size: var(--text-lg);
+    padding: var(--space-4) var(--space-8);
+    gap: var(--space-3);
+}
+
+.btn-large .arrow {
+    font-size: 1.5em;
+    transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.btn-large:hover .arrow {
+    transform: translateX(5px);
+}
+
+.cta-subtext {
+    margin-top: var(--space-3);
+    color: var(--light-darker);
+    font-size: var(--text-sm);
+}
+
+/* ==========================================================================
+   Mobile Optimizations
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .calculator-module {
+        padding: var(--space-8) 0;
+    }
+    
+    .module-title {
+        font-size: var(--text-3xl);
+    }
+    
+    .solar-calculator {
+        padding: var(--space-4);
+        border-radius: var(--radius-xl);
+    }
+    
+    .calc-results {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-3);
+    }
+    
+    .result-card {
+        padding: var(--space-4);
+    }
+    
+    .result-icon {
+        font-size: var(--text-2xl);
+    }
+    
+    .result-value {
+        font-size: var(--text-2xl);
+    }
+    
+    .calc-chart {
+        padding: var(--space-4);
+    }
+    
+    #savings-chart {
+        height: 200px;
+    }
+    
+    .breakdown-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .btn-large {
+        width: 100%;
+    }
+}
+
+@media (min-width: 1024px) {
+    .calculator-content {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    
+    .calc-results {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}

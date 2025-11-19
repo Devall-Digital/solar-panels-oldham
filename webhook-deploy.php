@@ -6,8 +6,14 @@
  */
 
 // Configuration
-// Load secret token from separate config file (not committed to GitHub)
-require_once 'webhook-config.php';
+// The webhook-config.php file should be created on your server with:
+// <?php $SECRET_TOKEN = 'your-github-webhook-secret-here';
+if (file_exists('webhook-config.php')) {
+    require_once 'webhook-config.php';
+} else {
+    // Fallback - you should create webhook-config.php on your server
+    die('Error: webhook-config.php not found. Please create it on your server.');
+}
 $REPO_PATH = '/home/sites/34b/b/b9ed38cdb2/public_html';
 $BRANCH = 'main';
 $LOG_FILE = 'deploy.log';
