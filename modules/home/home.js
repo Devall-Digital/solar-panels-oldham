@@ -233,6 +233,3 @@ export default class HomePage {
         emit('module:home:destroyed');
     }
 }
-
-// Export for dynamic import
-export { HomePage as default };

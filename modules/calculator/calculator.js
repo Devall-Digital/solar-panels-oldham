@@ -585,6 +585,3 @@ export default class SolarCalculator {
         emit('module:calculator:destroyed');
     }
 }
-
-// Export for dynamic import
-export { SolarCalculator as default };
