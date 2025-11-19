@@ -12,6 +12,7 @@ import { setState, getState } from '/core/state.js';
 
 export default class HeroSection {
     constructor(element) {
+        console.log('Hero component constructor called');
         this.element = element;
         this.particles = [];
         this.animationFrame = null;
@@ -38,6 +39,7 @@ export default class HeroSection {
     
     async init() {
         try {
+            console.log('Hero component init called');
             // Initialize particles canvas
             await this.initParticles();
             

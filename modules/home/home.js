@@ -32,6 +32,12 @@ const HomePage = class {
             // Initialize all components on the page
             await initComponents();
             
+            // Initialize calculator inline
+            await this.initCalculator();
+            
+            // Add smooth scrolling
+            this.setupSmoothScrolling();
+            
             // Add scroll animations
             this.setupScrollAnimations();
             
@@ -72,8 +78,26 @@ const HomePage = class {
      */
     getTemplate() {
         return `
+            <!-- Navigation -->
+            <nav class="fixed top-0 left-0 right-0 bg-dark-light backdrop-blur-md z-50 border-b border-dark-lighter">
+                <div class="container mx-auto px-4">
+                    <div class="flex justify-between items-center h-16">
+                        <div class="font-bold text-xl text-primary">Solar Panels Oldham</div>
+                        <div class="hidden md:flex space-x-6">
+                            <a href="#home" class="nav-link text-light hover:text-primary transition-colors">Home</a>
+                            <a href="#services" class="nav-link text-light hover:text-primary transition-colors">Services</a>
+                            <a href="#calculator" class="nav-link text-light hover:text-primary transition-colors">Calculator</a>
+                            <a href="#contact" class="nav-link text-light hover:text-primary transition-colors">Contact</a>
+                        </div>
+                        <button class="btn-primary" data-action="get-quote">
+                            Get Quote
+                        </button>
+                    </div>
+                </div>
+            </nav>
+
             <!-- Hero Section -->
-            <section class="hero-section" data-component="hero">
+            <section id="home" class="hero-section" data-component="hero">
                 <div class="hero-particles" id="particles"></div>
                 <div class="hero-content">
                     <h1 class="hero-title">
@@ -97,7 +121,7 @@ const HomePage = class {
                         </div>
                     </div>
                     <div class="hero-cta">
-                        <button class="btn-primary" data-action="calculator">
+                        <button class="btn-primary" data-action="scroll-to-calculator">
                             <span class="btn-text">Calculate Your Savings</span>
                             <span class="btn-shine"></span>
                         </button>
@@ -106,7 +130,7 @@ const HomePage = class {
             </section>
             
             <!-- Services Section -->
-            <section class="section">
+            <section id="services" class="section">
                 <div class="container">
                     <div class="section-header text-center mb-12">
                         <h2 class="text-4xl font-bold mb-4">Why Choose Solar Panels Oldham?</h2>
@@ -183,20 +207,237 @@ const HomePage = class {
                 </div>
             </section>
             
-            <!-- CTA Section -->
-            <section class="section bg-dark-light">
+            <!-- Calculator Section -->
+            <section id="calculator" class="section bg-dark-light">
+                <div class="container">
+                    <div class="section-header text-center mb-12">
+                        <h2 class="text-4xl font-bold mb-4">Calculate Your Solar Savings</h2>
+                        <p class="text-xl text-light-darker">See how much you could save with solar panels</p>
+                    </div>
+                    
+                    <!-- Calculator Component -->
+                    <div class="solar-calculator" data-component="calculator">
+                        <div class="calc-inputs">
+                            <div class="input-group">
+                                <label>Monthly Electricity Bill</label>
+                                <input type="range" class="range-input" 
+                                       data-input="bill" 
+                                       min="50" 
+                                       max="500" 
+                                       value="100"
+                                       step="10">
+                                <span class="range-value">£<span data-value="bill">100</span></span>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label>Property Type</label>
+                                <select class="select-input" data-input="property">
+                                    <option value="terraced">Terraced House</option>
+                                    <option value="semi" selected>Semi-Detached</option>
+                                    <option value="detached">Detached House</option>
+                                    <option value="bungalow">Bungalow</option>
+                                </select>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label>Roof Orientation</label>
+                                <div class="toggle-group">
+                                    <button class="toggle-option active" data-input="facing" data-value="south">South</button>
+                                    <button class="toggle-option" data-input="facing" data-value="east-west">East/West</button>
+                                    <button class="toggle-option" data-input="facing" data-value="north">North</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="calc-results">
+                            <div class="result-card saving animate-scaleIn">
+                                <div class="result-icon">💷</div>
+                                <div class="result-value">
+                                    £<span data-result="annual">0</span>
+                                </div>
+                                <div class="result-label">Annual Savings</div>
+                            </div>
+                            
+                            <div class="result-card roi animate-scaleIn delay-100">
+                                <div class="result-icon">📈</div>
+                                <div class="result-value">
+                                    <span data-result="roi">0</span>%
+                                </div>
+                                <div class="result-label">25 Year ROI</div>
+                            </div>
+                            
+                            <div class="result-card payback animate-scaleIn delay-200">
+                                <div class="result-icon">⏱️</div>
+                                <div class="result-value">
+                                    <span data-result="payback">0</span> years
+                                </div>
+                                <div class="result-label">Payback Period</div>
+                            </div>
+                        </div>
+                        
+                        <div class="calc-cta">
+                            <button class="btn-primary btn-large" data-action="show-quote-form">
+                                Get Your Personalized Quote
+                                <span class="arrow">→</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Contact Section -->
+            <section id="contact" class="section">
                 <div class="container text-center">
                     <h2 class="text-4xl font-bold mb-6">Ready to Start Saving?</h2>
                     <p class="text-xl mb-8 text-light-darker">Get your free, no-obligation quote today</p>
-                    <button class="btn-primary btn-large" data-action="get-quote">
+                    <button class="btn-primary btn-large" data-action="show-quote-form">
                         Get Your Free Quote
                         <span class="arrow">→</span>
                     </button>
                 </div>
             </section>
+
+            <!-- Quote Form Modal -->
+            <div class="modal" data-component="modal" id="quote-modal" style="display: none;">
+                <div class="modal-backdrop"></div>
+                <div class="modal-content">
+                    <button class="modal-close" aria-label="Close">×</button>
+                    <div class="modal-header">
+                        <h2 class="modal-title">Get Your Free Solar Quote</h2>
+                    </div>
+                    <div class="modal-body">
+                        <form class="progress-form" data-component="progress-form" id="quote-form">
+                            <div class="form-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" data-progress="0"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-screens">
+                                <!-- Step 1 -->
+                                <div class="form-screen active" data-screen="1">
+                                    <h3 class="screen-title">Your Details</h3>
+                                    <div class="form-group">
+                                        <div class="form-field">
+                                            <input type="text" name="name" id="name" required>
+                                            <label for="name">Full Name</label>
+                                            <span class="field-error"></span>
+                                        </div>
+                                        <div class="form-field">
+                                            <input type="email" name="email" id="email" required>
+                                            <label for="email">Email Address</label>
+                                            <span class="field-error"></span>
+                                        </div>
+                                        <div class="form-field">
+                                            <input type="tel" name="phone" id="phone" required>
+                                            <label for="phone">Phone Number</label>
+                                            <span class="field-error"></span>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn-next" data-next="2">
+                                        Continue <span class="arrow">→</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         `;
     }
     
+    /**
+     * Setup smooth scrolling
+     */
+    setupSmoothScrolling() {
+        // Handle navigation links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                if (targetSection) {
+                    targetSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Handle button actions
+        document.querySelectorAll('[data-action]').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const action = button.dataset.action;
+                
+                if (action === 'scroll-to-calculator') {
+                    document.querySelector('#calculator').scrollIntoView({ behavior: 'smooth' });
+                } else if (action === 'show-quote-form') {
+                    this.showQuoteModal();
+                } else if (action === 'get-quote') {
+                    this.showQuoteModal();
+                } else {
+                    emit('home:action', { action });
+                }
+            });
+        });
+
+        // Setup modal close
+        const modal = document.querySelector('#quote-modal');
+        if (modal) {
+            const closeBtn = modal.querySelector('.modal-close');
+            const backdrop = modal.querySelector('.modal-backdrop');
+            
+            closeBtn?.addEventListener('click', () => this.hideQuoteModal());
+            backdrop?.addEventListener('click', () => this.hideQuoteModal());
+        }
+    }
+
+    /**
+     * Show quote modal
+     */
+    showQuoteModal() {
+        const modal = document.querySelector('#quote-modal');
+        if (modal) {
+            modal.style.display = 'block';
+            setTimeout(() => {
+                modal.classList.add('active');
+            }, 10);
+        }
+    }
+
+    /**
+     * Hide quote modal
+     */
+    hideQuoteModal() {
+        const modal = document.querySelector('#quote-modal');
+        if (modal) {
+            modal.classList.remove('active');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+    }
+    
+    /**
+     * Initialize calculator
+     */
+    async initCalculator() {
+        try {
+            const { default: SolarCalculator } = await import('/modules/calculator/calculator.js');
+            const calculatorElement = document.querySelector('.solar-calculator[data-component="calculator"]');
+            if (calculatorElement) {
+                // Create a mini container for calculator
+                const calcModule = new SolarCalculator();
+                // Initialize with just the calculator element
+                const miniContainer = document.createElement('div');
+                miniContainer.innerHTML = calculatorElement.outerHTML;
+                await calcModule.init(miniContainer);
+                // Replace with initialized content
+                calculatorElement.parentNode.replaceChild(miniContainer.firstChild, calculatorElement);
+            }
+        } catch (error) {
+            console.error('Failed to initialize inline calculator:', error);
+        }
+    }
+
     /**
      * Setup scroll animations
      */
@@ -217,27 +458,26 @@ const HomePage = class {
         document.querySelectorAll('.section').forEach(section => {
             observer.observe(section);
         });
+
+        // Update active nav on scroll
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
         
-        // Handle CTA clicks
-        document.querySelectorAll('[data-action]').forEach(button => {
-            button.addEventListener('click', (e) => {
-                const action = button.dataset.action;
-                
-                if (action === 'calculator') {
-                    // Use the router from the global app instance
-                    if (window.app && window.app.router) {
-                        window.app.router.navigate('/calculator');
-                    } else {
-                        window.location.href = '/calculator';
-                    }
-                } else if (action === 'get-quote') {
-                    if (window.app && window.app.router) {
-                        window.app.router.navigate('/quote');
-                    } else {
-                        window.location.href = '/quote';
-                    }
-                } else {
-                    emit('home:action', { action });
+        window.addEventListener('scroll', () => {
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.pageYOffset >= (sectionTop - 100)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
                 }
             });
         });
