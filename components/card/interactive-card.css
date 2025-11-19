@@ -1,259 +1,173 @@
 /**
  * Component: Interactive Card Styles
- * Module: Components
- * Purpose: Styles for 3D interactive cards with hover effects
- * Dependencies: /assets/css/variables.css
- * Author: Initial Setup Agent
- * Date: November 2024
+ * Purpose: 3D interactive card component with glow effects
  */
 
-/* ==========================================================================
-   Card Container
-   ========================================================================== */
-
+/* Card Container */
 .interactive-card {
     position: relative;
-    cursor: pointer;
+    height: 100%;
+    perspective: 1000px;
     transform-style: preserve-3d;
-    transition: transform var(--duration-normal) var(--ease-smooth);
-    
-    /* Initial state for entrance animation */
-    opacity: 0;
-    transform: translateY(30px);
 }
 
-.interactive-card.is-visible {
-    animation: cardEntrance var(--duration-slow) var(--ease-out) forwards;
-}
-
-@keyframes cardEntrance {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Card glow effect */
+/* Card Glow Effect */
 .card-glow {
     position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    border-radius: var(--radius-xl);
+    inset: -2px;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(
+        45deg,
+        transparent,
+        var(--primary-light),
+        var(--primary),
+        var(--primary-light),
+        transparent
+    );
+    background-size: 400% 400%;
     opacity: 0;
-    transition: opacity var(--duration-normal) var(--ease-smooth);
-    pointer-events: none;
+    transition: opacity 0.3s ease;
+    filter: blur(10px);
     z-index: -1;
 }
 
-/* Card inner container */
+.interactive-card.is-hovering .card-glow {
+    animation: glowShift 3s ease-in-out infinite;
+}
+
+@keyframes glowShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+/* Card Inner */
 .card-inner {
     position: relative;
     background: var(--dark-light);
     border: 1px solid var(--dark-lighter);
-    border-radius: var(--radius-xl);
-    padding: var(--space-6);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-8);
     height: 100%;
     display: flex;
     flex-direction: column;
-    transform-origin: center;
-    transition: transform var(--duration-normal) var(--ease-smooth),
-                box-shadow var(--duration-normal) var(--ease-smooth);
+    transition: transform 0.1s ease, box-shadow 0.3s ease;
+    transform-style: preserve-3d;
     will-change: transform;
-    backdrop-filter: blur(var(--blur-sm));
 }
 
-/* Hover state */
 .interactive-card.is-hovering .card-inner {
     box-shadow: 
-        0 20px 40px -15px rgba(0, 0, 0, 0.3),
-        0 0 25px -5px rgba(var(--primary-rgb), 0.2);
-    border-color: rgba(var(--primary-rgb), 0.3);
+        0 20px 40px rgba(0, 0, 0, 0.4),
+        0 0 40px rgba(255, 215, 0, 0.1);
 }
 
-/* ==========================================================================
-   Card Content
-   ========================================================================== */
+/* Featured Card Style */
+.card-featured .card-inner {
+    border-color: var(--primary-dark);
+    background: linear-gradient(
+        135deg,
+        var(--dark-light) 0%,
+        rgba(255, 215, 0, 0.05) 100%
+    );
+}
 
-/* Card icon */
+.card-featured .card-glow {
+    opacity: 0.3;
+}
+
+/* Card Icon */
 .card-icon {
-    width: 60px;
-    height: 60px;
-    margin-bottom: var(--space-4);
+    width: 64px;
+    height: 64px;
+    margin-bottom: var(--spacing-4);
+    padding: var(--spacing-4);
+    background: var(--gradient-primary);
+    border-radius: var(--radius-lg);
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(var(--primary-rgb), 0.1);
-    border-radius: var(--radius-lg);
-    transition: all var(--duration-normal) var(--ease-smooth);
+    transform: translateZ(20px);
 }
 
-.card-icon img,
 .card-icon svg {
-    width: 32px;
-    height: 32px;
-    filter: brightness(0) invert(1);
-    transition: transform var(--duration-normal) var(--ease-smooth);
+    width: 100%;
+    height: 100%;
+    color: var(--dark);
 }
 
-.interactive-card:hover .card-icon {
-    background: rgba(var(--primary-rgb), 0.2);
-    transform: scale(1.1);
-}
-
-.interactive-card:hover .card-icon img,
-.interactive-card:hover .card-icon svg {
-    transform: scale(1.1);
-}
-
-/* Card title */
+/* Card Title */
 .card-title {
     font-size: var(--text-xl);
     font-weight: var(--font-semibold);
-    color: var(--light);
-    margin-bottom: var(--space-3);
-    transition: color var(--duration-normal) var(--ease-smooth);
+    margin-bottom: var(--spacing-4);
+    transform: translateZ(15px);
 }
 
-.interactive-card:hover .card-title {
-    color: var(--primary);
-}
-
-/* Card description */
+/* Card Description */
 .card-description {
     color: var(--light-darker);
-    line-height: var(--leading-relaxed);
-    flex-grow: 1;
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--spacing-6);
+    flex: 1;
+    transform: translateZ(10px);
 }
 
-/* Feature tags */
+/* Feature Tags */
 .card-features {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-2);
-    margin-bottom: var(--space-4);
+    gap: var(--spacing-2);
+    margin-bottom: var(--spacing-6);
 }
 
 .feature-tag {
-    display: inline-block;
-    padding: var(--space-1) var(--space-3);
-    background: rgba(var(--primary-rgb), 0.1);
-    color: var(--primary);
     font-size: var(--text-xs);
-    font-weight: var(--font-medium);
+    padding: var(--spacing-1) var(--spacing-3);
+    background: var(--primary-dark);
+    color: var(--primary);
     border-radius: var(--radius-full);
+    border: 1px solid var(--primary);
     text-transform: uppercase;
-    letter-spacing: var(--tracking-wide);
-    transition: all var(--duration-normal) var(--ease-smooth);
+    letter-spacing: 0.05em;
+    transform: translateZ(5px);
 }
 
-.interactive-card:hover .feature-tag {
-    background: rgba(var(--primary-rgb), 0.2);
-    transform: scale(1.05);
-}
-
-/* Card CTA */
+/* Card CTA Button */
 .card-cta {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-2);
+    gap: var(--spacing-2);
     color: var(--primary);
-    font-weight: var(--font-semibold);
-    text-decoration: none;
-    transition: all var(--duration-normal) var(--ease-smooth);
-    align-self: flex-start;
-}
-
-.card-cta:hover {
-    color: var(--primary-light);
-    gap: var(--space-3);
+    font-weight: var(--font-medium);
+    transition: all 0.3s ease;
+    transform: translateZ(10px);
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: inherit;
+    font-family: inherit;
 }
 
 .card-cta .arrow {
-    display: inline-block;
-    transition: transform var(--duration-normal) var(--ease-smooth);
-    font-size: 1.2em;
+    transition: transform 0.3s ease;
 }
 
-/* ==========================================================================
-   Card Variants
-   ========================================================================== */
-
-/* Primary variant */
-.interactive-card.card-primary .card-inner {
-    background: rgba(var(--primary-rgb), 0.05);
-    border-color: rgba(var(--primary-rgb), 0.2);
+.card-cta:hover {
+    gap: var(--spacing-4);
+    text-shadow: 0 0 20px var(--primary-light);
 }
 
-.interactive-card.card-primary:hover .card-inner {
-    background: rgba(var(--primary-rgb), 0.1);
-    border-color: rgba(var(--primary-rgb), 0.4);
+.card-cta:hover .arrow {
+    transform: translateX(4px);
 }
 
-/* Featured variant */
-.interactive-card.card-featured {
-    position: relative;
-}
-
-.interactive-card.card-featured::before {
-    content: 'Popular';
-    position: absolute;
-    top: -12px;
-    left: var(--space-4);
-    background: var(--primary);
-    color: var(--dark);
-    padding: var(--space-1) var(--space-3);
-    font-size: var(--text-xs);
-    font-weight: var(--font-bold);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-wide);
-    border-radius: var(--radius-full);
-    z-index: 10;
-}
-
-/* ==========================================================================
-   Responsive Design
-   ========================================================================== */
-
+/* Mobile: Disable 3D effects */
 @media (max-width: 768px) {
-    .card-inner {
-        padding: var(--space-4);
-    }
-    
-    .card-icon {
-        width: 50px;
-        height: 50px;
-    }
-    
-    .card-title {
-        font-size: var(--text-lg);
-    }
-    
-    .card-description {
-        font-size: var(--text-sm);
-    }
-}
-
-@media (min-width: 768px) {
     .interactive-card {
-        max-width: 400px;
+        perspective: none;
     }
-}
-
-@media (min-width: 1024px) {
+    
     .card-inner {
-        padding: var(--space-8);
-    }
-}
-
-/* ==========================================================================
-   Touch Devices
-   ========================================================================== */
-
-@media (hover: none) {
-    .interactive-card .card-inner {
         transform: none !important;
     }
     
@@ -261,41 +175,11 @@
         display: none;
     }
     
-    /* Show hover states on tap */
-    .interactive-card:active .card-inner {
-        transform: scale(0.98) !important;
-    }
-}
-
-/* ==========================================================================
-   Animation Delays for Staggered Effect
-   ========================================================================== */
-
-.interactive-card:nth-child(1) { animation-delay: 0ms; }
-.interactive-card:nth-child(2) { animation-delay: 100ms; }
-.interactive-card:nth-child(3) { animation-delay: 200ms; }
-.interactive-card:nth-child(4) { animation-delay: 300ms; }
-.interactive-card:nth-child(5) { animation-delay: 400ms; }
-.interactive-card:nth-child(6) { animation-delay: 500ms; }
-
-/* ==========================================================================
-   Reduced Motion
-   ========================================================================== */
-
-@media (prefers-reduced-motion: reduce) {
-    .interactive-card,
-    .card-inner,
     .card-icon,
-    .card-icon img,
+    .card-title,
+    .card-description,
     .feature-tag,
-    .card-cta,
-    .card-cta .arrow {
-        transition: none !important;
-        animation: none !important;
-    }
-    
-    .interactive-card.is-visible {
-        opacity: 1;
+    .card-cta {
         transform: none;
     }
 }

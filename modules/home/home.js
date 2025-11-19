@@ -5,17 +5,19 @@
  * Dependencies: /core/state.js, /core/events.js, /core/components.js
  * Author: Initial Setup Agent
  * Date: November 2024
- * Version: 2.0 - Fixed export syntax
+ * Version: 3.0 - Complete single page with working components
  */
 
-console.log('Home.js Version 2.0 loaded');
+console.log('Home.js Version 3.0 loaded - Complete Fix');
 
 import { emit } from '/core/events.js';
-import { initComponents } from '/core/components.js';
+import { setState, getState, subscribe } from '/core/state.js';
 
 const HomePage = class {
     constructor() {
         this.initialized = false;
+        this.particles = [];
+        this.animationFrame = null;
     }
     
     /**
@@ -23,17 +25,25 @@ const HomePage = class {
      */
     async init(container, routeData = {}) {
         try {
+            console.log('HomePage init started');
+            
             // Create home page content
             container.innerHTML = this.getTemplate();
             
             // Load component styles
             await this.loadStyles();
             
-            // Initialize all components on the page
-            await initComponents();
+            // Initialize particles manually since component system isn't working
+            this.initParticles();
             
-            // Initialize calculator inline
-            await this.initCalculator();
+            // Initialize counters
+            this.initCounters();
+            
+            // Initialize cards
+            this.initCards();
+            
+            // Initialize calculator
+            this.initCalculator();
             
             // Add smooth scrolling
             this.setupSmoothScrolling();
@@ -48,6 +58,331 @@ const HomePage = class {
             console.error('Home page initialization failed:', error);
             emit('module:home:error', error);
         }
+    }
+    
+    /**
+     * Initialize particle system directly
+     */
+    initParticles() {
+        console.log('Initializing particles');
+        const container = document.querySelector('.hero-particles');
+        if (!container) {
+            console.error('Particle container not found');
+            return;
+        }
+        
+        // Create canvas
+        const canvas = document.createElement('canvas');
+        canvas.className = 'particles-canvas';
+        canvas.style.position = 'absolute';
+        canvas.style.top = '0';
+        canvas.style.left = '0';
+        canvas.style.width = '100%';
+        canvas.style.height = '100%';
+        canvas.style.pointerEvents = 'none';
+        container.appendChild(canvas);
+        
+        const ctx = canvas.getContext('2d');
+        
+        // Set canvas size
+        const resizeCanvas = () => {
+            canvas.width = container.offsetWidth;
+            canvas.height = container.offsetHeight;
+        };
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        
+        // Mouse position
+        let mouse = { x: null, y: null };
+        container.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left;
+            mouse.y = e.clientY - rect.top;
+        });
+        
+        container.addEventListener('mouseleave', () => {
+            mouse.x = null;
+            mouse.y = null;
+        });
+        
+        // Create particles
+        const particleCount = 50;
+        const particles = [];
+        const particleColors = ['#FFD700', '#FFED4A', '#F59E0B'];
+        
+        for (let i = 0; i < particleCount; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: (Math.random() - 0.5) * 0.5,
+                size: Math.random() * 2 + 1,
+                color: particleColors[Math.floor(Math.random() * particleColors.length)]
+            });
+        }
+        
+        // Animation loop
+        const animate = () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            particles.forEach((particle, i) => {
+                // Update position
+                particle.x += particle.vx;
+                particle.y += particle.vy;
+                
+                // Bounce off walls
+                if (particle.x <= 0 || particle.x >= canvas.width) particle.vx *= -1;
+                if (particle.y <= 0 || particle.y >= canvas.height) particle.vy *= -1;
+                
+                // Mouse interaction
+                if (mouse.x !== null && mouse.y !== null) {
+                    const dx = mouse.x - particle.x;
+                    const dy = mouse.y - particle.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 100) {
+                        const force = (100 - distance) / 100;
+                        particle.vx -= (dx / distance) * force * 0.5;
+                        particle.vy -= (dy / distance) * force * 0.5;
+                    }
+                }
+                
+                // Draw particle
+                ctx.beginPath();
+                ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                ctx.fillStyle = particle.color;
+                ctx.fill();
+                
+                // Draw connections
+                for (let j = i + 1; j < particles.length; j++) {
+                    const other = particles[j];
+                    const dx = other.x - particle.x;
+                    const dy = other.y - particle.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 150) {
+                        const opacity = 1 - (distance / 150);
+                        ctx.beginPath();
+                        ctx.moveTo(particle.x, particle.y);
+                        ctx.lineTo(other.x, other.y);
+                        ctx.strokeStyle = `rgba(255, 215, 0, ${opacity * 0.2})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                }
+            });
+            
+            this.animationFrame = requestAnimationFrame(animate);
+        };
+        
+        animate();
+    }
+    
+    /**
+     * Initialize counting animations
+     */
+    initCounters() {
+        const counters = document.querySelectorAll('.stat-item');
+        
+        counters.forEach(counter => {
+            const target = parseInt(counter.dataset.count);
+            const numberElement = counter.querySelector('.stat-number');
+            
+            if (!numberElement || isNaN(target)) return;
+            
+            // Use Intersection Observer
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        this.animateCounter(numberElement, target);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            observer.observe(counter);
+        });
+    }
+    
+    /**
+     * Animate counter
+     */
+    animateCounter(element, target) {
+        const duration = 2000;
+        const start = 0;
+        const increment = target / (duration / 16);
+        let current = start;
+        
+        const updateCounter = () => {
+            current += increment;
+            
+            if (current < target) {
+                element.textContent = Math.floor(current).toLocaleString();
+                requestAnimationFrame(updateCounter);
+            } else {
+                element.textContent = target.toLocaleString();
+            }
+        };
+        
+        updateCounter();
+    }
+    
+    /**
+     * Initialize interactive cards
+     */
+    initCards() {
+        const cards = document.querySelectorAll('.interactive-card');
+        
+        cards.forEach(card => {
+            const inner = card.querySelector('.card-inner');
+            const glow = card.querySelector('.card-glow');
+            
+            if (!inner) return;
+            
+            // Only add tilt on desktop
+            if (window.innerWidth > 768 && card.dataset.tilt !== 'false') {
+                card.addEventListener('mouseenter', () => {
+                    card.classList.add('is-hovering');
+                });
+                
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const tiltX = ((y - centerY) / centerY) * 15;
+                    const tiltY = ((centerX - x) / centerX) * 15;
+                    
+                    inner.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.05)`;
+                    
+                    if (glow) {
+                        glow.style.opacity = '1';
+                    }
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.classList.remove('is-hovering');
+                    inner.style.transform = 'rotateX(0) rotateY(0) scale(1)';
+                    
+                    if (glow) {
+                        glow.style.opacity = '0';
+                    }
+                });
+            }
+        });
+    }
+    
+    /**
+     * Initialize calculator inline
+     */
+    initCalculator() {
+        // Calculator state
+        const calcState = {
+            monthlyBill: 100,
+            propertyType: 'semi',
+            roofOrientation: 'south',
+            shading: 'none'
+        };
+        
+        // Setup inputs
+        const billSlider = document.querySelector('[data-input="bill"]');
+        const billDisplay = document.querySelector('[data-value="bill"]');
+        const propertySelect = document.querySelector('[data-input="property"]');
+        
+        if (billSlider) {
+            billSlider.addEventListener('input', (e) => {
+                calcState.monthlyBill = parseFloat(e.target.value);
+                billDisplay.textContent = e.target.value;
+                this.calculateSavings();
+            });
+        }
+        
+        if (propertySelect) {
+            propertySelect.addEventListener('change', (e) => {
+                calcState.propertyType = e.target.value;
+                this.calculateSavings();
+            });
+        }
+        
+        // Toggle buttons
+        document.querySelectorAll('.toggle-option').forEach(button => {
+            button.addEventListener('click', () => {
+                const group = button.parentElement;
+                group.querySelectorAll('.toggle-option').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                button.classList.add('active');
+                
+                if (button.dataset.input === 'facing') {
+                    calcState.roofOrientation = button.dataset.value;
+                }
+                this.calculateSavings();
+            });
+        });
+        
+        // Store calc state globally
+        this.calcState = calcState;
+        
+        // Initial calculation
+        this.calculateSavings();
+    }
+    
+    /**
+     * Calculate solar savings
+     */
+    calculateSavings() {
+        const state = this.calcState;
+        
+        // Simple calculations
+        const annualBill = state.monthlyBill * 12;
+        const systemSizes = { terraced: 3, semi: 4, detached: 6, bungalow: 4 };
+        const systemSize = systemSizes[state.propertyType] || 4;
+        
+        const efficiencyFactors = { south: 1.0, 'east-west': 0.85, north: 0.65 };
+        const efficiency = efficiencyFactors[state.roofOrientation] || 1.0;
+        
+        const annualGeneration = systemSize * 900 * efficiency; // 900 kWh per kW per year
+        const annualSavings = Math.min(annualGeneration * 0.34, annualBill * 0.7);
+        const systemCost = systemSize * 1500;
+        const paybackPeriod = systemCost / annualSavings;
+        const roi25Year = ((annualSavings * 25 - systemCost) / systemCost) * 100;
+        
+        // Update display
+        const updateElement = (selector, value) => {
+            const element = document.querySelector(`[data-result="${selector}"]`);
+            if (element) {
+                this.animateNumber(element, value);
+            }
+        };
+        
+        updateElement('annual', Math.round(annualSavings));
+        updateElement('roi', Math.round(roi25Year));
+        updateElement('payback', paybackPeriod.toFixed(1));
+    }
+    
+    /**
+     * Animate number change
+     */
+    animateNumber(element, target) {
+        const current = parseFloat(element.textContent.replace(/,/g, '')) || 0;
+        const duration = 1000;
+        const steps = 30;
+        const increment = (target - current) / steps;
+        let step = 0;
+        
+        const timer = setInterval(() => {
+            step++;
+            const value = current + (increment * step);
+            
+            if (step >= steps) {
+                element.textContent = typeof target === 'string' ? target : target.toLocaleString();
+                clearInterval(timer);
+            } else {
+                element.textContent = Math.round(value).toLocaleString();
+            }
+        }, duration / steps);
     }
     
     /**
@@ -89,7 +424,7 @@ const HomePage = class {
                             <a href="#calculator" class="nav-link text-light hover:text-primary transition-colors">Calculator</a>
                             <a href="#contact" class="nav-link text-light hover:text-primary transition-colors">Contact</a>
                         </div>
-                        <button class="btn-primary" data-action="get-quote">
+                        <button class="btn-primary" data-action="show-quote-form">
                             Get Quote
                         </button>
                     </div>
@@ -216,7 +551,7 @@ const HomePage = class {
                     </div>
                     
                     <!-- Calculator Component -->
-                    <div class="solar-calculator" data-component="calculator">
+                    <div class="solar-calculator mx-auto max-w-4xl">
                         <div class="calc-inputs">
                             <div class="input-group">
                                 <label>Monthly Electricity Bill</label>
@@ -306,39 +641,33 @@ const HomePage = class {
                         <h2 class="modal-title">Get Your Free Solar Quote</h2>
                     </div>
                     <div class="modal-body">
-                        <form class="progress-form" data-component="progress-form" id="quote-form">
-                            <div class="form-progress">
-                                <div class="progress-bar">
-                                    <div class="progress-fill" data-progress="0"></div>
+                        <form class="quote-form" id="quote-form">
+                            <div class="form-group">
+                                <div class="form-field">
+                                    <input type="text" name="name" id="name" required>
+                                    <label for="name">Full Name</label>
+                                    <span class="field-error"></span>
+                                </div>
+                                <div class="form-field">
+                                    <input type="email" name="email" id="email" required>
+                                    <label for="email">Email Address</label>
+                                    <span class="field-error"></span>
+                                </div>
+                                <div class="form-field">
+                                    <input type="tel" name="phone" id="phone" required>
+                                    <label for="phone">Phone Number</label>
+                                    <span class="field-error"></span>
+                                </div>
+                                <div class="form-field">
+                                    <input type="text" name="postcode" id="postcode" required>
+                                    <label for="postcode">Postcode</label>
+                                    <span class="field-error"></span>
                                 </div>
                             </div>
-                            
-                            <div class="form-screens">
-                                <!-- Step 1 -->
-                                <div class="form-screen active" data-screen="1">
-                                    <h3 class="screen-title">Your Details</h3>
-                                    <div class="form-group">
-                                        <div class="form-field">
-                                            <input type="text" name="name" id="name" required>
-                                            <label for="name">Full Name</label>
-                                            <span class="field-error"></span>
-                                        </div>
-                                        <div class="form-field">
-                                            <input type="email" name="email" id="email" required>
-                                            <label for="email">Email Address</label>
-                                            <span class="field-error"></span>
-                                        </div>
-                                        <div class="form-field">
-                                            <input type="tel" name="phone" id="phone" required>
-                                            <label for="phone">Phone Number</label>
-                                            <span class="field-error"></span>
-                                        </div>
-                                    </div>
-                                    <button type="button" class="btn-next" data-next="2">
-                                        Continue <span class="arrow">→</span>
-                                    </button>
-                                </div>
-                            </div>
+                            <button type="submit" class="btn-primary btn-large w-full">
+                                Submit Quote Request
+                                <span class="arrow">→</span>
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -388,6 +717,55 @@ const HomePage = class {
             closeBtn?.addEventListener('click', () => this.hideQuoteModal());
             backdrop?.addEventListener('click', () => this.hideQuoteModal());
         }
+
+        // Handle form submission
+        const form = document.querySelector('#quote-form');
+        if (form) {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                await this.handleFormSubmit(form);
+            });
+        }
+    }
+
+    /**
+     * Handle form submission
+     */
+    async handleFormSubmit(form) {
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+        
+        // Add calculator results if available
+        if (this.calcState) {
+            data.calculator_results = this.calcState;
+        }
+        
+        try {
+            const response = await fetch('/api/leads.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    ...data,
+                    formId: 'quote-form',
+                    timestamp: new Date().toISOString()
+                })
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                alert('Thank you! We\'ll contact you within 24 hours with your personalized quote.');
+                this.hideQuoteModal();
+                form.reset();
+            } else {
+                alert('There was an error submitting your request. Please try again.');
+            }
+        } catch (error) {
+            console.error('Form submission error:', error);
+            alert('There was an error submitting your request. Please try again.');
+        }
     }
 
     /**
@@ -416,28 +794,6 @@ const HomePage = class {
         }
     }
     
-    /**
-     * Initialize calculator
-     */
-    async initCalculator() {
-        try {
-            const { default: SolarCalculator } = await import('/modules/calculator/calculator.js');
-            const calculatorElement = document.querySelector('.solar-calculator[data-component="calculator"]');
-            if (calculatorElement) {
-                // Create a mini container for calculator
-                const calcModule = new SolarCalculator();
-                // Initialize with just the calculator element
-                const miniContainer = document.createElement('div');
-                miniContainer.innerHTML = calculatorElement.outerHTML;
-                await calcModule.init(miniContainer);
-                // Replace with initialized content
-                calculatorElement.parentNode.replaceChild(miniContainer.firstChild, calculatorElement);
-            }
-        } catch (error) {
-            console.error('Failed to initialize inline calculator:', error);
-        }
-    }
-
     /**
      * Setup scroll animations
      */
@@ -487,6 +843,9 @@ const HomePage = class {
      * Destroy module
      */
     destroy() {
+        if (this.animationFrame) {
+            cancelAnimationFrame(this.animationFrame);
+        }
         this.initialized = false;
         emit('module:home:destroyed');
     }
