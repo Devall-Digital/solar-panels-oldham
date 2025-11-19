@@ -107,7 +107,7 @@ const HomePage = class {
         });
         
         // Create particles
-        const particleCount = 50;
+        const particleCount = 80;
         const particles = [];
         const particleColors = ['#FFD700', '#FFED4A', '#F59E0B'];
         
@@ -117,7 +117,7 @@ const HomePage = class {
                 y: Math.random() * canvas.height,
                 vx: (Math.random() - 0.5) * 0.5,
                 vy: (Math.random() - 0.5) * 0.5,
-                size: Math.random() * 2 + 1,
+                size: Math.random() * 3 + 1.5,
                 color: particleColors[Math.floor(Math.random() * particleColors.length)]
             });
         }
@@ -415,15 +415,15 @@ const HomePage = class {
     getTemplate() {
         return `
             <!-- Navigation -->
-            <nav class="fixed top-0 left-0 right-0 bg-dark-light backdrop-blur-md z-50 border-b border-dark-lighter">
-                <div class="container mx-auto px-4">
-                    <div class="flex justify-between items-center h-16">
+            <nav class="fixed top-0 left-0 right-0 z-50">
+                <div class="container">
+                    <div class="flex">
                         <div class="font-bold text-xl text-primary">Solar Panels Oldham</div>
-                        <div class="hidden md:flex space-x-6">
-                            <a href="#home" class="nav-link text-light hover:text-primary transition-colors">Home</a>
-                            <a href="#services" class="nav-link text-light hover:text-primary transition-colors">Services</a>
-                            <a href="#calculator" class="nav-link text-light hover:text-primary transition-colors">Calculator</a>
-                            <a href="#contact" class="nav-link text-light hover:text-primary transition-colors">Contact</a>
+                        <div class="hidden md:flex" style="gap: var(--spacing-8);">
+                            <a href="#home" class="nav-link">Home</a>
+                            <a href="#services" class="nav-link">Services</a>
+                            <a href="#calculator" class="nav-link">Calculator</a>
+                            <a href="#contact" class="nav-link">Contact</a>
                         </div>
                         <button class="btn-primary" data-action="show-quote-form">
                             Get Quote
