@@ -86,8 +86,9 @@ const HomePage = class {
         
         // Set canvas size
         const resizeCanvas = () => {
-            canvas.width = container.offsetWidth;
-            canvas.height = container.offsetHeight;
+            const rect = container.getBoundingClientRect();
+            canvas.width = rect.width || window.innerWidth;
+            canvas.height = rect.height || window.innerHeight;
         };
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
