@@ -550,8 +550,8 @@ const HomePage = class {
                         <p class="text-xl text-light-darker">See how much you could save with solar panels</p>
                     </div>
                     
-                    <!-- Calculator Component -->
-                    <div class="solar-calculator mx-auto max-w-4xl">
+                    <!-- Calculator Component - no data-component attribute -->
+                    <div class="solar-calculator mx-auto max-w-4xl" id="solar-calculator">
                         <div class="calc-inputs">
                             <div class="input-group">
                                 <label>Monthly Electricity Bill</label>
@@ -633,7 +633,7 @@ const HomePage = class {
             </section>
 
             <!-- Quote Form Modal -->
-            <div class="modal" data-component="modal" id="quote-modal" style="display: none;">
+            <div class="modal" id="quote-modal" style="display: none;">
                 <div class="modal-backdrop"></div>
                 <div class="modal-content">
                     <button class="modal-close" aria-label="Close">×</button>
