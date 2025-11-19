@@ -119,7 +119,9 @@ const HomePage = class {
                             <div class="card-glow"></div>
                             <div class="card-inner">
                                 <div class="card-icon">
-                                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSI+PHBhdGggZD0iTTE2IDJMMjAgMTBIMTJMMTYgMloiIGZpbGw9ImN1cnJlbnRDb2xvciIvPjwvc3ZnPg==" alt="Expert Installation">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+                                </svg>
                                 </div>
                                 <h3 class="card-title">Expert Installation</h3>
                                 <p class="card-description">MCS certified installers with over 25 years of experience in renewable energy systems.</p>
@@ -139,7 +141,9 @@ const HomePage = class {
                             <div class="card-glow"></div>
                             <div class="card-inner">
                                 <div class="card-icon">
-                                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSI+PHBhdGggZD0iTTE2IDJMMjAgMTBIMTJMMTYgMloiIGZpbGw9ImN1cnJlbnRDb2xvciIvPjwvc3ZnPg==" alt="Premium Products">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M11 2v20c-5.07-.5-9-4.79-9-10s3.93-9.5 9-10zm2.03 0v8.99H22c-.47-4.74-4.24-8.52-8.97-8.99zm0 11.01V22c4.74-.47 8.5-4.25 8.97-8.99h-8.97z"/>
+                                </svg>
                                 </div>
                                 <h3 class="card-title">Premium Solar Panels</h3>
                                 <p class="card-description">Top-tier panels from leading manufacturers with industry-best efficiency ratings.</p>
@@ -159,7 +163,9 @@ const HomePage = class {
                             <div class="card-glow"></div>
                             <div class="card-inner">
                                 <div class="card-icon">
-                                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSI+PHBhdGggZD0iTTE2IDJMMjAgMTBIMTJMMTYgMloiIGZpbGw9ImN1cnJlbnRDb2xvciIvPjwvc3ZnPg==" alt="Local Service">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                                </svg>
                                 </div>
                                 <h3 class="card-title">Local Service</h3>
                                 <p class="card-description">Based in Oldham, serving Saddleworth, Uppermill, and all of Greater Manchester.</p>
@@ -218,9 +224,18 @@ const HomePage = class {
                 const action = button.dataset.action;
                 
                 if (action === 'calculator') {
-                    emit('router:navigate', '/calculator');
+                    // Use the router from the global app instance
+                    if (window.app && window.app.router) {
+                        window.app.router.navigate('/calculator');
+                    } else {
+                        window.location.href = '/calculator';
+                    }
                 } else if (action === 'get-quote') {
-                    emit('router:navigate', '/quote');
+                    if (window.app && window.app.router) {
+                        window.app.router.navigate('/quote');
+                    } else {
+                        window.location.href = '/quote';
+                    }
                 } else {
                     emit('home:action', { action });
                 }

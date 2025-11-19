@@ -140,8 +140,9 @@ class ComponentManager {
                 throw new Error(`Unknown component: ${componentName}`);
             }
             
-            // Load component module
-            const module = await import(path);
+            // Load component module with cache busting
+            const cacheBuster = `?v=${Date.now()}`;
+            const module = await import(path + cacheBuster);
             
             // Register component
             this.register(componentName, module.default || module[Object.keys(module)[0]]);

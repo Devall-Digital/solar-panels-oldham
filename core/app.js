@@ -326,6 +326,9 @@ class SolarPanelsApp {
 // Create and export app instance
 const app = new SolarPanelsApp();
 
+// Make app globally accessible for debugging and navigation
+window.app = app;
+
 // Initialize on DOM ready
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => app.init());
