@@ -10,7 +10,7 @@
 import { emit } from '/core/events.js';
 import { initComponents } from '/core/components.js';
 
-export default class HomePage {
+class HomePage {
     constructor() {
         this.initialized = false;
     }
@@ -233,3 +233,5 @@ export default class HomePage {
         emit('module:home:destroyed');
     }
 }
+
+export default HomePage;

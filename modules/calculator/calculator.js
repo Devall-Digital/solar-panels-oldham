@@ -10,7 +10,7 @@
 import { setState, getState, subscribe } from '/core/state.js';
 import { emit, on } from '/core/events.js';
 
-export default class SolarCalculator {
+class SolarCalculator {
     constructor() {
         this.initialized = false;
         
@@ -585,3 +585,5 @@ export default class SolarCalculator {
         emit('module:calculator:destroyed');
     }
 }
+
+export default SolarCalculator;
