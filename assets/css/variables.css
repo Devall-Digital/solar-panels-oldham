@@ -8,6 +8,9 @@
  */
 
 :root {
+    /* Force light color scheme to prevent iOS dark mode interference */
+    color-scheme: light;
+    
     /* ==========================================================================
        Color System
        ========================================================================== */

@@ -27,11 +27,12 @@
     background-size: 400% 400%;
     opacity: 0;
     transition: opacity 0.3s ease;
-    filter: blur(10px);
+    filter: blur(20px);
     z-index: -1;
 }
 
 .interactive-card.is-hovering .card-glow {
+    opacity: 0.15;
     animation: glowShift 3s ease-in-out infinite;
 }
 
@@ -92,7 +93,11 @@
 }
 
 .card-featured .card-glow {
-    opacity: 0.4;
+    opacity: 0.1;
+}
+
+.card-featured.is-hovering .card-glow {
+    opacity: 0.2;
 }
 
 /* Card Icon */
