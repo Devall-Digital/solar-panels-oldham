@@ -290,7 +290,6 @@ const HomePage = class {
         // Setup inputs
         const billSlider = document.querySelector('[data-input="bill"]');
         const billDisplay = document.querySelector('[data-value="bill"]');
-        const propertySelect = document.querySelector('[data-input="property"]');
         
         if (billSlider) {
             billSlider.addEventListener('input', (e) => {
@@ -300,25 +299,25 @@ const HomePage = class {
             });
         }
         
-        if (propertySelect) {
-            propertySelect.addEventListener('change', (e) => {
-                calcState.propertyType = e.target.value;
-                this.calculateSavings();
-            });
-        }
-        
-        // Toggle buttons
+        // Toggle buttons for both property type and roof orientation
         document.querySelectorAll('.toggle-option').forEach(button => {
             button.addEventListener('click', () => {
                 const group = button.parentElement;
+                const inputType = button.dataset.input;
+                
+                // Only remove active from buttons in the same group
                 group.querySelectorAll('.toggle-option').forEach(btn => {
                     btn.classList.remove('active');
                 });
                 button.classList.add('active');
                 
-                if (button.dataset.input === 'facing') {
+                // Update state based on input type
+                if (inputType === 'facing') {
                     calcState.roofOrientation = button.dataset.value;
+                } else if (inputType === 'property') {
+                    calcState.propertyType = button.dataset.value;
                 }
+                
                 this.calculateSavings();
             });
         });
@@ -326,31 +325,65 @@ const HomePage = class {
         // Store calc state globally
         this.calcState = calcState;
         
+        // Initialize chart
+        this.initChart();
+        
         // Initial calculation
         this.calculateSavings();
     }
     
     /**
-     * Calculate solar savings
+     * Calculate solar savings with realistic formulas
      */
     calculateSavings() {
         const state = this.calcState;
         
-        // Simple calculations
+        // More accurate UK solar calculations
         const annualBill = state.monthlyBill * 12;
-        const systemSizes = { terraced: 3, semi: 4, detached: 6, bungalow: 4 };
-        const systemSize = systemSizes[state.propertyType] || 4;
         
-        const efficiencyFactors = { south: 1.0, 'east-west': 0.85, north: 0.65 };
+        // System sizes (kW) based on property type - realistic for UK homes
+        const systemSizes = { 
+            terraced: 3.0,
+            semi: 4.0, 
+            detached: 5.5,
+            bungalow: 4.5 
+        };
+        const systemSize = systemSizes[state.propertyType] || 4.0;
+        
+        // UK solar efficiency by orientation
+        const efficiencyFactors = { 
+            south: 1.0,
+            'east-west': 0.85,
+            north: 0.6
+        };
         const efficiency = efficiencyFactors[state.roofOrientation] || 1.0;
         
-        const annualGeneration = systemSize * 900 * efficiency; // 900 kWh per kW per year
-        const annualSavings = Math.min(annualGeneration * 0.34, annualBill * 0.7);
-        const systemCost = systemSize * 1500;
-        const paybackPeriod = systemCost / annualSavings;
-        const roi25Year = ((annualSavings * 25 - systemCost) / systemCost) * 100;
+        // UK average: 850-950 kWh per kWp per year
+        const ukAverageGeneration = 900;
+        const annualGeneration = systemSize * ukAverageGeneration * efficiency;
         
-        // Update display
+        // UK electricity price: ~£0.34 per kWh (2024)
+        const electricityPrice = 0.34;
+        
+        // Assume 60% self-consumption, rest exported at lower rate
+        const selfConsumption = annualGeneration * 0.6;
+        const exportAmount = annualGeneration * 0.4;
+        const exportRate = 0.15; // SEG export rate
+        
+        const savingsFromSelfUse = selfConsumption * electricityPrice;
+        const earningsFromExport = exportAmount * exportRate;
+        const annualSavings = Math.min(savingsFromSelfUse + earningsFromExport, annualBill * 0.85);
+        
+        // System cost: £1,400-1,600 per kWp installed (2024 UK average)
+        const costPerKW = 1450;
+        const systemCost = systemSize * costPerKW;
+        
+        // Calculations
+        const paybackPeriod = systemCost / annualSavings;
+        const lifetime25Savings = (annualSavings * 25) - systemCost;
+        const roi25Year = (lifetime25Savings / systemCost) * 100;
+        
+        // Update display with smooth animations
         const updateElement = (selector, value) => {
             const element = document.querySelector(`[data-result="${selector}"]`);
             if (element) {
@@ -361,6 +394,132 @@ const HomePage = class {
         updateElement('annual', Math.round(annualSavings));
         updateElement('roi', Math.round(roi25Year));
         updateElement('payback', paybackPeriod.toFixed(1));
+        
+        // Update chart
+        this.drawChart(annualSavings);
+    }
+    
+    /**
+     * Initialize savings chart
+     */
+    initChart() {
+        const canvas = document.querySelector('#savings-chart');
+        if (!canvas) return;
+        
+        this.chartCanvas = canvas;
+        this.chartCtx = canvas.getContext('2d');
+        
+        // Set canvas size
+        const container = canvas.parentElement;
+        canvas.width = container.offsetWidth;
+        canvas.height = 300;
+    }
+    
+    /**
+     * Draw savings chart
+     */
+    drawChart(annualSavings) {
+        if (!this.chartCtx || !this.chartCanvas) return;
+        
+        const ctx = this.chartCtx;
+        const canvas = this.chartCanvas;
+        const width = canvas.width;
+        const height = canvas.height;
+        
+        // Clear canvas
+        ctx.clearRect(0, 0, width, height);
+        
+        // Calculate cumulative savings over 25 years
+        const years = 25;
+        const data = [];
+        let cumulative = 0;
+        
+        for (let i = 0; i <= years; i++) {
+            cumulative += annualSavings * (i > 0 ? 1 : 0);
+            data.push(cumulative);
+        }
+        
+        const maxValue = Math.max(...data);
+        const padding = 40;
+        const chartWidth = width - padding * 2;
+        const chartHeight = height - padding * 2;
+        
+        // Draw grid
+        ctx.strokeStyle = 'rgba(255, 215, 0, 0.1)';
+        ctx.lineWidth = 1;
+        for (let i = 0; i <= 5; i++) {
+            const y = padding + (chartHeight / 5) * i;
+            ctx.beginPath();
+            ctx.moveTo(padding, y);
+            ctx.lineTo(width - padding, y);
+            ctx.stroke();
+        }
+        
+        // Draw area gradient
+        const gradient = ctx.createLinearGradient(0, padding, 0, height - padding);
+        gradient.addColorStop(0, 'rgba(255, 215, 0, 0.3)');
+        gradient.addColorStop(1, 'rgba(255, 215, 0, 0.05)');
+        
+        ctx.beginPath();
+        ctx.moveTo(padding, height - padding);
+        
+        data.forEach((value, index) => {
+            const x = padding + (chartWidth / years) * index;
+            const y = height - padding - (value / maxValue) * chartHeight;
+            
+            if (index === 0) {
+                ctx.moveTo(x, y);
+            } else {
+                ctx.lineTo(x, y);
+            }
+        });
+        
+        ctx.lineTo(width - padding, height - padding);
+        ctx.closePath();
+        ctx.fillStyle = gradient;
+        ctx.fill();
+        
+        // Draw line
+        ctx.beginPath();
+        data.forEach((value, index) => {
+            const x = padding + (chartWidth / years) * index;
+            const y = height - padding - (value / maxValue) * chartHeight;
+            
+            if (index === 0) {
+                ctx.moveTo(x, y);
+            } else {
+                ctx.lineTo(x, y);
+            }
+        });
+        
+        ctx.strokeStyle = '#FFD700';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+        
+        // Draw points
+        data.forEach((value, index) => {
+            if (index % 5 === 0) {
+                const x = padding + (chartWidth / years) * index;
+                const y = height - padding - (value / maxValue) * chartHeight;
+                
+                ctx.beginPath();
+                ctx.arc(x, y, 5, 0, Math.PI * 2);
+                ctx.fillStyle = '#FFD700';
+                ctx.fill();
+                
+                // Draw value labels
+                ctx.fillStyle = '#F8FAFC';
+                ctx.font = '12px Inter, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(`Year ${index}`, x, height - padding + 20);
+            }
+        });
+        
+        // Draw title
+        ctx.fillStyle = '#F8FAFC';
+        ctx.font = 'bold 14px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('Cumulative Savings Over 25 Years', width / 2, 20);
     }
     
     /**
@@ -415,15 +574,20 @@ const HomePage = class {
     getTemplate() {
         return `
             <!-- Navigation -->
-            <nav class="fixed top-0 left-0 right-0" style="z-index: 100;">
-                <div class="container" style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem;">
-                    <div style="font-weight: 700; font-size: 1.25rem; color: var(--primary);">Solar Panels Oldham</div>
-                    <div class="nav-links" style="display: flex; align-items: center; gap: 2rem;">
+            <nav>
+                <div class="container">
+                    <div class="nav-logo">Solar Panels Oldham</div>
+                    <div class="nav-links">
                         <a href="#home" class="nav-link">Home</a>
                         <a href="#services" class="nav-link">Services</a>
                         <a href="#calculator" class="nav-link">Calculator</a>
                         <a href="#contact" class="nav-link">Contact</a>
                     </div>
+                    <button class="nav-toggle" data-action="toggle-mobile-menu" aria-label="Toggle menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
                     <button class="btn-primary" data-action="show-quote-form">
                         Get Quote
                     </button>
@@ -550,35 +714,63 @@ const HomePage = class {
                     </div>
                     
                     <!-- Calculator Component - no data-component attribute -->
-                    <div class="solar-calculator mx-auto max-w-4xl" id="solar-calculator">
+                    <div class="solar-calculator" id="solar-calculator">
                         <div class="calc-inputs">
                             <div class="input-group">
                                 <label>Monthly Electricity Bill</label>
-                                <input type="range" class="range-input" 
-                                       data-input="bill" 
-                                       min="50" 
-                                       max="500" 
-                                       value="100"
-                                       step="10">
+                                <div class="slider-container">
+                                    <input type="range" class="range-input" 
+                                           data-input="bill" 
+                                           min="50" 
+                                           max="500" 
+                                           value="100"
+                                           step="10">
+                                    <div class="slider-marks">
+                                        <span>£50</span>
+                                        <span>£250</span>
+                                        <span>£500</span>
+                                    </div>
+                                </div>
                                 <span class="range-value">£<span data-value="bill">100</span></span>
                             </div>
                             
                             <div class="input-group">
                                 <label>Property Type</label>
-                                <select class="select-input" data-input="property">
-                                    <option value="terraced">Terraced House</option>
-                                    <option value="semi" selected>Semi-Detached</option>
-                                    <option value="detached">Detached House</option>
-                                    <option value="bungalow">Bungalow</option>
-                                </select>
+                                <div class="toggle-group">
+                                    <button class="toggle-option" data-input="property" data-value="terraced">
+                                        <span class="toggle-icon">🏠</span>
+                                        <span class="toggle-label">Terraced</span>
+                                    </button>
+                                    <button class="toggle-option active" data-input="property" data-value="semi">
+                                        <span class="toggle-icon">🏡</span>
+                                        <span class="toggle-label">Semi-Detached</span>
+                                    </button>
+                                    <button class="toggle-option" data-input="property" data-value="detached">
+                                        <span class="toggle-icon">🏘️</span>
+                                        <span class="toggle-label">Detached</span>
+                                    </button>
+                                    <button class="toggle-option" data-input="property" data-value="bungalow">
+                                        <span class="toggle-icon">🏚️</span>
+                                        <span class="toggle-label">Bungalow</span>
+                                    </button>
+                                </div>
                             </div>
                             
                             <div class="input-group">
                                 <label>Roof Orientation</label>
                                 <div class="toggle-group">
-                                    <button class="toggle-option active" data-input="facing" data-value="south">South</button>
-                                    <button class="toggle-option" data-input="facing" data-value="east-west">East/West</button>
-                                    <button class="toggle-option" data-input="facing" data-value="north">North</button>
+                                    <button class="toggle-option active" data-input="facing" data-value="south">
+                                        <span class="toggle-icon">☀️</span>
+                                        <span class="toggle-label">South</span>
+                                    </button>
+                                    <button class="toggle-option" data-input="facing" data-value="east-west">
+                                        <span class="toggle-icon">🌅</span>
+                                        <span class="toggle-label">East/West</span>
+                                    </button>
+                                    <button class="toggle-option" data-input="facing" data-value="north">
+                                        <span class="toggle-icon">🌙</span>
+                                        <span class="toggle-label">North</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -607,6 +799,10 @@ const HomePage = class {
                                 </div>
                                 <div class="result-label">Payback Period</div>
                             </div>
+                        </div>
+                        
+                        <div class="calc-chart">
+                            <canvas id="savings-chart" width="800" height="300"></canvas>
                         </div>
                         
                         <div class="calc-cta">
@@ -701,6 +897,8 @@ const HomePage = class {
                     this.showQuoteModal();
                 } else if (action === 'get-quote') {
                     this.showQuoteModal();
+                } else if (action === 'toggle-mobile-menu') {
+                    this.toggleMobileMenu();
                 } else {
                     emit('home:action', { action });
                 }
@@ -790,6 +988,19 @@ const HomePage = class {
             setTimeout(() => {
                 modal.style.display = 'none';
             }, 300);
+        }
+    }
+    
+    /**
+     * Toggle mobile menu
+     */
+    toggleMobileMenu() {
+        const navLinks = document.querySelector('.nav-links');
+        const navToggle = document.querySelector('.nav-toggle');
+        
+        if (navLinks && navToggle) {
+            navLinks.classList.toggle('active');
+            navToggle.classList.toggle('active');
         }
     }
     

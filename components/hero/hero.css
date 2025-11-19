@@ -12,6 +12,7 @@
     justify-content: center;
     overflow: hidden;
     background: var(--gradient-dark);
+    padding-top: 80px;
 }
 
 /* Particles Background */
@@ -88,8 +89,9 @@
 }
 
 .stat-item {
-    flex: 1;
-    min-width: 200px;
+    flex: 0 1 250px;
+    width: 250px;
+    height: 140px;
     text-align: center;
     padding: var(--spacing-8);
     background: rgba(255, 215, 0, 0.05);
@@ -100,6 +102,10 @@
     box-shadow: 
         0 4px 16px rgba(0, 0, 0, 0.2),
         inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .stat-item:nth-child(1) { animation-delay: 0.8s; }
@@ -117,11 +123,12 @@
 }
 
 .stat-label {
-    font-size: var(--text-sm);
+    font-size: var(--text-xs);
     color: var(--light);
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
     font-weight: var(--font-medium);
+    white-space: nowrap;
 }
 
 /* Hero CTA */

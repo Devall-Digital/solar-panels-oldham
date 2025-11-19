@@ -14,26 +14,22 @@
 /* Card Glow Effect */
 .card-glow {
     position: absolute;
-    inset: -2px;
-    border-radius: var(--radius-lg);
-    background: linear-gradient(
-        45deg,
-        transparent,
-        var(--primary-light),
-        var(--primary),
-        var(--primary-light),
-        transparent
+    inset: -20px;
+    border-radius: var(--radius-2xl);
+    background: radial-gradient(
+        circle at center,
+        rgba(255, 215, 0, 0.3) 0%,
+        transparent 70%
     );
-    background-size: 400% 400%;
     opacity: 0;
-    transition: opacity 0.3s ease;
-    filter: blur(20px);
+    transition: opacity 0.5s ease;
+    filter: blur(40px);
     z-index: -1;
+    pointer-events: none;
 }
 
 .interactive-card.is-hovering .card-glow {
-    opacity: 0.15;
-    animation: glowShift 3s ease-in-out infinite;
+    opacity: 0.3;
 }
 
 @keyframes glowShift {
@@ -149,14 +145,14 @@
 }
 
 .feature-tag {
-    font-size: var(--text-xs);
-    padding: var(--spacing-2) var(--spacing-4);
+    font-size: var(--text-sm);
+    padding: var(--spacing-3) var(--spacing-6);
     background: rgba(255, 215, 0, 0.15);
     color: var(--primary);
     border-radius: var(--radius-full);
     border: 1px solid rgba(255, 215, 0, 0.4);
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.05em;
     font-weight: var(--font-semibold);
     transform: translateZ(5px);
     backdrop-filter: blur(10px);
@@ -193,25 +189,13 @@
     transform: translateX(4px);
 }
 
-/* Mobile: Disable 3D effects */
+/* Mobile: Reduce 3D effects but keep some */
 @media (max-width: 768px) {
     .interactive-card {
-        perspective: none;
-    }
-    
-    .card-inner {
-        transform: none !important;
+        perspective: 800px;
     }
     
     .card-glow {
-        display: none;
-    }
-    
-    .card-icon,
-    .card-title,
-    .card-description,
-    .feature-tag,
-    .card-cta {
-        transform: none;
+        filter: blur(30px);
     }
 }
