@@ -273,8 +273,11 @@ export class Router {
             // Check if route has custom module path
             const modulePath = routeData.module || `/modules/${componentName}/${componentName}.js`;
             
+            // Add cache busting to prevent module caching issues
+            const cacheBuster = `?v=${Date.now()}`;
+            
             // Dynamically import component module
-            const module = await import(modulePath);
+            const module = await import(modulePath + cacheBuster);
             
             // Create instance and initialize
             if (module.default) {
