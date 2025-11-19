@@ -10,7 +10,7 @@
 import { setState, getState, subscribe } from '/core/state.js';
 import { emit, on } from '/core/events.js';
 
-class SolarCalculator {
+const SolarCalculator = class {
     constructor() {
         this.initialized = false;
         
@@ -584,6 +584,6 @@ class SolarCalculator {
         this.chart = null;
         emit('module:calculator:destroyed');
     }
-}
+};
 
-export default SolarCalculator;
+export { SolarCalculator as default };

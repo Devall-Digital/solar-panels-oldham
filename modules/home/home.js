@@ -5,12 +5,15 @@
  * Dependencies: /core/state.js, /core/events.js, /core/components.js
  * Author: Initial Setup Agent
  * Date: November 2024
+ * Version: 2.0 - Fixed export syntax
  */
+
+console.log('Home.js Version 2.0 loaded');
 
 import { emit } from '/core/events.js';
 import { initComponents } from '/core/components.js';
 
-class HomePage {
+const HomePage = class {
     constructor() {
         this.initialized = false;
     }
@@ -232,6 +235,6 @@ class HomePage {
         this.initialized = false;
         emit('module:home:destroyed');
     }
-}
+};
 
-export default HomePage;
+export { HomePage as default };
