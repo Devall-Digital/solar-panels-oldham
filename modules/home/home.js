@@ -107,8 +107,8 @@ const HomePage = class {
             // Load calculator module
             const { default: Calculator } = await import('/modules/calculator/calculator.js');
 
-            // Find calculator container
-            const calculatorContainer = this.element.querySelector('.solar-calculator');
+            // Find calculator container (it should be in the DOM now that template is inserted)
+            const calculatorContainer = document.querySelector('#solar-calculator');
             if (calculatorContainer) {
                 // Initialize calculator with the container
                 const calculatorInstance = new Calculator();
