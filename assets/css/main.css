@@ -215,6 +215,26 @@ li {
 
 .section-header {
     margin-bottom: var(--spacing-12);
+    text-align: center;
+}
+
+.section-title {
+    font-size: var(--text-4xl);
+    font-weight: var(--font-bold);
+    color: var(--light);
+    margin-bottom: var(--spacing-4);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.section-subtitle {
+    font-size: var(--text-lg);
+    color: var(--light-darker);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: var(--leading-relaxed);
 }
 
 /* ==========================================================================

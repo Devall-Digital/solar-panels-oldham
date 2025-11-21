@@ -1,0 +1,32 @@
+<!-- Component: Hero Section -->
+<section class="hero-section" data-component="hero">
+    <div class="hero-particles" id="particles"></div>
+    <div class="hero-content">
+        <h1 class="hero-title">
+            <span class="hero-title-line1">{{ line1 }}</span>
+            <span class="hero-title-line2">{{ line2 }}</span>
+            <span class="hero-accent">{{ accent }}</span>
+        </h1>
+        <p class="hero-subtitle">{{ subtitle }}</p>
+        <div class="hero-stats">
+            <div class="stat-item" data-count="{{ value1 }}">
+                <span class="stat-number">0</span>
+                <span class="stat-label">{{ label1 }}</span>
+            </div>
+            <div class="stat-item" data-count="{{ value2 }}">
+                <span class="stat-number">0</span>
+                <span class="stat-label">{{ label2 }}</span>
+            </div>
+            <div class="stat-item" data-count="{{ value3 }}">
+                <span class="stat-number">0</span>
+                <span class="stat-label">{{ label3 }}</span>
+            </div>
+        </div>
+        <div class="hero-cta">
+            <button class="btn-primary" data-action="{{ action }}">
+                <span class="btn-text">{{ cta_text }}</span>
+                <span class="btn-shine"></span>
+            </button>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar Calculator Test</title>
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="/assets/css/variables.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/animations.css">
+
+    <!-- Calculator CSS -->
+    <link rel="stylesheet" href="/components/calculator/calculator.css">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .test-header {
+            text-align: center;
+            color: #F8FAFC;
+            margin-bottom: 3rem;
+        }
+
+        .test-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .test-header p {
+            font-size: 1.1rem;
+            color: #CBD5E1;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .calculator-wrapper {
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 1rem;
+            padding: 2rem;
+            border: 1px solid rgba(255, 215, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="test-header">
+            <h1>Solar Calculator Test</h1>
+            <p>Test the interactive solar savings calculator. Adjust the inputs below to see real-time calculations.</p>
+        </div>
+
+        <div class="calculator-wrapper">
+            <!-- Solar Calculator Component -->
+            <div class="solar-calculator" data-component="calculator">
+                <div class="calc-inputs">
+                    <div class="input-group">
+                        <label>Monthly Energy Bill (£)</label>
+                        <input type="range" class="range-input"
+                               data-input="bill"
+                               min="50"
+                               max="1000"
+                               value="250">
+                        <span class="range-value">£<span data-value="bill">250</span></span>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Property Type</label>
+                        <select class="select-input" data-input="property">
+                            <option value="terraced">Terraced House</option>
+                            <option value="semi" selected>Semi-Detached</option>
+                            <option value="detached">Detached House</option>
+                            <option value="bungalow">Bungalow</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Roof Orientation</label>
+                        <div class="toggle-group">
+                            <button class="toggle-option active" data-input="facing" data-value="south">South</button>
+                            <button class="toggle-option" data-input="facing" data-value="east-west">East/West</button>
+                            <button class="toggle-option" data-input="facing" data-value="north">North</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calc-results">
+                    <div class="result-card saving">
+                        <div class="result-icon">💷</div>
+                        <div class="result-value">
+                            £<span data-result="annual">0</span>
+                        </div>
+                        <div class="result-label">Annual Savings</div>
+                    </div>
+
+                    <div class="result-card roi">
+                        <div class="result-icon">📈</div>
+                        <div class="result-value">
+                            <span data-result="roi">0</span>%
+                        </div>
+                        <div class="result-label">Return on Investment</div>
+                    </div>
+
+                    <div class="result-card payback">
+                        <div class="result-icon">⏱️</div>
+                        <div class="result-value">
+                            <span data-result="payback">0</span> years
+                        </div>
+                        <div class="result-label">Payback Period</div>
+                    </div>
+                </div>
+
+                <div class="calc-chart">
+                    <canvas id="savings-chart"></canvas>
+                </div>
+
+                <div class="calc-cta">
+                    <button class="btn-primary" data-action="get-quote">
+                        Get Your Personalized Quote
+                        <span class="arrow">→</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart.js from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Calculator Component -->
+    <script src="/components/calculator/calculator.js"></script>
+
+    <!-- Calculator Module -->
+    <script src="/modules/calculator/calculator.js"></script>
+
+    <script>
+        // Add some test functionality
+        document.addEventListener('calculator:quote-request', (e) => {
+            alert('Quote requested! Calculator data: ' + JSON.stringify(e.detail.calculatorData, null, 2));
+        });
+
+        document.addEventListener('calculator:calculate', (e) => {
+            console.log('Calculation performed:', e.detail);
+        });
+    </script>
+</body>
+</html>

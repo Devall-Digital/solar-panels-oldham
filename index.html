@@ -16,6 +16,12 @@
     <link rel="stylesheet" href="/assets/css/main.css">
     <link rel="stylesheet" href="/assets/css/animations.css">
     <link rel="stylesheet" href="/assets/css/utilities.css">
+    <link rel="stylesheet" href="/components/nav/nav.css">
+    <link rel="stylesheet" href="/components/hero/hero.css">
+    <link rel="stylesheet" href="/components/calculator/calculator.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+    <script src="/components/calculator/calculator.js" defer></script>
+    <script src="/modules/calculator/calculator.js" defer></script>
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -35,7 +41,100 @@
 <body>
     <!-- Skip to content -->
     <a href="#main" class="skip-to-content">Skip to main content</a>
-    
+
+    <!-- Navigation Component -->
+    <header class="nav-header" data-component="navigation">
+        <nav class="nav-container">
+            <div class="nav-brand">
+                <a href="/" class="nav-logo" data-action="home">
+                    <div class="logo-icon">
+                        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="20" cy="20" r="18" fill="var(--primary)" opacity="0.1"/>
+                            <path d="M12 20 L20 12 L28 20 L24 20 L24 28 L16 28 L16 20 Z" fill="var(--primary)"/>
+                        </svg>
+                    </div>
+                    <div class="logo-text">
+                        <span class="logo-main">Solar Panels Oldham</span>
+                        <span class="logo-tag">Future Energy</span>
+                    </div>
+                </a>
+            </div>
+
+            <div class="nav-menu">
+                <ul class="nav-links">
+                    <li class="nav-item">
+                        <a href="/" class="nav-link active" data-action="home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/calculator" class="nav-link" data-action="calculator">Calculator</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/services" class="nav-link" data-action="services">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/about" class="nav-link" data-action="about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/contact" class="nav-link" data-action="contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="nav-actions">
+                <button class="nav-cta btn-primary" data-action="get-quote">
+                    <span class="btn-text">Get Free Quote</span>
+                    <span class="btn-shine"></span>
+                </button>
+                <button class="menu-toggle" aria-label="Toggle mobile menu" aria-expanded="false">
+                    <span class="hamburger">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+                </button>
+            </div>
+
+            <!-- Mobile Menu Panel -->
+            <div class="mobile-menu-panel">
+                <div class="mobile-menu-header">
+                    <div class="mobile-logo">
+                        <div class="logo-icon">
+                            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="16" cy="16" r="14" fill="var(--primary)" opacity="0.1"/>
+                                <path d="M9.6 16 L16 9.6 L22.4 16 L19.2 16 L19.2 22.4 L12.8 22.4 L12.8 16 Z" fill="var(--primary)"/>
+                            </svg>
+                        </div>
+                        <span class="mobile-logo-text">Solar Panels Oldham</span>
+                    </div>
+                    <button class="mobile-menu-close" aria-label="Close menu">×</button>
+                </div>
+                <ul class="mobile-nav-links">
+                    <li class="mobile-nav-item">
+                        <a href="/" class="mobile-nav-link active" data-action="home">Home</a>
+                    </li>
+                    <li class="mobile-nav-item">
+                        <a href="/calculator" class="mobile-nav-link" data-action="calculator">Calculator</a>
+                    </li>
+                    <li class="mobile-nav-item">
+                        <a href="/services" class="mobile-nav-link" data-action="services">Services</a>
+                    </li>
+                    <li class="mobile-nav-item">
+                        <a href="/about" class="mobile-nav-link" data-action="about">About</a>
+                    </li>
+                    <li class="mobile-nav-item">
+                        <a href="/contact" class="mobile-nav-link" data-action="contact">Contact</a>
+                    </li>
+                </ul>
+                <div class="mobile-menu-footer">
+                    <button class="mobile-cta btn-primary" data-action="get-quote-mobile">
+                        <span class="btn-text">Get Free Quote</span>
+                        <span class="btn-shine"></span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
     <!-- App Container -->
     <div id="app">
         <!-- Initial loading state -->
@@ -53,7 +152,121 @@
     </div>
     
     <!-- Main content will be loaded here -->
-    <main id="main" role="main"></main>
+    <main id="main" role="main">
+        <!-- Component: Hero Section -->
+        <section class="hero-section" data-component="hero">
+            <div class="hero-particles" id="particles"></div>
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="hero-title-line1">Power Your Home</span>
+                    <span class="hero-title-line2">With Future Energy</span>
+                    <span class="hero-accent">Oldham's #1 Solar Choice</span>
+                </h1>
+                <p class="hero-subtitle">Join 1,000+ homeowners in Oldham saving up to £1,200 annually with our premium solar installations.</p>
+                <div class="hero-stats">
+                    <div class="stat-item" data-count="1200">
+                        <span class="stat-number">0</span>
+                        <span class="stat-label">Avg. Savings (£)</span>
+                    </div>
+                    <div class="stat-item" data-count="500">
+                        <span class="stat-number">0</span>
+                        <span class="stat-label">Installations</span>
+                    </div>
+                    <div class="stat-item" data-count="25">
+                        <span class="stat-number">0</span>
+                        <span class="stat-label">Year Warranty</span>
+                    </div>
+                </div>
+                <div class="hero-cta">
+                    <button class="btn-primary btn-large" data-action="scroll-to-calculator">
+                        <span class="btn-text">Calculate Your Savings</span>
+                        <span class="btn-shine"></span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Solar Calculator Section -->
+        <section class="calculator-section" id="calculator">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Calculate Your Solar Savings</h2>
+                    <p class="section-subtitle">See how much you could save with solar panels. Adjust the inputs below for a personalized calculation.</p>
+                </div>
+
+                <!-- Solar Calculator Component -->
+                <div class="solar-calculator" data-component="calculator">
+                    <div class="calc-inputs">
+                        <div class="input-group">
+                            <label>Monthly Energy Bill (£)</label>
+                            <input type="range" class="range-input"
+                                   data-input="bill"
+                                   min="50"
+                                   max="1000"
+                                   value="250">
+                            <span class="range-value">£<span data-value="bill">250</span></span>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Property Type</label>
+                            <select class="select-input" data-input="property">
+                                <option value="terraced">Terraced House</option>
+                                <option value="semi" selected>Semi-Detached</option>
+                                <option value="detached">Detached House</option>
+                                <option value="bungalow">Bungalow</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Roof Orientation</label>
+                            <div class="toggle-group">
+                                <button class="toggle-option active" data-input="facing" data-value="south">South</button>
+                                <button class="toggle-option" data-input="facing" data-value="east-west">East/West</button>
+                                <button class="toggle-option" data-input="facing" data-value="north">North</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calc-results">
+                        <div class="result-card saving">
+                            <div class="result-icon">💷</div>
+                            <div class="result-value">
+                                £<span data-result="annual">0</span>
+                            </div>
+                            <div class="result-label">Annual Savings</div>
+                        </div>
+
+                        <div class="result-card roi">
+                            <div class="result-icon">📈</div>
+                            <div class="result-value">
+                                <span data-result="roi">0</span>%
+                            </div>
+                            <div class="result-label">Return on Investment</div>
+                        </div>
+
+                        <div class="result-card payback">
+                            <div class="result-icon">⏱️</div>
+                            <div class="result-value">
+                                <span data-result="payback">0</span> years
+                            </div>
+                            <div class="result-label">Payback Period</div>
+                        </div>
+                    </div>
+
+                    <div class="calc-chart">
+                        <canvas id="savings-chart"></canvas>
+                    </div>
+
+                    <div class="calc-cta">
+                        <button class="btn-primary" data-action="get-quote">
+                            Get Your Personalized Quote
+                            <span class="arrow">→</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
     
     <!-- Core Application -->
     <script type="module">
