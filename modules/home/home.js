@@ -8,16 +8,12 @@
  * Version: 3.0 - Complete single page with working components
  */
 
-console.log('Home.js Version 3.0 loaded - Complete Fix');
-
 import { emit } from '/core/events.js';
 import { setState, getState, subscribe } from '/core/state.js';
 
 const HomePage = class {
     constructor() {
         this.initialized = false;
-        this.particles = [];
-        this.animationFrame = null;
     }
     
     /**
@@ -25,19 +21,12 @@ const HomePage = class {
      */
     async init(container, routeData = {}) {
         try {
-            console.log('HomePage init started');
-            
             // Create home page content
             container.innerHTML = this.getTemplate();
             
             // Load component styles
             await this.loadStyles();
-            
-            // Initialize particles manually since component system isn't working
-            this.initParticles();
-            
-            // Initialize counters
-            this.initCounters();
+
             
             // Initialize cards
             this.initCards();
@@ -59,19 +48,7 @@ const HomePage = class {
             emit('module:home:error', error);
         }
     }
-    
-    /**
-     * Initialize particle system directly
-     */
-    initParticles() {
-        console.log('Initializing particles');
-        const container = document.querySelector('.hero-particles');
-        if (!container) {
-            console.error('Particle container not found');
-            return;
-        }
-        
-        // Create canvas
+// Create canvas
         const canvas = document.createElement('canvas');
         canvas.className = 'particles-canvas';
         canvas.style.position = 'absolute';
@@ -178,52 +155,13 @@ const HomePage = class {
         
         animate();
     }
-    
-    /**
-     * Initialize counting animations
-     */
-    initCounters() {
-        const counters = document.querySelectorAll('.stat-item');
-        
-        counters.forEach(counter => {
-            const target = parseInt(counter.dataset.count);
-            const numberElement = counter.querySelector('.stat-number');
-            
-            if (!numberElement || isNaN(target)) return;
-            
-            // Use Intersection Observer
-            const observer = new IntersectionObserver(entries => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        this.animateCounter(numberElement, target);
-                        observer.unobserve(entry.target);
-                    }
-                });
+});
             }, { threshold: 0.5 });
             
             observer.observe(counter);
         });
     }
-    
-    /**
-     * Animate counter
-     */
-    animateCounter(element, target) {
-        const duration = 2000;
-        const start = 0;
-        const increment = target / (duration / 16);
-        let current = start;
-        
-        const updateCounter = () => {
-            current += increment;
-            
-            if (current < target) {
-                element.textContent = Math.floor(current).toLocaleString();
-                requestAnimationFrame(updateCounter);
-            } else {
-                element.textContent = target.toLocaleString();
-            }
-        };
+};
         
         updateCounter();
     }
@@ -550,6 +488,8 @@ const HomePage = class {
      */
     async loadStyles() {
         const styles = [
+            '/components/navigation/site-nav/site-nav.css',
+            '/components/mobile/mobile-menu/mobile-menu.css',
             '/components/hero/hero.css',
             '/components/card/interactive-card.css',
             '/components/form/progress-form.css',
@@ -574,53 +514,109 @@ const HomePage = class {
     getTemplate() {
         return `
             <!-- Navigation -->
-            <nav>
-                <div class="container">
-                    <div class="nav-logo">Solar Panels Oldham</div>
-                    <div class="nav-links">
-                        <a href="#home" class="nav-link">Home</a>
+            <header class="site-nav" data-component="site-nav" data-nav-state="default">
+                <div class="site-nav__container">
+                    <a href="#home" class="nav-logo" aria-label="Solar Panels Oldham home section">
+                        <span class="nav-logo-mark" aria-hidden="true">&#9728;</span>
+                        <span class="nav-logo-text">
+                            <span class="nav-logo-title">Solar Panels Oldham</span>
+                            <span class="nav-logo-subtitle">MCS Certified Installers</span>
+                        </span>
+                    </a>
+
+                    <nav class="site-nav__links" aria-label="Primary navigation">
+                        <a href="#home" class="nav-link" aria-current="true">Home</a>
                         <a href="#services" class="nav-link">Services</a>
                         <a href="#calculator" class="nav-link">Calculator</a>
                         <a href="#contact" class="nav-link">Contact</a>
-                    </div>
-                    <button class="nav-toggle" data-action="toggle-mobile-menu" aria-label="Toggle menu">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </button>
-                    <button class="btn-primary" data-action="show-quote-form">
-                        Get Quote
-                    </button>
-                </div>
-            </nav>
+                    </nav>
 
+                    <div class="site-nav__actions">
+                        <div class="nav-contact">
+                            <span class="nav-contact-label">Speak to an expert</span>
+                            <a href="tel:01615550198" class="nav-contact-link">0161 555 0198</a>
+                        </div>
+                        <button class="btn-primary nav-cta" data-action="show-quote-form">
+                            <span class="btn-text">Book a Survey</span>
+                            <span class="btn-shine"></span>
+                        </button>
+                    </div>
+
+                    <div class="mobile-menu" data-component="mobile-menu" data-menu-state="closed">
+                        <button 
+                            class="menu-toggle" 
+                            aria-label="Toggle menu" 
+                            aria-expanded="false" 
+                            aria-haspopup="true" 
+                            aria-controls="primary-mobile-menu">
+                            <span class="menu-toggle__label">Menu</span>
+                            <span class="hamburger" aria-hidden="true">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </span>
+                        </button>
+                        <nav id="primary-mobile-menu" class="menu-panel" aria-label="Mobile navigation" aria-hidden="true">
+                            <ul class="menu-list">
+                                <li class="menu-item">
+                                    <a href="#home" class="nav-link">Home</a>
+                                </li>
+                                <li class="menu-item">
+                                    <a href="#services" class="nav-link">Services</a>
+                                </li>
+                                <li class="menu-item">
+                                    <a href="#calculator" class="nav-link">Calculator</a>
+                                </li>
+                                <li class="menu-item">
+                                    <a href="#contact" class="nav-link">Contact</a>
+                                </li>
+                                <li class="menu-item menu-item-contact">
+                                    <div class="nav-contact">
+                                        <span class="nav-contact-label">Speak to an expert</span>
+                                        <a href="tel:01615550198" class="nav-contact-link">0161 555 0198</a>
+                                    </div>
+                                </li>
+                                <li class="menu-item menu-item-cta">
+                                    <button class="btn-primary w-full" data-action="show-quote-form">
+                                        <span class="btn-text">Book a Survey</span>
+                                        <span class="btn-shine"></span>
+                                    </button>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="site-nav__progress" aria-hidden="true">
+                    <span class="site-nav__progress-bar"></span>
+                </div>
+            </header>
             <!-- Hero Section -->
-            <section id="home" class="hero-section" data-component="hero">
-                <div class="hero-particles" id="particles"></div>
+            <section id="home" class="hero-section" data-component="hero" aria-labelledby="hero-title" aria-describedby="hero-subtitle">
+                <div class="hero-particles" id="particles" aria-hidden="true"></div>
                 <div class="hero-content">
-                    <h1 class="hero-title">
-                        <span class="hero-title-line1">Save Money With</span>
-                        <span class="hero-title-line2">Solar Power in</span>
-                        <span class="hero-accent">Oldham</span>
+                    <h1 class="hero-title" id="hero-title">
+                        <span class="hero-title-line1">Switch On Massive Savings</span>
+                        <span class="hero-title-line2">with Solar Power in</span>
+                        <span class="hero-accent">Oldham & Saddleworth</span>
                     </h1>
-                    <p class="hero-subtitle">Professional solar panel installation for homes in Greater Manchester. Cut your electricity bills by up to 70% with renewable energy.</p>
-                    <div class="hero-stats">
-                        <div class="stat-item" data-count="2847">
+                    <p class="hero-subtitle" id="hero-subtitle">MCS-certified engineers design, install, and maintain premium solar + battery systems with 7-day installs and lifetime performance monitoring.</p>
+                    <div class="hero-stats" role="list">
+                        <div class="stat-item" data-count="3184" role="listitem">
                             <span class="stat-number">0</span>
-                            <span class="stat-label">Homes Powered</span>
+                            <span class="stat-label">Local Installations</span>
                         </div>
-                        <div class="stat-item" data-count="4200">
+                        <div class="stat-item" data-count="4875" role="listitem">
                             <span class="stat-number">0</span>
-                            <span class="stat-label">Avg Yearly Savings (£)</span>
+                            <span class="stat-label">Avg Yearly Savings (�)</span>
                         </div>
-                        <div class="stat-item" data-count="25">
+                        <div class="stat-item" data-count="25" role="listitem">
                             <span class="stat-number">0</span>
-                            <span class="stat-label">Year Warranty</span>
+                            <span class="stat-label">Year Warranty Cover</span>
                         </div>
                     </div>
                     <div class="hero-cta">
                         <button class="btn-primary" data-action="scroll-to-calculator">
-                            <span class="btn-text">Calculate Your Savings</span>
+                            <span class="btn-text">Plan My Solar Savings</span>
                             <span class="btn-shine"></span>
                         </button>
                     </div>
@@ -874,18 +870,6 @@ const HomePage = class {
      * Setup smooth scrolling
      */
     setupSmoothScrolling() {
-        // Handle navigation links
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const targetId = link.getAttribute('href');
-                const targetSection = document.querySelector(targetId);
-                if (targetSection) {
-                    targetSection.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
-        });
-
         // Handle button actions
         document.querySelectorAll('[data-action]').forEach(button => {
             button.addEventListener('click', (e) => {
@@ -897,8 +881,6 @@ const HomePage = class {
                     this.showQuoteModal();
                 } else if (action === 'get-quote') {
                     this.showQuoteModal();
-                } else if (action === 'toggle-mobile-menu') {
-                    this.toggleMobileMenu();
                 } else {
                     emit('home:action', { action });
                 }
@@ -992,19 +974,6 @@ const HomePage = class {
     }
     
     /**
-     * Toggle mobile menu
-     */
-    toggleMobileMenu() {
-        const navLinks = document.querySelector('.nav-links');
-        const navToggle = document.querySelector('.nav-toggle');
-        
-        if (navLinks && navToggle) {
-            navLinks.classList.toggle('active');
-            navToggle.classList.toggle('active');
-        }
-    }
-    
-    /**
      * Setup scroll animations
      */
     setupScrollAnimations() {
@@ -1025,28 +994,6 @@ const HomePage = class {
             observer.observe(section);
         });
 
-        // Update active nav on scroll
-        const sections = document.querySelectorAll('section[id]');
-        const navLinks = document.querySelectorAll('.nav-link');
-        
-        window.addEventListener('scroll', () => {
-            let current = '';
-            
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (window.pageYOffset >= (sectionTop - 100)) {
-                    current = section.getAttribute('id');
-                }
-            });
-            
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === `#${current}`) {
-                    link.classList.add('active');
-                }
-            });
-        });
     }
     
     /**

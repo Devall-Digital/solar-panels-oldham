@@ -132,7 +132,8 @@ class ComponentManager {
                 'reveal': '/components/animation/scroll-reveal.js',
                 'particles': '/components/particles/particles.js',
                 'modal': '/components/modal/modal.js',
-                'mobile-menu': '/components/mobile/mobile-menu.js'
+                'mobile-menu': '/components/mobile/mobile-menu/mobile-menu.js',
+                'site-nav': '/components/navigation/site-nav/site-nav.js'
             };
             
             const path = componentPaths[componentName];

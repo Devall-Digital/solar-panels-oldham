@@ -561,10 +561,66 @@
 </div>
 ```
 
-**Required CSS**: `/components/mobile/mobile-menu.css`
-**Required JS**: `/components/mobile/mobile-menu.js`
+**Required CSS**: `/components/mobile/mobile-menu/mobile-menu.css`
+**Required JS**: `/components/mobile/mobile-menu/mobile-menu.js`
 **Variables**:
 - `menu_items`: List items HTML
+
+---
+
+### 15. SITE NAVIGATION
+**Purpose**: Sticky dopamine-powered navigation header with progress indicator
+**Dopamine Triggers**: Glassmorphism backdrop, scroll progress bar, animated CTA, hide/reveal motion
+
+```html
+<!-- Component: Site Navigation -->
+<header class="site-nav" data-component="site-nav" data-nav-state="default">
+    <div class="site-nav__container">
+        <a href="#home" class="nav-logo" aria-label="Solar Panels Oldham home section">
+            <span class="nav-logo-mark" aria-hidden="true">&#9728;</span>
+            <span class="nav-logo-text">
+                <span class="nav-logo-title">{{ brand_title }}</span>
+                <span class="nav-logo-subtitle">{{ brand_tagline }}</span>
+            </span>
+        </a>
+
+        <nav class="site-nav__links" aria-label="Primary navigation">
+            {{ nav_links }}
+        </nav>
+
+        <div class="site-nav__actions">
+            <div class="nav-contact">
+                <span class="nav-contact-label">{{ contact_label }}</span>
+                <a href="{{ contact_href }}" class="nav-contact-link">{{ contact_value }}</a>
+            </div>
+            <button class="btn-primary nav-cta" data-action="{{ cta_action }}">
+                <span class="btn-text">{{ cta_text }}</span>
+                <span class="btn-shine"></span>
+            </button>
+        </div>
+
+        <div class="mobile-menu" data-component="mobile-menu" data-menu-state="closed">
+            {{ mobile_menu_markup }}
+        </div>
+    </div>
+    <div class="site-nav__progress" aria-hidden="true">
+        <span class="site-nav__progress-bar"></span>
+    </div>
+</header>
+```
+
+**Required CSS**: `/components/navigation/site-nav/site-nav.css`
+**Required JS**: `/components/navigation/site-nav/site-nav.js`
+**Variables**:
+- `brand_title`: Primary logo text
+- `brand_tagline`: Secondary logo text
+- `nav_links`: `<a>` elements targeting sections
+- `contact_label`: Text above phone number
+- `contact_href`: `tel:` link
+- `contact_value`: Phone number text
+- `cta_action`: Action attribute for CTA button
+- `cta_text`: CTA button label
+- `mobile_menu_markup`: `mobile-menu` component HTML
 
 ---
 
