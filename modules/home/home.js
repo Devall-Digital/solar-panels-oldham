@@ -33,8 +33,8 @@ const HomePage = class {
             // Initialize cards
             this.initCards();
 
-            // Initialize calculator
-            this.initCalculator();
+            // Initialize calculator module
+            await this.initCalculator();
             
             // Add smooth scrolling
             this.setupSmoothScrolling();
@@ -100,274 +100,34 @@ const HomePage = class {
     }
     
     /**
-     * Initialize calculator inline
+     * Initialize calculator module
      */
-    initCalculator() {
-        // Calculator state
-        const calcState = {
-            monthlyBill: 100,
-            propertyType: 'semi',
-            roofOrientation: 'south',
-            shading: 'none'
-        };
-        
-        // Setup inputs
-        const billSlider = document.querySelector('[data-input="bill"]');
-        const billDisplay = document.querySelector('[data-value="bill"]');
-        
-        if (billSlider) {
-            billSlider.addEventListener('input', (e) => {
-                calcState.monthlyBill = parseFloat(e.target.value);
-                billDisplay.textContent = e.target.value;
-                this.calculateSavings();
-            });
-        }
-        
-        // Toggle buttons for both property type and roof orientation
-        document.querySelectorAll('.toggle-option').forEach(button => {
-            button.addEventListener('click', () => {
-                const group = button.parentElement;
-                const inputType = button.dataset.input;
-                
-                // Only remove active from buttons in the same group
-                group.querySelectorAll('.toggle-option').forEach(btn => {
-                    btn.classList.remove('active');
-                });
-                button.classList.add('active');
-                
-                // Update state based on input type
-                if (inputType === 'facing') {
-                    calcState.roofOrientation = button.dataset.value;
-                } else if (inputType === 'property') {
-                    calcState.propertyType = button.dataset.value;
-                }
-                
-                this.calculateSavings();
-            });
-        });
-        
-        // Store calc state globally
-        this.calcState = calcState;
-        
-        // Initialize chart
-        this.initChart();
-        
-        // Initial calculation
-        this.calculateSavings();
-    }
-    
-    /**
-     * Calculate solar savings with realistic formulas
-     */
-    calculateSavings() {
-        const state = this.calcState;
-        
-        // More accurate UK solar calculations
-        const annualBill = state.monthlyBill * 12;
-        
-        // System sizes (kW) based on property type - realistic for UK homes
-        const systemSizes = { 
-            terraced: 3.0,
-            semi: 4.0, 
-            detached: 5.5,
-            bungalow: 4.5 
-        };
-        const systemSize = systemSizes[state.propertyType] || 4.0;
-        
-        // UK solar efficiency by orientation
-        const efficiencyFactors = { 
-            south: 1.0,
-            'east-west': 0.85,
-            north: 0.6
-        };
-        const efficiency = efficiencyFactors[state.roofOrientation] || 1.0;
-        
-        // UK average: 850-950 kWh per kWp per year
-        const ukAverageGeneration = 900;
-        const annualGeneration = systemSize * ukAverageGeneration * efficiency;
-        
-        // UK electricity price: ~£0.34 per kWh (2024)
-        const electricityPrice = 0.34;
-        
-        // Assume 60% self-consumption, rest exported at lower rate
-        const selfConsumption = annualGeneration * 0.6;
-        const exportAmount = annualGeneration * 0.4;
-        const exportRate = 0.15; // SEG export rate
-        
-        const savingsFromSelfUse = selfConsumption * electricityPrice;
-        const earningsFromExport = exportAmount * exportRate;
-        const annualSavings = Math.min(savingsFromSelfUse + earningsFromExport, annualBill * 0.85);
-        
-        // System cost: £1,400-1,600 per kWp installed (2024 UK average)
-        const costPerKW = 1450;
-        const systemCost = systemSize * costPerKW;
-        
-        // Calculations
-        const paybackPeriod = systemCost / annualSavings;
-        const lifetime25Savings = (annualSavings * 25) - systemCost;
-        const roi25Year = (lifetime25Savings / systemCost) * 100;
-        
-        // Update display with smooth animations
-        const updateElement = (selector, value) => {
-            const element = document.querySelector(`[data-result="${selector}"]`);
-            if (element) {
-                this.animateNumber(element, value);
-            }
-        };
-        
-        updateElement('annual', Math.round(annualSavings));
-        updateElement('roi', Math.round(roi25Year));
-        updateElement('payback', paybackPeriod.toFixed(1));
-        
-        // Update chart
-        this.drawChart(annualSavings);
-    }
-    
-    /**
-     * Initialize savings chart
-     */
-    initChart() {
-        const canvas = document.querySelector('#savings-chart');
-        if (!canvas) return;
-        
-        this.chartCanvas = canvas;
-        this.chartCtx = canvas.getContext('2d');
-        
-        // Set canvas size
-        const container = canvas.parentElement;
-        canvas.width = container.offsetWidth;
-        canvas.height = 300;
-    }
-    
-    /**
-     * Draw savings chart
-     */
-    drawChart(annualSavings) {
-        if (!this.chartCtx || !this.chartCanvas) return;
-        
-        const ctx = this.chartCtx;
-        const canvas = this.chartCanvas;
-        const width = canvas.width;
-        const height = canvas.height;
-        
-        // Clear canvas
-        ctx.clearRect(0, 0, width, height);
-        
-        // Calculate cumulative savings over 25 years
-        const years = 25;
-        const data = [];
-        let cumulative = 0;
-        
-        for (let i = 0; i <= years; i++) {
-            cumulative += annualSavings * (i > 0 ? 1 : 0);
-            data.push(cumulative);
-        }
-        
-        const maxValue = Math.max(...data);
-        const padding = 40;
-        const chartWidth = width - padding * 2;
-        const chartHeight = height - padding * 2;
-        
-        // Draw grid
-        ctx.strokeStyle = 'rgba(255, 215, 0, 0.1)';
-        ctx.lineWidth = 1;
-        for (let i = 0; i <= 5; i++) {
-            const y = padding + (chartHeight / 5) * i;
-            ctx.beginPath();
-            ctx.moveTo(padding, y);
-            ctx.lineTo(width - padding, y);
-            ctx.stroke();
-        }
-        
-        // Draw area gradient
-        const gradient = ctx.createLinearGradient(0, padding, 0, height - padding);
-        gradient.addColorStop(0, 'rgba(255, 215, 0, 0.3)');
-        gradient.addColorStop(1, 'rgba(255, 215, 0, 0.05)');
-        
-        ctx.beginPath();
-        ctx.moveTo(padding, height - padding);
-        
-        data.forEach((value, index) => {
-            const x = padding + (chartWidth / years) * index;
-            const y = height - padding - (value / maxValue) * chartHeight;
-            
-            if (index === 0) {
-                ctx.moveTo(x, y);
+    async initCalculator() {
+        try {
+            // Load calculator module
+            const { default: Calculator } = await import('/modules/calculator/calculator.js');
+
+            // Find calculator container
+            const calculatorContainer = this.element.querySelector('.solar-calculator');
+            if (calculatorContainer) {
+                // Initialize calculator with the container
+                const calculatorInstance = new Calculator();
+                await calculatorInstance.init(calculatorContainer);
+
+                // Store reference
+                this.calculator = calculatorInstance;
+
+                console.log('Calculator module initialized successfully');
             } else {
-                ctx.lineTo(x, y);
+                console.warn('Calculator container not found');
             }
-        });
-        
-        ctx.lineTo(width - padding, height - padding);
-        ctx.closePath();
-        ctx.fillStyle = gradient;
-        ctx.fill();
-        
-        // Draw line
-        ctx.beginPath();
-        data.forEach((value, index) => {
-            const x = padding + (chartWidth / years) * index;
-            const y = height - padding - (value / maxValue) * chartHeight;
-            
-            if (index === 0) {
-                ctx.moveTo(x, y);
-            } else {
-                ctx.lineTo(x, y);
-            }
-        });
-        
-        ctx.strokeStyle = '#FFD700';
-        ctx.lineWidth = 3;
-        ctx.stroke();
-        
-        // Draw points
-        data.forEach((value, index) => {
-            if (index % 5 === 0) {
-                const x = padding + (chartWidth / years) * index;
-                const y = height - padding - (value / maxValue) * chartHeight;
-                
-                ctx.beginPath();
-                ctx.arc(x, y, 5, 0, Math.PI * 2);
-                ctx.fillStyle = '#FFD700';
-                ctx.fill();
-                
-                // Draw value labels
-                ctx.fillStyle = '#F8FAFC';
-                ctx.font = '12px Inter, sans-serif';
-                ctx.textAlign = 'center';
-                ctx.fillText(`Year ${index}`, x, height - padding + 20);
-            }
-        });
-        
-        // Draw title
-        ctx.fillStyle = '#F8FAFC';
-        ctx.font = 'bold 14px Inter, sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText('Cumulative Savings Over 25 Years', width / 2, 20);
+        } catch (error) {
+            console.error('Failed to initialize calculator module:', error);
+        }
     }
     
-    /**
-     * Animate number change
-     */
-    animateNumber(element, target) {
-        const current = parseFloat(element.textContent.replace(/,/g, '')) || 0;
-        const duration = 1000;
-        const steps = 30;
-        const increment = (target - current) / steps;
-        let step = 0;
-        
-        const timer = setInterval(() => {
-            step++;
-            const value = current + (increment * step);
-            
-            if (step >= steps) {
-                element.textContent = typeof target === 'string' ? target : target.toLocaleString();
-                clearInterval(timer);
-            } else {
-                element.textContent = Math.round(value).toLocaleString();
-            }
-        }, duration / steps);
-    }
+    
+    
     
     
     /**
@@ -780,8 +540,8 @@ const HomePage = class {
         const data = Object.fromEntries(formData.entries());
         
         // Add calculator results if available
-        if (this.calcState) {
-            data.calculator_results = this.calcState;
+        if (this.calculator) {
+            data.calculator_results = this.calculator.getState();
         }
         
         try {
@@ -885,9 +645,11 @@ const HomePage = class {
      * Destroy module
      */
     destroy() {
-        if (this.animationFrame) {
-            cancelAnimationFrame(this.animationFrame);
+        // Destroy calculator instance
+        if (this.calculator && typeof this.calculator.destroy === 'function') {
+            this.calculator.destroy();
         }
+
         this.initialized = false;
         emit('module:home:destroyed');
     }
