@@ -29,19 +29,10 @@ const HomePage = class {
             
             // Create home page content
             container.innerHTML = this.getTemplate();
-            
-            // Load component styles
-            await this.loadStyles();
-            
-            // Initialize particles manually since component system isn't working
-            this.initParticles();
-            
-            // Initialize counters
-            this.initCounters();
-            
+
             // Initialize cards
             this.initCards();
-            
+
             // Initialize calculator
             this.initCalculator();
             
@@ -60,173 +51,6 @@ const HomePage = class {
         }
     }
     
-    /**
-     * Initialize particle system directly
-     */
-    initParticles() {
-        console.log('Initializing particles');
-        const container = document.querySelector('.hero-particles');
-        if (!container) {
-            console.error('Particle container not found');
-            return;
-        }
-        
-        // Create canvas
-        const canvas = document.createElement('canvas');
-        canvas.className = 'particles-canvas';
-        canvas.style.position = 'absolute';
-        canvas.style.top = '0';
-        canvas.style.left = '0';
-        canvas.style.width = '100%';
-        canvas.style.height = '100%';
-        canvas.style.pointerEvents = 'none';
-        container.appendChild(canvas);
-        
-        const ctx = canvas.getContext('2d');
-        
-        // Set canvas size
-        const resizeCanvas = () => {
-            const rect = container.getBoundingClientRect();
-            canvas.width = rect.width || window.innerWidth;
-            canvas.height = rect.height || window.innerHeight;
-        };
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
-        
-        // Mouse position
-        let mouse = { x: null, y: null };
-        container.addEventListener('mousemove', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            mouse.x = e.clientX - rect.left;
-            mouse.y = e.clientY - rect.top;
-        });
-        
-        container.addEventListener('mouseleave', () => {
-            mouse.x = null;
-            mouse.y = null;
-        });
-        
-        // Create particles
-        const particleCount = 80;
-        const particles = [];
-        const particleColors = ['#FFD700', '#FFED4A', '#F59E0B'];
-        
-        for (let i = 0; i < particleCount; i++) {
-            particles.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                vx: (Math.random() - 0.5) * 0.5,
-                vy: (Math.random() - 0.5) * 0.5,
-                size: Math.random() * 3 + 1.5,
-                color: particleColors[Math.floor(Math.random() * particleColors.length)]
-            });
-        }
-        
-        // Animation loop
-        const animate = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            particles.forEach((particle, i) => {
-                // Update position
-                particle.x += particle.vx;
-                particle.y += particle.vy;
-                
-                // Bounce off walls
-                if (particle.x <= 0 || particle.x >= canvas.width) particle.vx *= -1;
-                if (particle.y <= 0 || particle.y >= canvas.height) particle.vy *= -1;
-                
-                // Mouse interaction
-                if (mouse.x !== null && mouse.y !== null) {
-                    const dx = mouse.x - particle.x;
-                    const dy = mouse.y - particle.y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    
-                    if (distance < 100) {
-                        const force = (100 - distance) / 100;
-                        particle.vx -= (dx / distance) * force * 0.5;
-                        particle.vy -= (dy / distance) * force * 0.5;
-                    }
-                }
-                
-                // Draw particle
-                ctx.beginPath();
-                ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-                ctx.fillStyle = particle.color;
-                ctx.fill();
-                
-                // Draw connections
-                for (let j = i + 1; j < particles.length; j++) {
-                    const other = particles[j];
-                    const dx = other.x - particle.x;
-                    const dy = other.y - particle.y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    
-                    if (distance < 150) {
-                        const opacity = 1 - (distance / 150);
-                        ctx.beginPath();
-                        ctx.moveTo(particle.x, particle.y);
-                        ctx.lineTo(other.x, other.y);
-                        ctx.strokeStyle = `rgba(255, 215, 0, ${opacity * 0.2})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.stroke();
-                    }
-                }
-            });
-            
-            this.animationFrame = requestAnimationFrame(animate);
-        };
-        
-        animate();
-    }
-    
-    /**
-     * Initialize counting animations
-     */
-    initCounters() {
-        const counters = document.querySelectorAll('.stat-item');
-        
-        counters.forEach(counter => {
-            const target = parseInt(counter.dataset.count);
-            const numberElement = counter.querySelector('.stat-number');
-            
-            if (!numberElement || isNaN(target)) return;
-            
-            // Use Intersection Observer
-            const observer = new IntersectionObserver(entries => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        this.animateCounter(numberElement, target);
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.5 });
-            
-            observer.observe(counter);
-        });
-    }
-    
-    /**
-     * Animate counter
-     */
-    animateCounter(element, target) {
-        const duration = 2000;
-        const start = 0;
-        const increment = target / (duration / 16);
-        let current = start;
-        
-        const updateCounter = () => {
-            current += increment;
-            
-            if (current < target) {
-                element.textContent = Math.floor(current).toLocaleString();
-                requestAnimationFrame(updateCounter);
-            } else {
-                element.textContent = target.toLocaleString();
-            }
-        };
-        
-        updateCounter();
-    }
     
     /**
      * Initialize interactive cards
@@ -545,28 +369,6 @@ const HomePage = class {
         }, duration / steps);
     }
     
-    /**
-     * Load component styles
-     */
-    async loadStyles() {
-        const styles = [
-            '/components/hero/hero.css',
-            '/components/card/interactive-card.css',
-            '/components/form/progress-form.css',
-            '/components/loader/loader.css',
-            '/modules/calculator/calculator.css'
-        ];
-        
-        // Load all styles
-        styles.forEach(href => {
-            if (!document.querySelector(`link[href="${href}"]`)) {
-                const link = document.createElement('link');
-                link.rel = 'stylesheet';
-                link.href = href;
-                document.head.appendChild(link);
-            }
-        });
-    }
     
     /**
      * Get home page template
@@ -654,17 +456,18 @@ const HomePage = class {
                     </h1>
                     <p class="hero-subtitle">Professional solar panel installation for homes in Greater Manchester. Cut your electricity bills by up to 70% with renewable energy.</p>
                     <div class="hero-stats">
-                        <div class="stat-item" data-count="2847">
-                            <span class="stat-number">0</span>
-                            <span class="stat-label">Homes Powered</span>
+                        <div class="animated-counter" data-component="counter">
+                            <span class="counter-value" data-target="2847">0</span>
+                            <span class="counter-suffix"> Homes Powered</span>
                         </div>
-                        <div class="stat-item" data-count="4200">
-                            <span class="stat-number">0</span>
-                            <span class="stat-label">Avg Yearly Savings (£)</span>
+                        <div class="animated-counter" data-component="counter">
+                            <span class="counter-prefix">£</span>
+                            <span class="counter-value" data-target="4200">0</span>
+                            <span class="counter-suffix"> Avg Yearly Savings</span>
                         </div>
-                        <div class="stat-item" data-count="25">
-                            <span class="stat-number">0</span>
-                            <span class="stat-label">Year Warranty</span>
+                        <div class="animated-counter" data-component="counter">
+                            <span class="counter-value" data-target="25">0</span>
+                            <span class="counter-suffix"> Year Warranty</span>
                         </div>
                     </div>
                     <div class="hero-cta">
@@ -877,7 +680,7 @@ const HomePage = class {
             </section>
 
             <!-- Quote Form Modal -->
-            <div class="modal" id="quote-modal" style="display: none;">
+            <div class="modal" data-component="modal" id="quote-modal">
                 <div class="modal-backdrop"></div>
                 <div class="modal-content">
                     <button class="modal-close" aria-label="Close">×</button>
@@ -887,24 +690,28 @@ const HomePage = class {
                     <div class="modal-body">
                         <form class="quote-form" id="quote-form">
                             <div class="form-group">
-                                <div class="form-field">
-                                    <input type="text" name="name" id="name" required>
-                                    <label for="name">Full Name</label>
+                                <div class="form-field" data-component="form-field">
+                                    <input type="text" class="animated-input" name="name" id="quote-name" required>
+                                    <label for="quote-name" class="animated-label">Full Name</label>
+                                    <span class="field-line"></span>
                                     <span class="field-error"></span>
                                 </div>
-                                <div class="form-field">
-                                    <input type="email" name="email" id="email" required>
-                                    <label for="email">Email Address</label>
+                                <div class="form-field" data-component="form-field">
+                                    <input type="email" class="animated-input" name="email" id="quote-email" required>
+                                    <label for="quote-email" class="animated-label">Email Address</label>
+                                    <span class="field-line"></span>
                                     <span class="field-error"></span>
                                 </div>
-                                <div class="form-field">
-                                    <input type="tel" name="phone" id="phone" required>
-                                    <label for="phone">Phone Number</label>
+                                <div class="form-field" data-component="form-field">
+                                    <input type="tel" class="animated-input" name="phone" id="quote-phone" required>
+                                    <label for="quote-phone" class="animated-label">Phone Number</label>
+                                    <span class="field-line"></span>
                                     <span class="field-error"></span>
                                 </div>
-                                <div class="form-field">
-                                    <input type="text" name="postcode" id="postcode" required>
-                                    <label for="postcode">Postcode</label>
+                                <div class="form-field" data-component="form-field">
+                                    <input type="text" class="animated-input" name="postcode" id="quote-postcode" required>
+                                    <label for="quote-postcode" class="animated-label">Postcode</label>
+                                    <span class="field-line"></span>
                                     <span class="field-error"></span>
                                 </div>
                             </div>
@@ -954,15 +761,6 @@ const HomePage = class {
             });
         });
 
-        // Setup modal close
-        const modal = document.querySelector('#quote-modal');
-        if (modal) {
-            const closeBtn = modal.querySelector('.modal-close');
-            const backdrop = modal.querySelector('.modal-backdrop');
-            
-            closeBtn?.addEventListener('click', () => this.hideQuoteModal());
-            backdrop?.addEventListener('click', () => this.hideQuoteModal());
-        }
 
         // Handle form submission
         const form = document.querySelector('#quote-form');
@@ -1014,39 +812,24 @@ const HomePage = class {
         }
     }
 
+    
     /**
-     * Show quote modal
+     * Show quote modal using modal component
      */
-    showQuoteModal() {
+    async showQuoteModal() {
         const modal = document.querySelector('#quote-modal');
-        if (modal) {
-            modal.style.display = 'block';
-            setTimeout(() => {
-                modal.classList.add('active');
-            }, 10);
+        if (modal && modal._componentInstance) {
+            await modal._componentInstance.show();
         }
     }
 
-    /**
-     * Hide quote modal
-     */
-    hideQuoteModal() {
-        const modal = document.querySelector('#quote-modal');
-        if (modal) {
-            modal.classList.remove('active');
-            setTimeout(() => {
-                modal.style.display = 'none';
-            }, 300);
-        }
-    }
-    
     /**
      * Toggle mobile menu
      */
     toggleMobileMenu() {
         const navLinks = document.querySelector('.nav-links');
         const navToggle = document.querySelector('.nav-toggle');
-        
+
         if (navLinks && navToggle) {
             navLinks.classList.toggle('active');
             navToggle.classList.toggle('active');
