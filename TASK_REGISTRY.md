@@ -114,20 +114,6 @@ This registry coordinates tasks between multiple agents, preventing conflicts an
   - [x] Main index.html entry point
 - **Notes**: Created 5 core components with dopamine-inducing effects, each with JS, CSS, and documentation
 
-### TASK-016: Navigation System ✅ COMPLETED
-- **Status**: COMPLETED
-- **Assigned**: GPT-5.1 Codex
-- **Started**: 21 Nov 2025
-- **Completed**: 21 Nov 2025
-- **Description**: Implement immersive site navigation + responsive mobile menu using approved components
-- **Dependencies**: TASK-004, TASK-006
-- **Deliverables**:
-  - [x] `components/navigation/site-nav` (CSS/JS/README)
-  - [x] `components/mobile/mobile-menu` (CSS/JS/README)
-  - [x] Updated home module markup + styles loading
-  - [x] Component library + registry documentation
-- **Notes**: Added scroll progress indicator, hide-on-scroll logic, smooth anchor navigation, accessibility + focus management, and parity with dopamine design rules.
-
 ---
 
 ## 🎮 PHASE 3: INTERACTIVE FEATURES
