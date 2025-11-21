@@ -26,18 +26,23 @@ const HomePage = class {
     async init(container, routeData = {}) {
         try {
             console.log('HomePage init started');
-
+            
             // Create home page content
             container.innerHTML = this.getTemplate();
-
+            
             // Load component styles
             await this.loadStyles();
-
-            // Load and initialize hero component
-            await this.loadHeroComponent();
-
-            // Initialize other components
+            
+            // Initialize particles manually since component system isn't working
+            this.initParticles();
+            
+            // Initialize counters
+            this.initCounters();
+            
+            // Initialize cards
             this.initCards();
+            
+            // Initialize calculator
             this.initCalculator();
             
             // Add smooth scrolling
@@ -56,68 +61,172 @@ const HomePage = class {
     }
     
     /**
-     * Load and initialize hero component
+     * Initialize particle system directly
      */
-    async loadHeroComponent() {
-        try {
-            const heroContainer = document.querySelector('[data-component="hero-section"]');
-            if (!heroContainer) {
-                console.warn('Hero container not found');
-                return;
-            }
-
-            // Load hero component HTML
-            const response = await fetch('/components/hero/hero.html');
-            if (!response.ok) {
-                throw new Error('Failed to load hero component HTML');
-            }
-
-            let heroHtml = await response.text();
-
-            // Get props from data attribute
-            const props = JSON.parse(heroContainer.dataset.props || '{}');
-
-            // Replace template variables
-            Object.keys(props).forEach(key => {
-                const regex = new RegExp(`{{${key}}}`, 'g');
-                heroHtml = heroHtml.replace(regex, props[key]);
+    initParticles() {
+        console.log('Initializing particles');
+        const container = document.querySelector('.hero-particles');
+        if (!container) {
+            console.error('Particle container not found');
+            return;
+        }
+        
+        // Create canvas
+        const canvas = document.createElement('canvas');
+        canvas.className = 'particles-canvas';
+        canvas.style.position = 'absolute';
+        canvas.style.top = '0';
+        canvas.style.left = '0';
+        canvas.style.width = '100%';
+        canvas.style.height = '100%';
+        canvas.style.pointerEvents = 'none';
+        container.appendChild(canvas);
+        
+        const ctx = canvas.getContext('2d');
+        
+        // Set canvas size
+        const resizeCanvas = () => {
+            const rect = container.getBoundingClientRect();
+            canvas.width = rect.width || window.innerWidth;
+            canvas.height = rect.height || window.innerHeight;
+        };
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        
+        // Mouse position
+        let mouse = { x: null, y: null };
+        container.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left;
+            mouse.y = e.clientY - rect.top;
+        });
+        
+        container.addEventListener('mouseleave', () => {
+            mouse.x = null;
+            mouse.y = null;
+        });
+        
+        // Create particles
+        const particleCount = 80;
+        const particles = [];
+        const particleColors = ['#FFD700', '#FFED4A', '#F59E0B'];
+        
+        for (let i = 0; i < particleCount; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: (Math.random() - 0.5) * 0.5,
+                size: Math.random() * 3 + 1.5,
+                color: particleColors[Math.floor(Math.random() * particleColors.length)]
             });
-
-            // Insert hero HTML
-            heroContainer.innerHTML = heroHtml;
-
-            // Load hero CSS and JS
-            await this.loadHeroAssets();
-
-            // Initialize hero component
-            const heroElement = heroContainer.querySelector('[data-component="hero"]');
-            if (heroElement && !heroElement.heroComponent) {
-                // Import and initialize hero component
-                const { default: HeroComponent } = await import('/components/hero/hero.js');
-                heroElement.heroComponent = new HeroComponent(heroElement);
-            }
-
-        } catch (error) {
-            console.error('Failed to load hero component:', error);
-            // Fallback: show error message
-            heroContainer.innerHTML = '<div class="hero-error">Hero section temporarily unavailable</div>';
         }
+        
+        // Animation loop
+        const animate = () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            particles.forEach((particle, i) => {
+                // Update position
+                particle.x += particle.vx;
+                particle.y += particle.vy;
+                
+                // Bounce off walls
+                if (particle.x <= 0 || particle.x >= canvas.width) particle.vx *= -1;
+                if (particle.y <= 0 || particle.y >= canvas.height) particle.vy *= -1;
+                
+                // Mouse interaction
+                if (mouse.x !== null && mouse.y !== null) {
+                    const dx = mouse.x - particle.x;
+                    const dy = mouse.y - particle.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 100) {
+                        const force = (100 - distance) / 100;
+                        particle.vx -= (dx / distance) * force * 0.5;
+                        particle.vy -= (dy / distance) * force * 0.5;
+                    }
+                }
+                
+                // Draw particle
+                ctx.beginPath();
+                ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                ctx.fillStyle = particle.color;
+                ctx.fill();
+                
+                // Draw connections
+                for (let j = i + 1; j < particles.length; j++) {
+                    const other = particles[j];
+                    const dx = other.x - particle.x;
+                    const dy = other.y - particle.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 150) {
+                        const opacity = 1 - (distance / 150);
+                        ctx.beginPath();
+                        ctx.moveTo(particle.x, particle.y);
+                        ctx.lineTo(other.x, other.y);
+                        ctx.strokeStyle = `rgba(255, 215, 0, ${opacity * 0.2})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                }
+            });
+            
+            this.animationFrame = requestAnimationFrame(animate);
+        };
+        
+        animate();
     }
-
-    /**
-     * Load hero component assets
-     */
-    async loadHeroAssets() {
-        // Load CSS if not already loaded
-        if (!document.querySelector('link[href="/components/hero/hero.css"]')) {
-            const link = document.createElement('link');
-            link.rel = 'stylesheet';
-            link.href = '/components/hero/hero.css';
-            document.head.appendChild(link);
-        }
-    }
-
     
+    /**
+     * Initialize counting animations
+     */
+    initCounters() {
+        const counters = document.querySelectorAll('.stat-item');
+        
+        counters.forEach(counter => {
+            const target = parseInt(counter.dataset.count);
+            const numberElement = counter.querySelector('.stat-number');
+            
+            if (!numberElement || isNaN(target)) return;
+            
+            // Use Intersection Observer
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        this.animateCounter(numberElement, target);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            observer.observe(counter);
+        });
+    }
+    
+    /**
+     * Animate counter
+     */
+    animateCounter(element, target) {
+        const duration = 2000;
+        const start = 0;
+        const increment = target / (duration / 16);
+        let current = start;
+        
+        const updateCounter = () => {
+            current += increment;
+            
+            if (current < target) {
+                element.textContent = Math.floor(current).toLocaleString();
+                requestAnimationFrame(updateCounter);
+            } else {
+                element.textContent = target.toLocaleString();
+            }
+        };
+        
+        updateCounter();
+    }
     
     /**
      * Initialize interactive cards
@@ -441,13 +550,14 @@ const HomePage = class {
      */
     async loadStyles() {
         const styles = [
+            '/components/hero/hero.css',
             '/components/card/interactive-card.css',
             '/components/form/progress-form.css',
             '/components/loader/loader.css',
             '/modules/calculator/calculator.css'
         ];
-
-        // Load all styles (hero.css is loaded by loadHeroComponent)
+        
+        // Load all styles
         styles.forEach(href => {
             if (!document.querySelector(`link[href="${href}"]`)) {
                 const link = document.createElement('link');
@@ -533,10 +643,38 @@ const HomePage = class {
                 </div>
             </header>
 
-            <!-- Hero Section Component -->
-            <div id="home" data-component="hero-section" data-props='{"line1":"Save Money With","line2":"Solar Power in","accent":"Oldham","subtitle":"Professional solar panel installation for homes in Greater Manchester. Cut your electricity bills by up to 70% with renewable energy.","value1":"2847","label1":"Homes Powered","value2":"4200","label2":"Avg Yearly Savings (£)","value3":"25","label3":"Year Warranty","action":"scroll-to-calculator","cta_text":"Calculate Your Savings"}'>
-                <!-- Hero component will be loaded here -->
-            </div>
+            <!-- Hero Section -->
+            <section id="home" class="hero-section" data-component="hero">
+                <div class="hero-particles" id="particles"></div>
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        <span class="hero-title-line1">Save Money With</span>
+                        <span class="hero-title-line2">Solar Power in</span>
+                        <span class="hero-accent">Oldham</span>
+                    </h1>
+                    <p class="hero-subtitle">Professional solar panel installation for homes in Greater Manchester. Cut your electricity bills by up to 70% with renewable energy.</p>
+                    <div class="hero-stats">
+                        <div class="stat-item" data-count="2847">
+                            <span class="stat-number">0</span>
+                            <span class="stat-label">Homes Powered</span>
+                        </div>
+                        <div class="stat-item" data-count="4200">
+                            <span class="stat-number">0</span>
+                            <span class="stat-label">Avg Yearly Savings (£)</span>
+                        </div>
+                        <div class="stat-item" data-count="25">
+                            <span class="stat-number">0</span>
+                            <span class="stat-label">Year Warranty</span>
+                        </div>
+                    </div>
+                    <div class="hero-cta">
+                        <button class="btn-primary" data-action="scroll-to-calculator">
+                            <span class="btn-text">Calculate Your Savings</span>
+                            <span class="btn-shine"></span>
+                        </button>
+                    </div>
+                </div>
+            </section>
             
             <!-- Services Section -->
             <section id="services" class="section">
