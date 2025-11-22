@@ -1,0 +1,245 @@
+/**
+ * Component: Mobile Menu
+ * Module: Components
+ * Purpose: Responsive navigation menu styling
+ * Dependencies: /assets/css/variables.css, /assets/css/animations.css
+ */
+
+/* ==========================================================================
+   Mobile Menu Component
+   ========================================================================== */
+
+.mobile-menu {
+    position: relative;
+    z-index: var(--z-dropdown);
+}
+
+/* Menu Toggle Button */
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: var(--space-2);
+    border-radius: var(--radius-md);
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.menu-toggle:hover {
+    background: rgba(var(--primary-rgb), 0.1);
+}
+
+.menu-toggle:focus {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+/* Hamburger Icon */
+.hamburger {
+    width: 24px;
+    height: 18px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.hamburger span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: var(--light);
+    border-radius: 1px;
+    transition: all 0.3s ease;
+    transform-origin: center;
+}
+
+/* Menu Panel */
+.menu-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 280px;
+    height: 100vh;
+    background: var(--dark);
+    backdrop-filter: blur(10px);
+    border-left: 1px solid rgba(var(--primary-rgb), 0.1);
+    transform: translateX(100%);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: var(--z-modal);
+    padding: var(--space-8) var(--space-6);
+    overflow-y: auto;
+}
+
+/* Menu List */
+.menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-list li {
+    margin-bottom: var(--space-2);
+}
+
+.menu-list a {
+    display: block;
+    color: var(--light);
+    text-decoration: none;
+    font-size: var(--text-lg);
+    font-weight: var(--font-medium);
+    padding: var(--space-4) var(--space-3);
+    border-radius: var(--radius-md);
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.menu-list a:hover,
+.menu-list a:focus {
+    background: rgba(var(--primary-rgb), 0.1);
+    color: var(--primary);
+    transform: translateX(4px);
+}
+
+.menu-list a::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    transition: width 0.3s ease;
+    z-index: -1;
+}
+
+.menu-list a:hover::before,
+.menu-list a:focus::before {
+    width: 100%;
+}
+
+/* Special styling for CTA button in menu */
+.menu-list .btn-primary {
+    margin-top: var(--space-6);
+    text-align: center;
+    background: var(--gradient-primary);
+    border: none;
+    color: var(--dark);
+    font-weight: var(--font-semibold);
+    box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3);
+}
+
+.menu-list .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(var(--primary-rgb), 0.4);
+}
+
+/* Menu open state */
+.menu-open .menu-panel {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+/* Backdrop for menu */
+.menu-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+    z-index: calc(var(--z-modal) - 1);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.menu-open .menu-backdrop {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+/* Show mobile menu on small screens */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: flex;
+    }
+
+    /* Hide desktop navigation */
+    .desktop-nav {
+        display: none;
+    }
+}
+
+/* Tablet adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .menu-toggle {
+        display: flex;
+    }
+
+    .menu-panel {
+        width: 320px;
+    }
+}
+
+/* Desktop - hide mobile menu */
+@media (min-width: 1025px) {
+    .menu-toggle {
+        display: none;
+    }
+
+    .menu-panel {
+        display: none;
+    }
+}
+
+/* ==========================================================================
+   Accessibility
+   ========================================================================== */
+
+/* Focus management */
+.menu-open .menu-panel:focus-within {
+    outline: 2px solid var(--primary);
+    outline-offset: -2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .menu-panel {
+        border-left: 2px solid var(--light);
+    }
+
+    .menu-list a {
+        border: 1px solid transparent;
+    }
+
+    .menu-list a:focus {
+        border-color: var(--primary);
+    }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .hamburger span,
+    .menu-panel,
+    .menu-list a {
+        transition: none;
+    }
+
+    .menu-list a:hover {
+        transform: none;
+    }
+}

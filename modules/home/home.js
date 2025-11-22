@@ -105,13 +105,13 @@ const HomePage = class {
     async initCalculator() {
         try {
             // Load calculator module
-            const { default: Calculator } = await import('/modules/calculator/calculator.js');
+            const { SolarCalculator } = await import('/modules/calculator/calculator.js');
 
             // Find calculator container (it should be in the DOM now that template is inserted)
             const calculatorContainer = document.querySelector('#solar-calculator');
             if (calculatorContainer) {
                 // Initialize calculator with the container
-                const calculatorInstance = new Calculator();
+                const calculatorInstance = new SolarCalculator();
                 await calculatorInstance.init(calculatorContainer);
 
                 // Store reference
@@ -216,18 +216,18 @@ const HomePage = class {
                     </h1>
                     <p class="hero-subtitle">Professional solar panel installation for homes in Greater Manchester. Cut your electricity bills by up to 70% with renewable energy.</p>
                     <div class="hero-stats">
-                        <div class="animated-counter" data-component="counter">
-                            <span class="counter-value" data-target="2847">0</span>
-                            <span class="counter-suffix"> Homes Powered</span>
+                        <div class="animated-counter" data-component="counter" data-target="2847">
+                            <span class="counter-value">0</span>
+                            <span class="counter-suffix">Homes Powered</span>
                         </div>
-                        <div class="animated-counter" data-component="counter">
+                        <div class="animated-counter" data-component="counter" data-target="4200">
                             <span class="counter-prefix">£</span>
-                            <span class="counter-value" data-target="4200">0</span>
-                            <span class="counter-suffix"> Avg Yearly Savings</span>
+                            <span class="counter-value">0</span>
+                            <span class="counter-suffix">Avg Yearly Savings</span>
                         </div>
-                        <div class="animated-counter" data-component="counter">
-                            <span class="counter-value" data-target="25">0</span>
-                            <span class="counter-suffix"> Year Warranty</span>
+                        <div class="animated-counter" data-component="counter" data-target="25">
+                            <span class="counter-value">0</span>
+                            <span class="counter-suffix">Year Warranty</span>
                         </div>
                     </div>
                     <div class="hero-cta">

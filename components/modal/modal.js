@@ -11,10 +11,10 @@ import { emit } from '/core/events.js';
 
 export default class ModalDialog {
     constructor(element) {
-        this.element = element;
-        this.backdrop = element.querySelector('.modal-backdrop');
-        this.content = element.querySelector('.modal-content');
-        this.closeBtn = element.querySelector('.modal-close');
+            this.element = element;
+            this.backdrop = element.querySelector('.modal-backdrop');
+            this.content = element.querySelector('.modal-content');
+            this.closeBtn = element.querySelector('.modal-close');
         this.initialized = false;
 
         // Configuration
@@ -53,7 +53,7 @@ export default class ModalDialog {
 
             // Set up event listeners
             this.setupEventListeners();
-
+            
             // Set initial state
             this.element.setAttribute('aria-hidden', 'true');
 
@@ -61,10 +61,10 @@ export default class ModalDialog {
             if (this.config.focusTrap) {
                 this.setupFocusTrap();
             }
-
+            
             this.initialized = true;
             emit('component:modal:initialized', { element: this.element });
-
+            
         } catch (error) {
             console.error('Modal initialization failed:', error);
             emit('component:modal:error', { element: this.element, error });
@@ -187,10 +187,10 @@ export default class ModalDialog {
 
         // Store previous active element
         this.state.previousActiveElement = document.activeElement;
-
+        
         // Prevent body scroll
         if (this.config.preventScroll) {
-            document.body.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden';
         }
 
         // Update ARIA attributes
@@ -252,18 +252,18 @@ export default class ModalDialog {
 
         // Emit hide event
         emit('modal:hide', { element: this.element });
-
+        
         // Wait for animation
         await this.waitForAnimation();
 
         // Hide modal
-        this.element.style.display = 'none';
-
+            this.element.style.display = 'none';
+            
         // Restore body scroll
         if (this.config.preventScroll) {
-            document.body.style.overflow = '';
-        }
-
+                document.body.style.overflow = '';
+            }
+            
         // Remove modal-open class from body
         document.body.classList.remove('modal-open');
 
