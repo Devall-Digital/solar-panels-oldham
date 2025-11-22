@@ -18,29 +18,29 @@ class SolarCalculator {
 
         // Calculator state
         this.state = {
-            monthlyBill: 100,
+            monthlyBill: 120, // More realistic UK average
             propertyType: 'semi',
             roofOrientation: 'south',
             shading: 'none'
         };
 
-        // Configuration
+        // Configuration (realistic UK values)
         this.config = {
-            systemSizes: {
-                terraced: 3.0,
-                semi: 4.0,
-                detached: 5.5,
-                bungalow: 4.5
+            systemSpecs: {
+                terraced: { size: 2.5, cost: 3800 },
+                semi: { size: 3.5, cost: 4800 },
+                detached: { size: 4.5, cost: 6200 },
+                bungalow: { size: 4.0, cost: 5500 }
             },
-            efficiencyFactors: {
+            orientationFactors: {
                 south: 1.0,
-                'east-west': 0.85,
-                north: 0.6
+                'east-west': 0.75,
+                north: 0.5
             },
             electricityPrice: 0.34, // £ per kWh (2024 UK)
-            exportRate: 0.15, // SEG export rate
-            selfConsumption: 0.6, // 60% self-consumption
-            ukAverageGeneration: 900 // kWh per kWp per year
+            exportRate: 0.15, // Smart Export Guarantee
+            selfConsumption: 0.65, // 65% self-consumption (realistic)
+            baseGeneration: 900 // kWh per kWp per year (conservative)
         };
 
         // Bind methods
@@ -212,49 +212,82 @@ class SolarCalculator {
      * Calculate solar savings with realistic formulas
      */
     calculateSavings() {
-        const annualBill = this.state.monthlyBill * 12;
+        // Get inputs
+        const monthlyBill = this.state.monthlyBill;
+        const annualBill = monthlyBill * 12;
 
-        // System size based on property type
-        const systemSize = this.config.systemSizes[this.state.propertyType] || 4.0;
+        // System specifications based on property type (more conservative)
+        const systemSpecs = {
+            terraced: { size: 2.5, cost: 3800 },
+            semi: { size: 3.5, cost: 4800 },
+            detached: { size: 4.5, cost: 6200 },
+            bungalow: { size: 4.0, cost: 5500 }
+        };
 
-        // Efficiency based on roof orientation
-        const efficiency = this.config.efficiencyFactors[this.state.roofOrientation] || 1.0;
+        const system = systemSpecs[this.state.propertyType] || systemSpecs.semi;
 
-        // Annual generation calculation
-        const annualGeneration = systemSize * this.config.ukAverageGeneration * efficiency;
+        // Orientation efficiency (more realistic factors)
+        const orientationFactors = {
+            south: 1.0,
+            'east-west': 0.75,
+            north: 0.5
+        };
 
-        // Savings calculations
-        const selfConsumption = annualGeneration * this.config.selfConsumption;
-        const exportAmount = annualGeneration * (1 - this.config.selfConsumption);
+        const orientationFactor = orientationFactors[this.state.roofOrientation] || 1.0;
 
-        const savingsFromSelfUse = selfConsumption * this.config.electricityPrice;
-        const earningsFromExport = exportAmount * this.config.exportRate;
-        const annualSavings = Math.min(savingsFromSelfUse + earningsFromExport, annualBill * 0.85);
+        // UK solar generation: ~850-950 kWh per kWp per year (conservative)
+        const baseGeneration = 900; // kWh per kWp
+        const annualGeneration = system.size * baseGeneration * orientationFactor;
 
-        // System cost and ROI
-        const costPerKW = 1450; // £ per kWp installed (2024 UK average)
-        const systemCost = systemSize * costPerKW;
-        const paybackPeriod = systemCost / annualSavings;
-        const lifetime25Savings = (annualSavings * 25) - systemCost;
-        const roi25Year = (lifetime25Savings / systemCost) * 100;
+        // Electricity rates (2024 UK averages)
+        const unitRate = 0.34; // £ per kWh
+        const exportRate = 0.15; // Smart Export Guarantee
 
-        // Update results display
+        // Self-consumption estimate (60-70% for typical UK homes)
+        const selfConsumptionRate = 0.65;
+
+        // Calculate savings
+        const selfConsumed = annualGeneration * selfConsumptionRate;
+        const exported = annualGeneration * (1 - selfConsumptionRate);
+
+        const savingsFromConsumption = selfConsumed * unitRate;
+        const earningsFromExport = exported * exportRate;
+        const totalAnnualSavings = savingsFromConsumption + earningsFromExport;
+
+        // Cap savings at 80% of bill (realistic maximum)
+        const realisticSavings = Math.min(totalAnnualSavings, annualBill * 0.8);
+
+        // System economics
+        const systemCost = system.cost;
+        const netCost = systemCost; // Assuming no grants for simplicity
+
+        // Payback period (years)
+        const paybackYears = netCost / realisticSavings;
+
+        // ROI calculation (simple payback method)
+        const lifetimeYears = 25;
+        const totalLifetimeSavings = realisticSavings * lifetimeYears;
+        const netLifetimeBenefit = totalLifetimeSavings - netCost;
+        const roi = (netLifetimeBenefit / netCost) * 100;
+
+        // Update results with realistic values
         this.updateResults({
-            annual: Math.round(annualSavings),
-            roi: Math.round(roi25Year),
-            payback: paybackPeriod.toFixed(1),
-            systemSize: systemSize.toFixed(1),
-            annualGeneration: Math.round(annualGeneration)
+            annualSavings: Math.round(realisticSavings),
+            paybackYears: paybackYears.toFixed(1),
+            roi: Math.round(Math.max(0, Math.min(roi, 25))), // Cap at realistic 25%
+            systemSize: system.size.toFixed(1),
+            annualGeneration: Math.round(annualGeneration),
+            systemCost: systemCost.toLocaleString()
         });
 
         // Update chart
-        this.drawChart(annualSavings);
+        this.drawChart(realisticSavings);
 
         emit('calculator:calculated', {
-            annualSavings,
-            roi25Year,
-            paybackPeriod,
-            systemSize,
+            annualSavings: realisticSavings,
+            paybackYears,
+            roi,
+            systemSize: system.size,
             annualGeneration
         });
     }
@@ -266,13 +299,14 @@ class SolarCalculator {
         const updateElement = (selector, value, formatter = (v) => v) => {
             const element = this.element.querySelector(`[data-result="${selector}"]`);
             if (element) {
-                this.animateNumber(element, formatter(value));
+                // Pass raw value to animateNumber, formatting happens inside
+                this.animateNumber(element, value, formatter);
             }
         };
 
-        updateElement('annual', results.annual, (v) => `£${v.toLocaleString()}`);
-        updateElement('roi', results.roi, (v) => `${v}%`);
-        updateElement('payback', results.payback, (v) => `${v} years`);
+        updateElement('annual', results.annualSavings, (v) => `£${Math.floor(v).toLocaleString()}`);
+        updateElement('roi', results.roi, (v) => `${Math.floor(v)}%`);
+        updateElement('payback', results.paybackYears, (v) => `${parseFloat(v).toFixed(1)} years`);
 
         // Store results for quote requests
         this.state.results = results;
@@ -406,8 +440,9 @@ class SolarCalculator {
     /**
      * Animate number change
      */
-    animateNumber(element, target, duration = 1000) {
+    animateNumber(element, targetValue, formatter = (v) => v.toString(), duration = 1000) {
         const current = parseFloat(element.textContent.replace(/[^0-9.-]/g, '')) || 0;
+        const target = parseFloat(targetValue);
         const startTime = performance.now();
 
         const animate = (currentTime) => {
@@ -416,18 +451,10 @@ class SolarCalculator {
             const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
             const easedProgress = easeOutCubic(progress);
 
-            const value = current + (parseFloat(target.toString().replace(/[^0-9.-]/g, '')) - current) * easedProgress;
+            const value = current + (target - current) * easedProgress;
 
-            // Format the display
-            if (typeof target === 'string' && target.includes('£')) {
-                element.textContent = `£${Math.floor(value).toLocaleString()}`;
-            } else if (typeof target === 'string' && target.includes('%')) {
-                element.textContent = `${Math.floor(value)}%`;
-            } else if (typeof target === 'string' && target.includes('years')) {
-                element.textContent = `${value} years`;
-            } else {
-                element.textContent = target;
-            }
+            // Apply the formatter function
+            element.textContent = formatter(value);
 
             if (progress < 1) {
                 requestAnimationFrame(animate);
