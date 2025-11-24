@@ -637,12 +637,20 @@ function createParticle(container) {
     // Random delay
     particle.style.animationDelay = Math.random() * 5 + 's';
     
-    // Random color variation
+    // Random color variation - solar themed (sun yellow/orange, cyan energy, purple panels)
     const colorVariation = Math.random();
-    if (colorVariation > 0.5) {
-        particle.style.background = 'radial-gradient(circle, rgba(6, 182, 212, 0.6) 0%, transparent 70%)';
+    if (colorVariation > 0.66) {
+        // Cyan energy particles
+        particle.style.background = 'radial-gradient(circle, rgba(6, 182, 212, 0.8) 0%, rgba(6, 182, 212, 0.4) 30%, transparent 70%)';
+        particle.style.boxShadow = '0 0 10px rgba(6, 182, 212, 0.5)';
+    } else if (colorVariation > 0.33) {
+        // Purple panel particles
+        particle.style.background = 'radial-gradient(circle, rgba(139, 92, 246, 0.8) 0%, rgba(139, 92, 246, 0.4) 30%, transparent 70%)';
+        particle.style.boxShadow = '0 0 10px rgba(139, 92, 246, 0.5)';
     } else {
-        particle.style.background = 'radial-gradient(circle, rgba(139, 92, 246, 0.6) 0%, transparent 70%)';
+        // Sun/yellow energy particles
+        particle.style.background = 'radial-gradient(circle, rgba(251, 191, 36, 0.6) 0%, rgba(251, 191, 36, 0.3) 40%, transparent 70%)';
+        particle.style.boxShadow = '0 0 8px rgba(251, 191, 36, 0.4)';
     }
     
     container.appendChild(particle);
