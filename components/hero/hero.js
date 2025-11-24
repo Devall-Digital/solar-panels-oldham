@@ -1,433 +1,416 @@
 /**
- * Hero Section Component
- * Interactive hero with counters, particles, and animations
+ * Component: Hero Section
+ * Module: Components
+ * Purpose: Main landing area with animated particles and counters
+ * Dependencies: /core/events.js
+ * Author: Development Agent
+ * Date: November 2024
  */
 
-class HeroSection {
-  constructor(element) {
-    this.element = element;
-    this.counters = [];
-    this.particles = [];
-    this.observers = [];
-    this.initialized = false;
-  }
+import { emit } from '/core/events.js';
 
-  async init() {
-    try {
-      console.log('Initializing Hero Section component');
+export default class HeroSection {
+    constructor(element) {
+        this.element = element;
+        this.particlesContainer = element.querySelector('.hero-particles');
+        this.contentContainer = element.querySelector('.hero-content');
+        this.initialized = false;
 
-      // Initialize counters
-      this.initCounters();
+        // Configuration
+        this.config = {
+            particles: {
+                count: 80,
+                colors: ['#FFD700', '#FFED4A', '#F59E0B'],
+                speed: 0.5,
+                size: { min: 1.5, max: 3 },
+                connectionDistance: 150,
+                mouseInfluence: 100
+            },
+            counters: {
+                duration: 2000,
+                easing: 'easeOutCubic'
+            }
+        };
 
-      // Initialize particles
-      this.initParticles();
+        // State
+        this.state = {
+            particles: [],
+            counters: [],
+            mouse: { x: null, y: null },
+            animationFrame: null,
+            canvas: null,
+            ctx: null
+        };
 
-      // Initialize scroll effects
-      this.initScrollEffects();
-
-      // Initialize interactive elements
-      this.initInteractiveElements();
-
-      // Start animation loop
-      this.startAnimationLoop();
-
-      this.initialized = true;
-      console.log('Hero Section component initialized successfully');
-
-    } catch (error) {
-      console.error('Hero Section initialization failed:', error);
-      throw error;
+        // Bind methods
+        this.handleMouseMove = this.onMouseMove.bind(this);
+        this.handleMouseLeave = this.onMouseLeave.bind(this);
+        this.handleResize = this.onResize.bind(this);
     }
-  }
 
-  /**
-   * Initialize animated counters
-   */
-  initCounters() {
-    const counterElements = this.element.querySelectorAll('[data-counter]');
+    async init() {
+        try {
+            console.log('Initializing Hero Section component');
 
-    counterElements.forEach(element => {
-      const target = parseInt(element.dataset.counter);
-      const counter = {
-        element,
-        target,
-        current: 0,
-        speed: target / 2000, // 2 second animation
-        active: false
-      };
+            // Initialize particles system
+            this.initParticles();
 
-      this.counters.push(counter);
-    });
+            // Initialize counters
+            this.initCounters();
 
-    // Start counters when hero is visible
-    this.observeHeroVisibility();
-  }
+            // Set up event listeners
+            this.setupEventListeners();
 
-  /**
-   * Observe when hero section becomes visible
-   */
-  observeHeroVisibility() {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting && !this.countersStarted) {
-          this.startCounters();
-          this.countersStarted = true;
-          observer.disconnect();
+            // Add intersection observer for animations
+            this.setupIntersectionObserver();
+
+            this.initialized = true;
+            emit('component:hero:initialized', { element: this.element });
+
+        } catch (error) {
+            console.error('Hero initialization failed:', error);
+            emit('component:hero:error', { element: this.element, error });
         }
-      });
-    }, {
-      threshold: 0.3,
-      rootMargin: '0px 0px -100px 0px'
-    });
-
-    observer.observe(this.element);
-    this.observers.push(observer);
-  }
-
-  /**
-   * Start counter animations
-   */
-  startCounters() {
-    this.counters.forEach(counter => {
-      counter.active = true;
-      this.animateCounter(counter);
-    });
-  }
-
-  /**
-   * Animate individual counter
-   */
-  animateCounter(counter) {
-    if (!counter.active) return;
-
-    counter.current += counter.speed;
-
-    if (counter.current >= counter.target) {
-      counter.current = counter.target;
-      counter.active = false;
-
-      // Create celebration particles when counter finishes
-      this.createCelebrationParticles(counter.element);
     }
 
-    // Format and display number
-    const formatted = this.formatCounter(counter.current, counter.target);
-    counter.element.textContent = formatted;
-
-    if (counter.active) {
-      requestAnimationFrame(() => this.animateCounter(counter));
-    }
-  }
-
-  /**
-   * Format counter numbers
-   */
-  formatCounter(value, target) {
-    const numValue = Math.floor(value);
-
-    if (target >= 1000000) {
-      return (numValue / 1000000).toFixed(1) + 'M';
-    } else if (target >= 1000) {
-      return (numValue / 1000).toFixed(0) + 'K';
-    }
-
-    return numValue.toLocaleString();
-  }
-
-  /**
-   * Create celebration particles when counter finishes
-   */
-  createCelebrationParticles(element) {
-    const rect = element.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-
-    for (let i = 0; i < 12; i++) {
-      const particle = document.createElement('div');
-      particle.className = 'celebration-particle';
-      particle.style.left = centerX + 'px';
-      particle.style.top = centerY + 'px';
-
-      // Random direction and distance
-      const angle = (i / 12) * Math.PI * 2;
-      const distance = 50 + Math.random() * 50;
-      const tx = Math.cos(angle) * distance;
-      const ty = Math.sin(angle) * distance;
-
-      particle.style.setProperty('--tx', tx + 'px');
-      particle.style.setProperty('--ty', ty + 'px');
-
-      // Random colors
-      const colors = ['#FFD700', '#00BFFF', '#FF4500', '#10B981'];
-      particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-
-      document.body.appendChild(particle);
-
-      setTimeout(() => {
-        if (particle.parentNode) {
-          particle.parentNode.removeChild(particle);
+    /**
+     * Initialize particle system
+     */
+    initParticles() {
+        if (!this.particlesContainer) {
+            console.warn('Particles container not found');
+            return;
         }
-      }, 1500);
-    }
-  }
 
-  /**
-   * Initialize particle system
-   */
-  initParticles() {
-    const particleContainer = this.element.querySelector('#hero-particles');
-    if (!particleContainer) return;
+        // Create canvas
+        this.state.canvas = document.createElement('canvas');
+        this.state.canvas.className = 'hero-particles-canvas';
+        this.state.canvas.style.cssText = `
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        `;
+        this.particlesContainer.appendChild(this.state.canvas);
 
-    // Create ambient particles
-    this.createAmbientParticles(particleContainer, 30);
+        this.state.ctx = this.state.canvas.getContext('2d');
 
-    // Create electricity arcs
-    this.createElectricityArcs();
+        // Set canvas size
+        this.updateCanvasSize();
 
-    // Create energy waves
-    this.createEnergyWaves();
-  }
+        // Create particles
+        this.createParticles();
 
-  /**
-   * Create ambient floating particles
-   */
-  createAmbientParticles(container, count) {
-    const colors = ['#00BFFF', '#0080FF', '#FFD700', '#FF8C00', '#FF4500'];
+        // Start animation
+        this.animate();
 
-    for (let i = 0; i < count; i++) {
-      const particle = document.createElement('div');
-      particle.className = 'ambient-particle';
-      particle.style.left = Math.random() * 100 + '%';
-      particle.style.top = Math.random() * 100 + '%';
-      particle.style.animationDelay = Math.random() * 10 + 's';
-      particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
-      particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-      particle.style.opacity = 0.6;
-
-      container.appendChild(particle);
-      this.particles.push(particle);
-    }
-  }
-
-  /**
-   * Create electricity arc effects
-   */
-  createElectricityArcs() {
-    const arcs = this.element.querySelectorAll('.electricity-arc');
-
-    arcs.forEach((arc, index) => {
-      // Add dynamic styling
-      arc.style.animationDelay = (index * 0.5) + 's';
-      arc.style.animationDuration = (2 + Math.random()) + 's';
-    });
-  }
-
-  /**
-   * Create energy wave effects
-   */
-  createEnergyWaves() {
-    const waves = this.element.querySelectorAll('.energy-wave');
-
-    waves.forEach((wave, index) => {
-      wave.style.animationDelay = (index * 2) + 's';
-    });
-  }
-
-  /**
-   * Initialize scroll effects
-   */
-  initScrollEffects() {
-    this.scrollHandler = this.handleScroll.bind(this);
-    window.addEventListener('scroll', this.scrollHandler, { passive: true });
-  }
-
-  /**
-   * Handle scroll events
-   */
-  handleScroll() {
-    const scrolled = window.scrollY;
-    const windowHeight = window.innerHeight;
-
-    // Parallax effect on hero background
-    const heroBg = this.element.querySelector('.hero-bg-effects');
-    if (heroBg) {
-      heroBg.style.transform = `translateY(${scrolled * 0.5}px)`;
+        // Set up mouse interaction
+        this.particlesContainer.addEventListener('mousemove', this.handleMouseMove);
+        this.particlesContainer.addEventListener('mouseleave', this.handleMouseLeave);
+        window.addEventListener('resize', this.handleResize);
     }
 
-    // Update particle positions based on scroll
-    this.updateParticlesOnScroll(scrolled);
+    /**
+     * Update canvas size
+     */
+    updateCanvasSize() {
+        if (!this.state.canvas) return;
 
-    // Update scroll indicator
-    this.updateScrollIndicator(scrolled);
-  }
-
-  /**
-   * Update particles based on scroll position
-   */
-  updateParticlesOnScroll(scrolled) {
-    this.particles.forEach((particle, index) => {
-      const speed = 0.1 + (index % 3) * 0.1;
-      const yOffset = scrolled * speed;
-      particle.style.transform = `translateY(${-yOffset}px)`;
-    });
-  }
-
-  /**
-   * Update scroll indicator
-   */
-  updateScrollIndicator(scrolled) {
-    const indicator = this.element.querySelector('.scroll-indicator');
-    if (!indicator) return;
-
-    const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = Math.min(scrolled / documentHeight, 1);
-
-    const progressBar = indicator.querySelector('.scroll-progress');
-    if (progressBar) {
-      progressBar.style.height = (progress * 100) + '%';
+        const rect = this.particlesContainer.getBoundingClientRect();
+        this.state.canvas.width = rect.width || window.innerWidth;
+        this.state.canvas.height = rect.height || window.innerHeight;
     }
-  }
 
-  /**
-   * Initialize interactive elements
-   */
-  initInteractiveElements() {
-    // Add hover effects to buttons
-    const buttons = this.element.querySelectorAll('.btn-primary, .btn-secondary');
-    buttons.forEach(button => {
-      button.addEventListener('mouseenter', () => {
-        this.createButtonHoverEffect(button);
-      });
-    });
+    /**
+     * Create particle objects
+     */
+    createParticles() {
+        this.state.particles = [];
 
-    // Add click effects
-    buttons.forEach(button => {
-      button.addEventListener('click', () => {
-        this.createButtonClickEffect(button);
-      });
-    });
-  }
-
-  /**
-   * Create button hover effect
-   */
-  createButtonHoverEffect(button) {
-    // Add glow effect
-    button.style.boxShadow = '0 0 30px rgba(0, 191, 255, 0.6)';
-
-    // Create subtle particles
-    const rect = button.getBoundingClientRect();
-    for (let i = 0; i < 3; i++) {
-      const particle = document.createElement('div');
-      particle.className = 'button-hover-particle';
-      particle.style.left = (rect.left + Math.random() * rect.width) + 'px';
-      particle.style.top = (rect.top + Math.random() * rect.height) + 'px';
-
-      document.body.appendChild(particle);
-
-      setTimeout(() => {
-        if (particle.parentNode) {
-          particle.parentNode.removeChild(particle);
+        for (let i = 0; i < this.config.particles.count; i++) {
+            this.state.particles.push({
+                x: Math.random() * this.state.canvas.width,
+                y: Math.random() * this.state.canvas.height,
+                vx: (Math.random() - 0.5) * this.config.particles.speed,
+                vy: (Math.random() - 0.5) * this.config.particles.speed,
+                size: Math.random() * (this.config.particles.size.max - this.config.particles.size.min) + this.config.particles.size.min,
+                color: this.config.particles.colors[Math.floor(Math.random() * this.config.particles.colors.length)],
+                originalVx: 0,
+                originalVy: 0
+            });
         }
-      }, 1000);
     }
-  }
 
-  /**
-   * Create button click effect
-   */
-  createButtonClickEffect(button) {
-    // Scale animation
-    button.style.animation = 'buttonClick 0.3s ease-out';
+    /**
+     * Animation loop
+     */
+    animate() {
+        if (!this.state.ctx || !this.state.canvas) return;
 
-    // Create burst particles
-    const rect = button.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
+        const ctx = this.state.ctx;
+        const canvas = this.state.canvas;
 
-    for (let i = 0; i < 8; i++) {
-      const particle = document.createElement('div');
-      particle.className = 'button-click-particle';
+        // Clear canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      const angle = (i / 8) * Math.PI * 2;
-      const distance = 30;
-      particle.style.left = (centerX + Math.cos(angle) * distance) + 'px';
-      particle.style.top = (centerY + Math.sin(angle) * distance) + 'px';
+        // Update and draw particles
+        this.state.particles.forEach((particle, i) => {
+            this.updateParticle(particle);
+            this.drawParticle(particle);
 
-      const colors = ['#FFD700', '#00BFFF', '#FF4500'];
-      particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+            // Draw connections
+            this.drawConnections(particle, i);
+        });
 
-      document.body.appendChild(particle);
+        this.state.animationFrame = requestAnimationFrame(() => this.animate());
+    }
 
-      setTimeout(() => {
-        if (particle.parentNode) {
-          particle.parentNode.removeChild(particle);
+    /**
+     * Update particle position and behavior
+     */
+    updateParticle(particle) {
+        // Store original velocity
+        if (particle.originalVx === 0 && particle.originalVy === 0) {
+            particle.originalVx = particle.vx;
+            particle.originalVy = particle.vy;
         }
-      }, 800);
+
+        // Mouse interaction
+        if (this.state.mouse.x !== null && this.state.mouse.y !== null) {
+            const dx = this.state.mouse.x - particle.x;
+            const dy = this.state.mouse.y - particle.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < this.config.particles.mouseInfluence) {
+                const force = (this.config.particles.mouseInfluence - distance) / this.config.particles.mouseInfluence;
+                particle.vx -= (dx / distance) * force * 0.5;
+                particle.vy -= (dy / distance) * force * 0.5;
+            }
+        }
+
+        // Update position
+        particle.x += particle.vx;
+        particle.y += particle.vy;
+
+        // Bounce off walls
+        if (particle.x <= 0 || particle.x >= this.state.canvas.width) {
+            particle.vx *= -1;
+        }
+        if (particle.y <= 0 || particle.y >= this.state.canvas.height) {
+            particle.vy *= -1;
+        }
+
+        // Apply friction to mouse-influenced particles
+        const friction = 0.98;
+        particle.vx *= friction;
+        particle.vy *= friction;
+
+        // Reset to original velocity if too slow
+        if (Math.abs(particle.vx) < 0.01) particle.vx = particle.originalVx;
+        if (Math.abs(particle.vy) < 0.01) particle.vy = particle.originalVy;
     }
 
-    setTimeout(() => {
-      button.style.animation = '';
-    }, 300);
-  }
+    /**
+     * Draw particle
+     */
+    drawParticle(particle) {
+        const ctx = this.state.ctx;
 
-  /**
-   * Start animation loop for continuous effects
-   */
-  startAnimationLoop() {
-    this.animationLoop = () => {
-      this.updateDynamicEffects();
-      requestAnimationFrame(this.animationLoop);
-    };
-
-    this.animationLoop();
-  }
-
-  /**
-   * Update dynamic effects each frame
-   */
-  updateDynamicEffects() {
-    // Update electricity arc opacity based on time
-    const time = Date.now() * 0.001;
-    const arcs = this.element.querySelectorAll('.electricity-arc');
-
-    arcs.forEach((arc, index) => {
-      const opacity = 0.3 + Math.sin(time + index) * 0.2;
-      arc.style.opacity = Math.max(0.1, opacity);
-    });
-  }
-
-  /**
-   * Destroy component
-   */
-  destroy() {
-    // Remove event listeners
-    if (this.scrollHandler) {
-      window.removeEventListener('scroll', this.scrollHandler);
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+        ctx.fillStyle = particle.color;
+        ctx.fill();
     }
 
-    // Disconnect observers
-    this.observers.forEach(observer => observer.disconnect());
+    /**
+     * Draw connections between particles
+     */
+    drawConnections(particle, index) {
+        const ctx = this.state.ctx;
 
-    // Stop animation loop
-    if (this.animationLoop) {
-      cancelAnimationFrame(this.animationLoop);
+        for (let j = index + 1; j < this.state.particles.length; j++) {
+            const other = this.state.particles[j];
+            const dx = other.x - particle.x;
+            const dy = other.y - particle.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < this.config.particles.connectionDistance) {
+                const opacity = 1 - (distance / this.config.particles.connectionDistance);
+                ctx.beginPath();
+                ctx.moveTo(particle.x, particle.y);
+                ctx.lineTo(other.x, other.y);
+                ctx.strokeStyle = `rgba(255, 215, 0, ${opacity * 0.2})`;
+                ctx.lineWidth = 0.5;
+                ctx.stroke();
+            }
+        }
     }
 
-    // Remove particles
-    this.particles.forEach(particle => {
-      if (particle.parentNode) {
-        particle.parentNode.removeChild(particle);
-      }
-    });
+    /**
+     * Initialize animated counters
+     */
+    initCounters() {
+        const counterElements = this.element.querySelectorAll('.stat-item');
 
-    this.initialized = false;
-    console.log('Hero Section component destroyed');
-  }
+        counterElements.forEach(counter => {
+            const target = parseInt(counter.dataset.count);
+            const numberElement = counter.querySelector('.stat-number');
+
+            if (!numberElement || isNaN(target)) return;
+
+            // Create counter state
+            const counterState = {
+                element: numberElement,
+                target,
+                current: 0,
+                startTime: null,
+                duration: this.config.counters.duration,
+                observer: null
+            };
+
+            this.state.counters.push(counterState);
+
+            // Set up intersection observer
+            counterState.observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !counterState.startTime) {
+                        counterState.startTime = performance.now();
+                        this.animateCounter(counterState);
+                        counterState.observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            counterState.observer.observe(counter);
+        });
+    }
+
+    /**
+     * Animate counter
+     */
+    animateCounter(counterState) {
+        const elapsed = performance.now() - counterState.startTime;
+        const progress = Math.min(elapsed / counterState.duration, 1);
+
+        // Easing function
+        const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+        const easedProgress = easeOutCubic(progress);
+
+        counterState.current = counterState.target * easedProgress;
+
+        // Update display
+        counterState.element.textContent = Math.floor(counterState.current).toLocaleString();
+
+        if (progress < 1) {
+            requestAnimationFrame(() => this.animateCounter(counterState));
+        } else {
+            counterState.element.textContent = counterState.target.toLocaleString();
+        }
+    }
+
+    /**
+     * Set up event listeners
+     */
+    setupEventListeners() {
+        // CTA button clicks
+        const ctaButton = this.element.querySelector('.hero-cta .btn-primary');
+        if (ctaButton) {
+            ctaButton.addEventListener('click', () => {
+                const action = ctaButton.dataset.action;
+                emit('hero:cta:click', { action, element: this.element });
+            });
+        }
+    }
+
+    /**
+     * Set up intersection observer for entrance animations
+     */
+    setupIntersectionObserver() {
+        const observer = new IntersectionObserver(
+            entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        this.element.classList.add('hero-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            { threshold: 0.1 }
+        );
+
+        observer.observe(this.element);
+    }
+
+    /**
+     * Mouse move handler
+     */
+    onMouseMove(event) {
+        const rect = this.particlesContainer.getBoundingClientRect();
+        this.state.mouse.x = event.clientX - rect.left;
+        this.state.mouse.y = event.clientY - rect.top;
+    }
+
+    /**
+     * Mouse leave handler
+     */
+    onMouseLeave() {
+        this.state.mouse.x = null;
+        this.state.mouse.y = null;
+    }
+
+    /**
+     * Resize handler
+     */
+    onResize() {
+        this.updateCanvasSize();
+        // Recreate particles for new canvas size
+        this.createParticles();
+    }
+
+    /**
+     * Update configuration
+     */
+    updateConfig(newConfig) {
+        this.config = { ...this.config, ...newConfig };
+
+        // Reinitialize if needed
+        if (newConfig.particles) {
+            this.createParticles();
+        }
+    }
+
+    /**
+     * Destroy component
+     */
+    destroy() {
+        // Cancel animation
+        if (this.state.animationFrame) {
+            cancelAnimationFrame(this.state.animationFrame);
+        }
+
+        // Remove event listeners
+        if (this.particlesContainer) {
+            this.particlesContainer.removeEventListener('mousemove', this.handleMouseMove);
+            this.particlesContainer.removeEventListener('mouseleave', this.handleMouseLeave);
+        }
+        window.removeEventListener('resize', this.handleResize);
+
+        // Clean up canvas
+        if (this.state.canvas && this.state.canvas.parentNode) {
+            this.state.canvas.parentNode.removeChild(this.state.canvas);
+        }
+
+        // Clean up counter observers
+        this.state.counters.forEach(counter => {
+            if (counter.observer) {
+                counter.observer.disconnect();
+            }
+        });
+
+        this.initialized = false;
+        emit('component:hero:destroyed', { element: this.element });
+    }
 }
-
-// Export for use in other modules
-export default HeroSection;
-
-// Make available globally
-window.HeroSection = HeroSection;
