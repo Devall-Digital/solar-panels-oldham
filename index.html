@@ -52,6 +52,14 @@
 <body>
     <!-- Animated Background -->
     <div class="animated-bg"></div>
+    <div class="particles-container" id="particles"></div>
+    <div class="geometric-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+        <div class="shape shape-4"></div>
+        <div class="shape shape-5"></div>
+    </div>
     
     <!-- Navigation -->
     <nav class="nav-container">
@@ -119,134 +127,141 @@
             <h2 class="section-title">Solar Panel Calculator</h2>
             <p class="section-subtitle">Adjust the sliders below to see your potential savings in real-time</p>
             
-            <div class="calculator-container">
-                <!-- Input Panel -->
-                <div class="calculator-panel input-panel">
-                    <h3 class="panel-title">Your Details</h3>
-                    
-                    <div class="input-group">
-                        <label for="location">Location</label>
-                        <select id="location" class="input-field">
-                            <option value="oldham">Oldham</option>
-                            <option value="rochdale">Rochdale</option>
-                            <option value="manchester">Manchester</option>
-                            <option value="ashton">Ashton-under-Lyne</option>
-                            <option value="bury">Bury</option>
-                            <option value="bolton">Bolton</option>
-                            <option value="other">Other Greater Manchester Area</option>
-                        </select>
-                    </div>
-                    
-                    <div class="input-group">
-                        <label for="roofSize">
-                            Roof Size: <span id="roofSizeValue">50</span> m²
-                        </label>
-                        <input type="range" id="roofSize" min="20" max="200" value="50" class="slider">
-                        <div class="slider-track"></div>
-                    </div>
-                    
-                    <div class="input-group">
-                        <label for="energyUsage">
-                            Monthly Energy Usage: <span id="energyUsageValue">300</span> kWh
-                        </label>
-                        <input type="range" id="energyUsage" min="100" max="1000" value="300" class="slider">
-                        <div class="slider-track"></div>
-                    </div>
-                    
-                    <div class="input-group">
-                        <label for="roofOrientation">Roof Orientation</label>
-                        <div class="orientation-selector">
-                            <button class="orientation-btn" data-orientation="south">South</button>
-                            <button class="orientation-btn" data-orientation="southeast">SE</button>
-                            <button class="orientation-btn active" data-orientation="southwest">SW</button>
-                            <button class="orientation-btn" data-orientation="east">East</button>
-                            <button class="orientation-btn" data-orientation="west">West</button>
-                        </div>
-                    </div>
-                    
-                    <div class="input-group">
-                        <label for="roofPitch">
-                            Roof Pitch: <span id="roofPitchValue">35</span>°
-                        </label>
-                        <input type="range" id="roofPitch" min="15" max="60" value="35" class="slider">
-                        <div class="slider-track"></div>
-                    </div>
-                    
-                    <div class="input-group">
-                        <label for="shading">
-                            Shading Level: <span id="shadingValue">Low</span>
-                        </label>
-                        <input type="range" id="shading" min="0" max="100" value="20" class="slider">
-                        <div class="slider-track"></div>
-                    </div>
-                    
-                    <div class="input-group">
-                        <label for="propertyType">Property Type</label>
-                        <div class="property-selector">
-                            <button class="property-btn" data-type="detached">Detached</button>
-                            <button class="property-btn active" data-type="semi">Semi-Detached</button>
-                            <button class="property-btn" data-type="terraced">Terraced</button>
-                            <button class="property-btn" data-type="flat">Flat</button>
-                        </div>
-                    </div>
-                    
-                    <div class="input-group">
-                        <label for="budget">
-                            Budget: £<span id="budgetValue">10000</span>
-                        </label>
-                        <input type="range" id="budget" min="3000" max="30000" value="10000" step="500" class="slider">
-                        <div class="slider-track"></div>
-                    </div>
-                </div>
-                
-                <!-- Results Panel -->
-                <div class="calculator-panel results-panel">
+            <div class="calculator-wrapper">
+                <!-- Results Panel - Now at top for immediate visibility -->
+                <div class="calculator-panel results-panel results-top">
                     <h3 class="panel-title">Your Results</h3>
-                    
-                    <div class="results-grid">
-                        <div class="result-card">
+                    <div class="results-grid-compact">
+                        <div class="result-card-compact">
                             <div class="result-label">System Size</div>
                             <div class="result-value" id="systemSize">4.5 kW</div>
                         </div>
-                        <div class="result-card">
-                            <div class="result-label">Number of Panels</div>
+                        <div class="result-card-compact">
+                            <div class="result-label">Panels</div>
                             <div class="result-value" id="numPanels">12</div>
                         </div>
-                        <div class="result-card">
-                            <div class="result-label">Installation Cost</div>
+                        <div class="result-card-compact">
+                            <div class="result-label">Cost</div>
                             <div class="result-value" id="installCost">£8,500</div>
                         </div>
-                        <div class="result-card">
+                        <div class="result-card-compact highlight-card">
                             <div class="result-label">Annual Savings</div>
                             <div class="result-value highlight" id="annualSavings">£1,200</div>
                         </div>
-                        <div class="result-card">
+                        <div class="result-card-compact">
                             <div class="result-label">ROI</div>
                             <div class="result-value" id="roi">14.1%</div>
                         </div>
-                        <div class="result-card">
-                            <div class="result-label">Payback Period</div>
-                            <div class="result-value" id="paybackPeriod">7.1 years</div>
+                        <div class="result-card-compact">
+                            <div class="result-label">Payback</div>
+                            <div class="result-value" id="paybackPeriod">7.1 yrs</div>
                         </div>
-                        <div class="result-card full-width">
-                            <div class="result-label">CO₂ Reduction</div>
-                            <div class="result-value" id="co2Reduction">2.1 tonnes/year</div>
+                    </div>
+                </div>
+                
+                <!-- Main Calculator Container -->
+                <div class="calculator-container">
+                    <!-- Input Panel -->
+                    <div class="calculator-panel input-panel">
+                        <h3 class="panel-title">Your Details</h3>
+                        
+                        <div class="inputs-grid">
+                            <div class="input-group">
+                                <label for="location">Location</label>
+                                <select id="location" class="input-field">
+                                    <option value="oldham">Oldham</option>
+                                    <option value="rochdale">Rochdale</option>
+                                    <option value="manchester">Manchester</option>
+                                    <option value="ashton">Ashton-under-Lyne</option>
+                                    <option value="bury">Bury</option>
+                                    <option value="bolton">Bolton</option>
+                                    <option value="other">Other Greater Manchester Area</option>
+                                </select>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="roofSize">
+                                    Roof Size: <span id="roofSizeValue">50</span> m²
+                                </label>
+                                <input type="range" id="roofSize" min="20" max="200" value="50" class="slider">
+                                <div class="slider-track"></div>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="energyUsage">
+                                    Energy Usage: <span id="energyUsageValue">300</span> kWh/mo
+                                </label>
+                                <input type="range" id="energyUsage" min="100" max="1000" value="300" class="slider">
+                                <div class="slider-track"></div>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="roofOrientation">Roof Orientation</label>
+                                <div class="orientation-selector">
+                                    <button class="orientation-btn" data-orientation="south">S</button>
+                                    <button class="orientation-btn" data-orientation="southeast">SE</button>
+                                    <button class="orientation-btn active" data-orientation="southwest">SW</button>
+                                    <button class="orientation-btn" data-orientation="east">E</button>
+                                    <button class="orientation-btn" data-orientation="west">W</button>
+                                </div>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="roofPitch">
+                                    Roof Pitch: <span id="roofPitchValue">35</span>°
+                                </label>
+                                <input type="range" id="roofPitch" min="15" max="60" value="35" class="slider">
+                                <div class="slider-track"></div>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="shading">
+                                    Shading: <span id="shadingValue">Low</span>
+                                </label>
+                                <input type="range" id="shading" min="0" max="100" value="20" class="slider">
+                                <div class="slider-track"></div>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="propertyType">Property Type</label>
+                                <div class="property-selector">
+                                    <button class="property-btn" data-type="detached">Detached</button>
+                                    <button class="property-btn active" data-type="semi">Semi</button>
+                                    <button class="property-btn" data-type="terraced">Terraced</button>
+                                    <button class="property-btn" data-type="flat">Flat</button>
+                                </div>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="budget">
+                                    Budget: £<span id="budgetValue">10000</span>
+                                </label>
+                                <input type="range" id="budget" min="3000" max="30000" value="10000" step="500" class="slider">
+                                <div class="slider-track"></div>
+                            </div>
                         </div>
                     </div>
                     
-                    <!-- Charts Container -->
-                    <div class="charts-container">
-                        <div class="chart-wrapper">
-                            <h4 class="chart-title">Savings Over Time</h4>
-                            <canvas id="savingsChart"></canvas>
+                    <!-- Charts Panel - Side by side with inputs -->
+                    <div class="calculator-panel charts-panel">
+                        <h3 class="panel-title">Visualizations</h3>
+                        <div class="charts-container-compact">
+                            <div class="chart-wrapper-compact">
+                                <h4 class="chart-title">Savings Over Time</h4>
+                                <canvas id="savingsChart"></canvas>
+                            </div>
+                            <div class="chart-wrapper-compact">
+                                <h4 class="chart-title">Energy Comparison</h4>
+                                <canvas id="energyChart"></canvas>
+                            </div>
+                            <div class="chart-wrapper-compact">
+                                <h4 class="chart-title">ROI Progress</h4>
+                                <canvas id="roiChart"></canvas>
+                            </div>
                         </div>
-                        <div class="chart-wrapper">
-                            <h4 class="chart-title">Energy Generation vs Consumption</h4>
-                            <canvas id="energyChart"></canvas>
-                        </div>
-                        <div class="chart-wrapper">
-                            <h4 class="chart-title">ROI Progress</h4>
-                            <canvas id="roiChart"></canvas>
+                        <div class="co2-badge">
+                            <div class="result-label">CO₂ Reduction</div>
+                            <div class="result-value" id="co2Reduction">2.1 tonnes/year</div>
                         </div>
                     </div>
                 </div>

@@ -113,34 +113,54 @@ if ($fileSaved === false) {
     exit;
 }
 
-// Optional: Send email notification
-// Uncomment and configure the email settings below if you want email notifications
-/*
-$to = 'your-email@example.com'; // Change this to your email
-$subject = 'New Solar Panel Quote Request - ' . $name;
-$emailMessage = "New quote request received:\n\n";
-$emailMessage .= "Name: $name\n";
-$emailMessage .= "Email: $email\n";
-$emailMessage .= "Phone: $phone\n";
-$emailMessage .= "Address: $address\n";
-$emailMessage .= "Location: $location\n\n";
-$emailMessage .= "Calculator Results:\n";
-$emailMessage .= "System Size: $systemSize kW\n";
-$emailMessage .= "Number of Panels: $numPanels\n";
-$emailMessage .= "Installation Cost: £" . number_format($installCost) . "\n";
-$emailMessage .= "Annual Savings: £" . number_format($annualSavings) . "\n";
-$emailMessage .= "ROI: $roi%\n";
-$emailMessage .= "Payback Period: $paybackPeriod years\n";
-if (!empty($message)) {
-    $emailMessage .= "\nAdditional Message:\n$message\n";
+// Send email notification
+if (file_exists(__DIR__ . '/email-config.php')) {
+    require_once __DIR__ . '/email-config.php';
+    
+    if (isset($QUOTE_EMAIL) && !empty($QUOTE_EMAIL) && $QUOTE_EMAIL !== 'your-email@example.com') {
+        $to = $QUOTE_EMAIL;
+        $subject = 'New Solar Panel Quote Request - ' . $name;
+        
+        $emailMessage = "New quote request received:\n\n";
+        $emailMessage .= "CONTACT DETAILS:\n";
+        $emailMessage .= "Name: $name\n";
+        $emailMessage .= "Email: $email\n";
+        $emailMessage .= "Phone: $phone\n";
+        $emailMessage .= "Address: $address\n";
+        $emailMessage .= "Location: $location\n\n";
+        
+        $emailMessage .= "CALCULATOR RESULTS:\n";
+        $emailMessage .= "System Size: $systemSize kW\n";
+        $emailMessage .= "Number of Panels: $numPanels\n";
+        $emailMessage .= "Installation Cost: £" . number_format($installCost) . "\n";
+        $emailMessage .= "Annual Savings: £" . number_format($annualSavings) . "\n";
+        $emailMessage .= "ROI: $roi%\n";
+        $emailMessage .= "Payback Period: $paybackPeriod years\n";
+        
+        if (!empty($message)) {
+            $emailMessage .= "\nADDITIONAL MESSAGE:\n$message\n";
+        }
+        
+        $emailMessage .= "\n---\n";
+        $emailMessage .= "This quote was submitted via the Solar Panels Oldham calculator.\n";
+        $emailMessage .= "Timestamp: " . date('Y-m-d H:i:s') . "\n";
+        
+        $fromEmail = isset($EMAIL_FROM) ? $EMAIL_FROM : 'noreply@solar-panels-oldham.co.uk';
+        $fromName = isset($EMAIL_FROM_NAME) ? $EMAIL_FROM_NAME : 'Solar Panels Oldham';
+        
+        $headers = "From: $fromName <$fromEmail>\r\n";
+        $headers .= "Reply-To: $email\r\n";
+        $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+        $headers .= "X-Mailer: PHP/" . phpversion() . "\r\n";
+        
+        $mailSent = mail($to, $subject, $emailMessage, $headers);
+        
+        // Log email attempt (optional)
+        if (!$mailSent) {
+            error_log("Failed to send quote email to: $to");
+        }
+    }
 }
-
-$headers = "From: noreply@solar-panels-oldham.co.uk\r\n";
-$headers .= "Reply-To: $email\r\n";
-$headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
-
-mail($to, $subject, $emailMessage, $headers);
-*/
 
 // Return success response
 echo json_encode([

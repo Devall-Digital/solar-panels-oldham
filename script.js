@@ -17,6 +17,7 @@ let roiChart = null;
 
 // Initialize on DOM load
 document.addEventListener('DOMContentLoaded', function() {
+    initializeParticles();
     initializeCalculator();
     initializeCharts();
     initializeAnimations();
@@ -596,6 +597,62 @@ function debounce(func, wait) {
         clearTimeout(timeout);
         timeout = setTimeout(later, wait);
     };
+}
+
+// Initialize Particle System
+function initializeParticles() {
+    const particlesContainer = document.getElementById('particles');
+    if (!particlesContainer) return;
+    
+    const particleCount = 50;
+    
+    for (let i = 0; i < particleCount; i++) {
+        createParticle(particlesContainer);
+    }
+    
+    // Add new particles periodically
+    setInterval(() => {
+        if (particlesContainer.children.length < particleCount) {
+            createParticle(particlesContainer);
+        }
+    }, 2000);
+}
+
+function createParticle(container) {
+    const particle = document.createElement('div');
+    particle.classList.add('particle');
+    
+    // Random size between 2px and 8px
+    const size = Math.random() * 6 + 2;
+    particle.style.width = size + 'px';
+    particle.style.height = size + 'px';
+    
+    // Random starting position
+    particle.style.left = Math.random() * 100 + '%';
+    
+    // Random animation duration
+    const duration = Math.random() * 10 + 15; // 15-25 seconds
+    particle.style.animationDuration = duration + 's';
+    
+    // Random delay
+    particle.style.animationDelay = Math.random() * 5 + 's';
+    
+    // Random color variation
+    const colorVariation = Math.random();
+    if (colorVariation > 0.5) {
+        particle.style.background = 'radial-gradient(circle, rgba(6, 182, 212, 0.6) 0%, transparent 70%)';
+    } else {
+        particle.style.background = 'radial-gradient(circle, rgba(139, 92, 246, 0.6) 0%, transparent 70%)';
+    }
+    
+    container.appendChild(particle);
+    
+    // Remove particle after animation completes
+    setTimeout(() => {
+        if (particle.parentNode) {
+            particle.remove();
+        }
+    }, duration * 1000);
 }
 
 // Add ripple effect to buttons

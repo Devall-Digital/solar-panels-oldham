@@ -115,7 +115,7 @@
 </IfModule>
 
 # Prevent access to sensitive files
-<FilesMatch "^(webhook-config\.php|\.htaccess|\.git|quotes/.*)$">
+<FilesMatch "^(webhook-config\.php|email-config\.php|\.htaccess|\.git|quotes/.*)$">
     Order allow,deny
     Deny from all
 </FilesMatch>

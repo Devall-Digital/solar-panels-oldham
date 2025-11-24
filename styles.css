@@ -44,7 +44,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
+    z-index: -3;
     background: radial-gradient(ellipse at top, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
                 radial-gradient(ellipse at bottom, rgba(6, 182, 212, 0.15) 0%, transparent 50%);
     animation: bgPulse 8s ease-in-out infinite;
@@ -53,6 +53,141 @@ body {
 @keyframes bgPulse {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.7; }
+}
+
+/* Particles Container */
+.particles-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.particle {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.6) 0%, transparent 70%);
+    animation: particleFloat 20s infinite linear;
+}
+
+@keyframes particleFloat {
+    0% {
+        transform: translateY(100vh) translateX(0) scale(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100vh) translateX(100px) scale(1);
+        opacity: 0;
+    }
+}
+
+/* Geometric Shapes */
+.geometric-shapes {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.shape {
+    position: absolute;
+    border: 2px solid;
+    opacity: 0.1;
+    animation: shapeRotate 30s infinite linear;
+}
+
+.shape-1 {
+    width: 300px;
+    height: 300px;
+    top: 10%;
+    left: 5%;
+    border-color: var(--primary-purple);
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+    animation: shapeRotate 25s infinite linear, shapeMove1 20s ease-in-out infinite;
+}
+
+.shape-2 {
+    width: 200px;
+    height: 200px;
+    bottom: 15%;
+    right: 10%;
+    border-color: var(--primary-cyan);
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    animation: shapeRotate 35s infinite linear reverse, shapeMove2 25s ease-in-out infinite;
+}
+
+.shape-3 {
+    width: 150px;
+    height: 150px;
+    top: 50%;
+    right: 20%;
+    border-color: var(--primary-purple);
+    transform: rotate(45deg);
+    animation: shapeRotate 40s infinite linear, shapeMove3 30s ease-in-out infinite;
+}
+
+.shape-4 {
+    width: 250px;
+    height: 250px;
+    bottom: 20%;
+    left: 15%;
+    border-color: var(--primary-cyan);
+    border-radius: 50%;
+    animation: shapeRotate 28s infinite linear reverse, shapeMove4 22s ease-in-out infinite;
+}
+
+.shape-5 {
+    width: 180px;
+    height: 180px;
+    top: 30%;
+    left: 50%;
+    border-color: var(--primary-purple);
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+    animation: shapeRotate 32s infinite linear, shapeMove5 18s ease-in-out infinite;
+}
+
+@keyframes shapeRotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes shapeMove1 {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(50px, -30px) rotate(180deg); }
+}
+
+@keyframes shapeMove2 {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-40px, 50px) rotate(-180deg); }
+}
+
+@keyframes shapeMove3 {
+    0%, 100% { transform: translate(0, 0) rotate(45deg); }
+    50% { transform: translate(60px, 40px) rotate(225deg); }
+}
+
+@keyframes shapeMove4 {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-50px, -60px) rotate(180deg); }
+}
+
+@keyframes shapeMove5 {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(40px, 50px) rotate(180deg); }
 }
 
 /* Navigation */
@@ -371,11 +506,82 @@ body {
     animation: fadeInUp 1s ease forwards;
 }
 
+.calculator-wrapper {
+    margin-top: 3rem;
+}
+
+.results-top {
+    margin-bottom: 2rem;
+}
+
+.results-grid-compact {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+}
+
+.result-card-compact {
+    background: rgba(6, 182, 212, 0.1);
+    border: 1px solid rgba(6, 182, 212, 0.3);
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.result-card-compact:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(6, 182, 212, 0.3);
+    border-color: var(--primary-cyan);
+}
+
+.result-card-compact.highlight-card {
+    background: rgba(139, 92, 246, 0.15);
+    border-color: rgba(139, 92, 246, 0.4);
+}
+
+.result-card-compact.highlight-card:hover {
+    box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4);
+    border-color: var(--primary-purple);
+}
+
+.result-card-compact .result-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.result-card-compact .result-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.result-card-compact .result-value.highlight {
+    font-size: 1.75rem;
+}
+
 .calculator-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
-    margin-top: 3rem;
+}
+
+.inputs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.inputs-grid .input-group {
+    margin-bottom: 0;
+}
+
+.inputs-grid .input-group:has(.orientation-selector),
+.inputs-grid .input-group:has(.property-selector) {
+    grid-column: 1 / -1;
 }
 
 .calculator-panel {
@@ -613,6 +819,13 @@ body {
     margin-top: 2rem;
 }
 
+.charts-container-compact {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
 .chart-wrapper {
     background: rgba(6, 182, 212, 0.05);
     border: 1px solid rgba(6, 182, 212, 0.2);
@@ -620,11 +833,45 @@ body {
     padding: 1.5rem;
 }
 
+.chart-wrapper-compact {
+    background: rgba(6, 182, 212, 0.05);
+    border: 1px solid rgba(6, 182, 212, 0.2);
+    border-radius: 12px;
+    padding: 1rem;
+}
+
 .chart-title {
     font-size: 1.1rem;
     margin-bottom: 1rem;
     color: var(--text-primary);
     text-align: center;
+}
+
+.chart-wrapper-compact .chart-title {
+    font-size: 0.95rem;
+    margin-bottom: 0.75rem;
+}
+
+.co2-badge {
+    background: rgba(139, 92, 246, 0.1);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+}
+
+.co2-badge .result-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.co2-badge .result-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
 }
 
 /* Quote Form Section */
@@ -828,12 +1075,34 @@ textarea.form-input {
         grid-template-columns: 1fr;
     }
     
+    .results-grid-compact {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .result-card-compact .result-value {
+        font-size: 1.25rem;
+    }
+    
+    .result-card-compact .result-value.highlight {
+        font-size: 1.5rem;
+    }
+    
     .quote-form {
         padding: 2rem 1.5rem;
     }
     
     .property-selector {
         grid-template-columns: 1fr;
+    }
+    
+    .orientation-selector {
+        flex-wrap: wrap;
+    }
+    
+    .orientation-btn {
+        min-width: 60px;
+        padding: 0.6rem 0.8rem;
+        font-size: 0.85rem;
     }
 }
 
