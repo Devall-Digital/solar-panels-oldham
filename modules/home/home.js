@@ -317,95 +317,257 @@ const HomePage = class {
                 </div>
             </section>
             
-            <!-- Calculator Section -->
-            <section id="calculator" class="section bg-dark-light">
+            <!-- Futuristic Solar Calculator Section -->
+            <section id="calculator" class="section calculator-section">
                 <div class="container">
-                    <div class="section-header text-center mb-12">
-                        <h2 class="text-4xl font-bold mb-4">Solar Investment Calculator</h2>
-                        <p class="text-xl text-light-darker">Calculate your potential returns with our advanced solar analytics</p>
+                    <div class="section-header text-center mb-16">
+                        <h2 class="text-5xl font-bold mb-6 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent">
+                            ⚡ Solar Power Calculator
+                        </h2>
+                        <p class="text-xl text-light-darker max-w-3xl mx-auto">
+                            Discover your path to energy independence with our advanced solar simulation
+                        </p>
                     </div>
 
-                    <!-- Calculator Component -->
-                    <div class="solar-calculator" id="solar-calculator">
-                        <div class="calc-inputs">
-                            <div class="input-field">
-                                <label>Monthly Electricity Bill</label>
-                                <input type="number" min="50" max="500" value="120" step="5" class="calc-input" data-input="bill">
-                                <div class="input-hint">Enter the total value of your monthly electricity bill in pounds</div>
+                    <!-- Futuristic Calculator Interface -->
+                    <div class="solar-calculator-futuristic" id="solar-calculator">
+                        <!-- Control Panel -->
+                        <div class="control-panel">
+                            <div class="panel-header">
+                                <div class="panel-icon">⚡</div>
+                                <h3 class="panel-title">Energy Configuration</h3>
                             </div>
 
-                            <div class="input-field">
-                                <label>Property Type</label>
-                                <select class="calc-select" data-input="property">
-                                    <option value="terraced">🏠 Terraced House</option>
-                                    <option value="semi" selected>🏡 Semi-Detached</option>
-                                    <option value="detached">🏘️ Detached House</option>
-                                    <option value="bungalow">🏚️ Bungalow</option>
-                                </select>
-                            </div>
+                            <!-- Interactive Controls -->
+                            <div class="controls-grid">
+                                <!-- Electricity Bill Slider -->
+                                <div class="control-group">
+                                    <label class="control-label">
+                                        <span class="label-icon">💡</span>
+                                        Monthly Electricity Bill
+                                    </label>
+                                    <div class="slider-container-futuristic">
+                                        <input type="range" min="50" max="500" value="120" step="5" class="futuristic-slider" data-input="bill" id="bill-slider">
+                                        <div class="slider-track">
+                                            <div class="slider-fill" id="bill-fill"></div>
+                                        </div>
+                                        <div class="slider-value-display">
+                                            <span class="currency-symbol">£</span>
+                                            <span class="value-number" data-value="bill">120</span>
+                                        </div>
+                                    </div>
+                                    <div class="slider-labels">
+                                        <span>£50</span>
+                                        <span>£500</span>
+                                    </div>
+                                </div>
 
-                            <div class="input-field">
-                                <label>Roof Orientation</label>
-                                <select class="calc-select" data-input="facing">
-                                    <option value="south" selected>☀️ South Facing</option>
-                                    <option value="east-west">🌅 East/West Facing</option>
-                                    <option value="north">🌙 North Facing</option>
-                                </select>
-                            </div>
+                                <!-- Property Type Selector -->
+                                <div class="control-group">
+                                    <label class="control-label">
+                                        <span class="label-icon">🏠</span>
+                                        Property Type
+                                    </label>
+                                    <div class="property-selector">
+                                        <button class="property-btn" data-property="terraced">
+                                            <div class="property-icon">🏠</div>
+                                            <div class="property-name">Terraced</div>
+                                        </button>
+                                        <button class="property-btn active" data-property="semi">
+                                            <div class="property-icon">🏡</div>
+                                            <div class="property-name">Semi-Detached</div>
+                                        </button>
+                                        <button class="property-btn" data-property="detached">
+                                            <div class="property-icon">🏘️</div>
+                                            <div class="property-name">Detached</div>
+                                        </button>
+                                        <button class="property-btn" data-property="bungalow">
+                                            <div class="property-icon">🏚️</div>
+                                            <div class="property-name">Bungalow</div>
+                                        </button>
+                                    </div>
+                                </div>
 
-                            <div class="input-field">
-                                <label>Investment Period (Years)</label>
-                                <input type="range" min="10" max="25" value="25" step="5" class="calc-slider" data-input="period">
-                                <div class="slider-display">
-                                    <span class="slider-value" data-value="period">25</span> years
+                                <!-- Roof Orientation -->
+                                <div class="control-group">
+                                    <label class="control-label">
+                                        <span class="label-icon">☀️</span>
+                                        Solar Orientation
+                                    </label>
+                                    <div class="orientation-selector">
+                                        <button class="orientation-btn active" data-orientation="south">
+                                            <div class="orientation-visual">
+                                                <div class="sun-icon">☀️</div>
+                                                <div class="orientation-lines south-lines"></div>
+                                            </div>
+                                            <div class="orientation-label">South</div>
+                                        </button>
+                                        <button class="orientation-btn" data-orientation="east-west">
+                                            <div class="orientation-visual">
+                                                <div class="sun-icon">🌅</div>
+                                                <div class="orientation-lines east-west-lines"></div>
+                                            </div>
+                                            <div class="orientation-label">East/West</div>
+                                        </button>
+                                        <button class="orientation-btn" data-orientation="north">
+                                            <div class="orientation-visual">
+                                                <div class="sun-icon">🌙</div>
+                                                <div class="orientation-lines north-lines"></div>
+                                            </div>
+                                            <div class="orientation-label">North</div>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- System Size Override -->
+                                <div class="control-group">
+                                    <label class="control-label">
+                                        <span class="label-icon">🔋</span>
+                                        System Size (kWp)
+                                    </label>
+                                    <div class="size-selector">
+                                        <button class="size-btn" data-size="auto">
+                                            <div class="size-icon">🎯</div>
+                                            <div class="size-label">Auto</div>
+                                        </button>
+                                        <button class="size-btn" data-size="2.5">
+                                            <div class="size-icon">🔋</div>
+                                            <div class="size-label">2.5 kWp</div>
+                                        </button>
+                                        <button class="size-btn" data-size="3.5">
+                                            <div class="size-icon">🔋</div>
+                                            <div class="size-label">3.5 kWp</div>
+                                        </button>
+                                        <button class="size-btn" data-size="4.5">
+                                            <div class="size-icon">🔋</div>
+                                            <div class="size-label">4.5 kWp</div>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="calc-results">
-                            <h3 class="results-title">Investment Summary</h3>
-
-                            <div class="result-metric">
-                                <div class="metric-label">Annual Savings</div>
-                                <div class="metric-value">£<span data-result="annual">0</span></div>
+                        <!-- Results Dashboard -->
+                        <div class="results-dashboard">
+                            <div class="dashboard-header">
+                                <div class="dashboard-icon">📊</div>
+                                <h3 class="dashboard-title">Energy Savings Analysis</h3>
                             </div>
 
-                            <div class="result-metric">
-                                <div class="metric-label">System Size</div>
-                                <div class="metric-value"><span data-result="systemSize">3.5</span> kWp</div>
+                            <!-- Key Metrics -->
+                            <div class="metrics-grid">
+                                <div class="metric-card savings-card">
+                                    <div class="metric-icon">💰</div>
+                                    <div class="metric-content">
+                                        <div class="metric-value">£<span data-result="annual">0</span></div>
+                                        <div class="metric-label">Annual Savings</div>
+                                        <div class="metric-trend" data-trend="annual">↗️ +0%</div>
+                                    </div>
+                                </div>
+
+                                <div class="metric-card roi-card">
+                                    <div class="metric-icon">📈</div>
+                                    <div class="metric-content">
+                                        <div class="metric-value"><span data-result="roi">0</span>%</div>
+                                        <div class="metric-label">25 Year ROI</div>
+                                        <div class="metric-trend" data-trend="roi">↗️ +0%</div>
+                                    </div>
+                                </div>
+
+                                <div class="metric-card payback-card">
+                                    <div class="metric-icon">⏱️</div>
+                                    <div class="metric-content">
+                                        <div class="metric-value"><span data-result="payback">0</span> yrs</div>
+                                        <div class="metric-label">Payback Period</div>
+                                        <div class="metric-trend" data-trend="payback">↗️ +0%</div>
+                                    </div>
+                                </div>
+
+                                <div class="metric-card system-card">
+                                    <div class="metric-icon">⚡</div>
+                                    <div class="metric-content">
+                                        <div class="metric-value"><span data-result="systemSize">0</span> kWp</div>
+                                        <div class="metric-label">System Size</div>
+                                        <div class="metric-trend" data-trend="system">↗️ +0%</div>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="result-metric">
-                                <div class="metric-label">System Cost</div>
-                                <div class="metric-value">£<span data-result="systemCost">4,800</span></div>
+                            <!-- Interactive Chart -->
+                            <div class="chart-section">
+                                <div class="chart-header">
+                                    <h4 class="chart-title">25-Year Financial Projection</h4>
+                                    <div class="chart-controls">
+                                        <button class="chart-toggle active" data-chart="savings">Savings</button>
+                                        <button class="chart-toggle" data-chart="generation">Generation</button>
+                                        <button class="chart-toggle" data-chart="roi">ROI</button>
+                                    </div>
+                                </div>
+                                <div class="chart-container">
+                                    <canvas id="savings-chart" width="800" height="300"></canvas>
+                                    <div class="chart-overlay">
+                                        <div class="chart-particle" id="chart-particle-1"></div>
+                                        <div class="chart-particle" id="chart-particle-2"></div>
+                                        <div class="chart-particle" id="chart-particle-3"></div>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="result-metric">
-                                <div class="metric-label"><span data-period="25">25</span> Year ROI</div>
-                                <div class="metric-value"><span data-result="roi">0</span>%</div>
+                            <!-- System Visualization -->
+                            <div class="system-visualization">
+                                <div class="roof-preview">
+                                    <div class="roof-outline">
+                                        <div class="solar-panels" id="solar-panels-viz">
+                                            <!-- Panels will be generated dynamically -->
+                                        </div>
+                                        <div class="sun-position" id="sun-position"></div>
+                                        <div class="energy-flow" id="energy-flow"></div>
+                                    </div>
+                                    <div class="viz-stats">
+                                        <div class="viz-stat">
+                                            <span class="viz-icon">☀️</span>
+                                            <span class="viz-value"><span data-result="annualGeneration">0</span> kWh/year</span>
+                                        </div>
+                                        <div class="viz-stat">
+                                            <span class="viz-icon">💡</span>
+                                            <span class="viz-value">£<span data-result="systemCost">0</span> total</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="result-metric">
-                                <div class="metric-label">Payback Period</div>
-                                <div class="metric-value"><span data-result="payback">0</span> years</div>
-                            </div>
-
-                            <div class="result-cta">
-                                <p class="cta-text">Ready to start your solar investment journey?</p>
-                                <button class="btn-primary btn-large" data-action="show-quote-form">
-                                    Get Your Free Quote
-                                    <span class="btn-arrow">→</span>
-                                </button>
+                            <!-- CTA Section -->
+                            <div class="calculator-cta">
+                                <div class="cta-content">
+                                    <h4 class="cta-title">Ready to Go Solar?</h4>
+                                    <p class="cta-subtitle">Get your personalized solar proposal today</p>
+                                    <div class="cta-buttons">
+                                        <button class="cta-btn primary" data-action="show-quote-form">
+                                            <span class="btn-icon">⚡</span>
+                                            Get Free Quote
+                                            <span class="btn-arrow">→</span>
+                                        </button>
+                                        <button class="cta-btn secondary" data-action="download-report">
+                                            <span class="btn-icon">📄</span>
+                                            Download Report
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="cta-visual">
+                                    <div class="energy-pulse"></div>
+                                    <div class="solar-flare"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="calc-chart-section">
-                        <h3 class="chart-title">25-Year Savings Projection</h3>
-                        <div class="chart-container">
-                            <canvas id="savings-chart" width="800" height="300"></canvas>
-                        </div>
-                    </div>
+                <!-- Background Effects -->
+                <div class="calculator-bg-effects">
+                    <div class="electricity-arc arc-1"></div>
+                    <div class="electricity-arc arc-2"></div>
+                    <div class="electricity-arc arc-3"></div>
+                    <div class="particle-field" id="calculator-particles"></div>
                 </div>
             </section>
             

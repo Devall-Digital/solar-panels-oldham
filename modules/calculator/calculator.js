@@ -89,54 +89,135 @@ class SolarCalculator {
      * Set up input elements
      */
     setupInputs() {
-        // Monthly bill input
-        const billInput = this.element.querySelector('[data-input="bill"]');
-        if (billInput) {
-            billInput.addEventListener('input', (e) => {
-                this.state.monthlyBill = parseFloat(e.target.value) || 120;
-                this.calculateSavings();
-                this.saveState();
-            });
-            billInput.value = this.state.monthlyBill;
-        }
+        // Futuristic bill slider
+        this.setupFuturisticSlider();
 
-        // Property type select
-        const propertySelect = this.element.querySelector('[data-input="property"]');
-        if (propertySelect) {
-            propertySelect.addEventListener('change', (e) => {
-                this.state.propertyType = e.target.value;
-                this.calculateSavings();
-                this.saveState();
-            });
-            propertySelect.value = this.state.propertyType;
-        }
+        // Property type buttons
+        this.setupPropertyButtons();
 
-        // Roof orientation select
-        const facingSelect = this.element.querySelector('[data-input="facing"]');
-        if (facingSelect) {
-            facingSelect.addEventListener('change', (e) => {
-                this.state.roofOrientation = e.target.value;
-                this.calculateSavings();
-                this.saveState();
-            });
-            facingSelect.value = this.state.roofOrientation;
-        }
+        // Orientation buttons
+        this.setupOrientationButtons();
 
-        // Investment period slider
-        const periodSlider = this.element.querySelector('[data-input="period"]');
-        const periodDisplay = this.element.querySelector('[data-value="period"]');
-        if (periodSlider && periodDisplay) {
-            periodSlider.addEventListener('input', (e) => {
-                const period = parseInt(e.target.value);
-                this.state.investmentPeriod = period;
-                periodDisplay.textContent = period;
-                this.updatePeriodLabels(period);
+        // Size selector buttons
+        this.setupSizeButtons();
+
+        // Chart toggle buttons
+        this.setupChartToggles();
+
+        // Initialize particles
+        this.initParticles();
+    }
+
+    /**
+     * Setup futuristic slider with real-time updates
+     */
+    setupFuturisticSlider() {
+        const slider = this.element.querySelector('#bill-slider');
+        const fill = this.element.querySelector('#bill-fill');
+        const valueDisplay = this.element.querySelector('[data-value="bill"]');
+
+        if (slider && fill && valueDisplay) {
+            const updateSlider = (value) => {
+                const percentage = ((value - 50) / (500 - 50)) * 100;
+                fill.style.width = `${percentage}%`;
+                valueDisplay.textContent = value;
+
+                this.state.monthlyBill = parseFloat(value);
                 this.calculateSavings();
+                this.createSliderParticles(value);
+                this.saveState();
+            };
+
+            slider.addEventListener('input', (e) => {
+                updateSlider(e.target.value);
+            });
+
+            // Initialize
+            slider.value = this.state.monthlyBill;
+            updateSlider(this.state.monthlyBill);
+        }
+    }
+
+    /**
+     * Setup property type buttons
+     */
+    setupPropertyButtons() {
+        const buttons = this.element.querySelectorAll('[data-property]');
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                buttons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                button.classList.add('active');
+
+                this.state.propertyType = button.dataset.property;
+                this.calculateSavings();
+                this.createButtonParticles(button);
                 this.saveState();
             });
-            periodSlider.value = this.state.investmentPeriod;
-            periodDisplay.textContent = this.state.investmentPeriod;
-        }
+        });
+    }
+
+    /**
+     * Setup orientation buttons
+     */
+    setupOrientationButtons() {
+        const buttons = this.element.querySelectorAll('[data-orientation]');
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                buttons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                button.classList.add('active');
+
+                this.state.roofOrientation = button.dataset.orientation;
+                this.calculateSavings();
+                this.createButtonParticles(button);
+                this.updateSunPosition(button.dataset.orientation);
+                this.saveState();
+            });
+        });
+    }
+
+    /**
+     * Setup size selector buttons
+     */
+    setupSizeButtons() {
+        const buttons = this.element.querySelectorAll('[data-size]');
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                buttons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                button.classList.add('active');
+
+                const size = button.dataset.size === 'auto' ? null : parseFloat(button.dataset.size);
+                this.state.systemSizeOverride = size;
+                this.calculateSavings();
+                this.createButtonParticles(button);
+                this.updateSolarPanels(size);
+                this.saveState();
+            });
+        });
+    }
+
+    /**
+     * Setup chart toggle buttons
+     */
+    setupChartToggles() {
+        const buttons = this.element.querySelectorAll('.chart-toggle');
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                buttons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                button.classList.add('active');
+
+                this.currentChartType = button.dataset.chart;
+                this.updateChartDisplay();
+                this.createButtonParticles(button);
+            });
+        });
     }
 
     /**
@@ -147,6 +228,143 @@ class SolarCalculator {
         periodLabels.forEach(label => {
             label.textContent = period;
         });
+    }
+
+    /**
+     * Initialize particle effects
+     */
+    initParticles() {
+        this.particleContainer = this.element.querySelector('#calculator-particles');
+        if (this.particleContainer) {
+            this.createAmbientParticles();
+        }
+    }
+
+    /**
+     * Create ambient particle field
+     */
+    createAmbientParticles() {
+        for (let i = 0; i < 20; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'ambient-particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 10 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+
+            // Random colors for electricity theme
+            const colors = ['#ffd700', '#00bfff', '#ff4500', '#ff8c00'];
+            particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+            this.particleContainer.appendChild(particle);
+        }
+    }
+
+    /**
+     * Create particles on slider interaction
+     */
+    createSliderParticles(value) {
+        const slider = this.element.querySelector('#bill-slider');
+        if (!slider) return;
+
+        for (let i = 0; i < 5; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'slider-particle';
+            particle.style.left = (slider.offsetLeft + slider.offsetWidth * (value - 50) / 450) + 'px';
+            particle.style.top = (slider.offsetTop + slider.offsetHeight / 2) + 'px';
+
+            const colors = ['#ffd700', '#00bfff', '#ff4500'];
+            particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+            particle.style.animation = `particleBurst ${0.5 + Math.random() * 0.5}s ease-out forwards`;
+
+            document.body.appendChild(particle);
+
+            setTimeout(() => {
+                if (particle.parentNode) {
+                    particle.parentNode.removeChild(particle);
+                }
+            }, 1000);
+        }
+    }
+
+    /**
+     * Create particles on button click
+     */
+    createButtonParticles(button) {
+        const rect = button.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        for (let i = 0; i < 8; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'button-particle';
+
+            const angle = (i / 8) * Math.PI * 2;
+            const distance = 20 + Math.random() * 30;
+            const x = centerX + Math.cos(angle) * distance;
+            const y = centerY + Math.sin(angle) * distance;
+
+            particle.style.left = x + 'px';
+            particle.style.top = y + 'px';
+
+            const colors = ['#ffd700', '#00bfff', '#ff4500', '#00ff88'];
+            particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+            particle.style.animation = `particleExplode ${0.6 + Math.random() * 0.4}s ease-out forwards`;
+
+            document.body.appendChild(particle);
+
+            setTimeout(() => {
+                if (particle.parentNode) {
+                    particle.parentNode.removeChild(particle);
+                }
+            }, 1000);
+        }
+    }
+
+    /**
+     * Update sun position based on orientation
+     */
+    updateSunPosition(orientation) {
+        const sun = this.element.querySelector('#sun-position');
+        if (!sun) return;
+
+        const positions = {
+            'south': 'right: 20px; top: -20px;',
+            'east-west': 'left: 50%; top: -20px; transform: translateX(-50%);',
+            'north': 'left: 20px; top: -20px;'
+        };
+
+        sun.style.cssText = positions[orientation] || positions['south'];
+    }
+
+    /**
+     * Update solar panel visualization
+     */
+    updateSolarPanels(size) {
+        const container = this.element.querySelector('#solar-panels-viz');
+        if (!container) return;
+
+        // Clear existing panels
+        container.innerHTML = '';
+
+        // Calculate number of panels based on system size
+        const panelCount = size ? Math.max(2, Math.min(8, Math.round(size / 0.5))) : 4;
+
+        for (let i = 0; i < panelCount; i++) {
+            const panel = document.createElement('div');
+            panel.className = 'solar-panel';
+            panel.style.animationDelay = (i * 0.1) + 's';
+            container.appendChild(panel);
+        }
+    }
+
+    /**
+     * Update chart display based on selected type
+     */
+    updateChartDisplay() {
+        // This would switch between different chart types
+        // For now, just update the existing chart
+        this.drawChart(this.state.results?.annual || 0);
     }
 
     /**
@@ -336,21 +554,60 @@ class SolarCalculator {
      * Update results display
      */
     updateResults(results) {
-        const updateElement = (selector, value, formatter = (v) => v) => {
+        // Store previous results for trend calculation
+        const previousResults = this.state.results || {};
+
+        const updateElement = (selector, value, formatter = (v) => v.toString(), duration = 1000) => {
             const element = this.element.querySelector(`[data-result="${selector}"]`);
             if (element) {
-                // Pass raw value to animateNumber, formatting happens inside
-                this.animateNumber(element, value, formatter);
+                // Animate number change
+                this.animateNumber(element, value, formatter, duration);
+
+                // Update trend indicator
+                const trendElement = this.element.querySelector(`[data-trend="${selector}"]`);
+                if (trendElement && previousResults[selector] !== undefined) {
+                    const change = value - previousResults[selector];
+                    const percentage = previousResults[selector] !== 0 ? (change / previousResults[selector]) * 100 : 0;
+
+                    if (Math.abs(percentage) > 1) {
+                        const isPositive = change > 0;
+                        trendElement.textContent = `${isPositive ? '↗️' : '↘️'} ${isPositive ? '+' : ''}${Math.abs(percentage).toFixed(1)}%`;
+                        trendElement.style.color = isPositive ? '#10b981' : '#ef4444';
+                        trendElement.style.animation = 'trendPulse 0.5s ease-out';
+                    }
+                }
             }
         };
 
         updateElement('annual', results.annualSavings, (v) => `£${Math.floor(v).toLocaleString()}`);
         updateElement('roi', results.roi, (v) => `${Math.floor(v)}%`);
         updateElement('payback', results.paybackYears, (v) => `${parseFloat(v).toFixed(1)} years`);
+        updateElement('systemSize', results.systemSize, (v) => v.toFixed(1));
+        updateElement('systemCost', results.systemCost, (v) => v.toLocaleString());
+        updateElement('annualGeneration', results.annualGeneration, (v) => Math.round(v).toLocaleString());
+
+        // Update system size display
+        this.updateSolarPanels(results.systemSize);
+
+        // Trigger success animation on results update
+        this.animateResultsUpdate();
 
         // Store results for quote requests
         this.state.results = results;
         this.saveState();
+    }
+
+    /**
+     * Animate results update with dopamine-inducing effects
+     */
+    animateResultsUpdate() {
+        const cards = this.element.querySelectorAll('.metric-card');
+        cards.forEach((card, index) => {
+            card.style.animation = 'none';
+            setTimeout(() => {
+                card.style.animation = `cardUpdate 0.6s ease-out ${index * 0.1}s`;
+            }, 10);
+        });
     }
 
     /**
