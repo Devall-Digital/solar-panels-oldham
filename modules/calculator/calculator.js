@@ -21,6 +21,7 @@ class SolarCalculator {
             monthlyBill: 120, // More realistic UK average
             propertyType: 'semi',
             roofOrientation: 'south',
+            investmentPeriod: 25, // Default investment period
             shading: 'none'
         };
 
@@ -66,6 +67,9 @@ class SolarCalculator {
             // Load initial state from global state if available
             this.loadState();
 
+            // Set initial period labels
+            this.updatePeriodLabels(this.state.investmentPeriod);
+
             // Calculate initial results
             this.calculateSavings();
 
@@ -85,28 +89,63 @@ class SolarCalculator {
      * Set up input elements
      */
     setupInputs() {
-        // Bill slider
-        const billSlider = this.element.querySelector('[data-input="bill"]');
-        const billDisplay = this.element.querySelector('[data-value="bill"]');
-
-        if (billSlider && billDisplay) {
-            billSlider.addEventListener('input', (e) => {
-                this.state.monthlyBill = parseFloat(e.target.value);
-                billDisplay.textContent = e.target.value;
+        // Monthly bill input
+        const billInput = this.element.querySelector('[data-input="bill"]');
+        if (billInput) {
+            billInput.addEventListener('input', (e) => {
+                this.state.monthlyBill = parseFloat(e.target.value) || 120;
                 this.calculateSavings();
+                this.saveState();
             });
+            billInput.value = this.state.monthlyBill;
         }
 
-        // Property type toggles
-        this.setupToggleGroup('property', (value) => {
-            this.state.propertyType = value;
-            this.calculateSavings();
-        });
+        // Property type select
+        const propertySelect = this.element.querySelector('[data-input="property"]');
+        if (propertySelect) {
+            propertySelect.addEventListener('change', (e) => {
+                this.state.propertyType = e.target.value;
+                this.calculateSavings();
+                this.saveState();
+            });
+            propertySelect.value = this.state.propertyType;
+        }
 
-        // Roof orientation toggles
-        this.setupToggleGroup('facing', (value) => {
-            this.state.roofOrientation = value;
-            this.calculateSavings();
+        // Roof orientation select
+        const facingSelect = this.element.querySelector('[data-input="facing"]');
+        if (facingSelect) {
+            facingSelect.addEventListener('change', (e) => {
+                this.state.roofOrientation = e.target.value;
+                this.calculateSavings();
+                this.saveState();
+            });
+            facingSelect.value = this.state.roofOrientation;
+        }
+
+        // Investment period slider
+        const periodSlider = this.element.querySelector('[data-input="period"]');
+        const periodDisplay = this.element.querySelector('[data-value="period"]');
+        if (periodSlider && periodDisplay) {
+            periodSlider.addEventListener('input', (e) => {
+                const period = parseInt(e.target.value);
+                this.state.investmentPeriod = period;
+                periodDisplay.textContent = period;
+                this.updatePeriodLabels(period);
+                this.calculateSavings();
+                this.saveState();
+            });
+            periodSlider.value = this.state.investmentPeriod;
+            periodDisplay.textContent = this.state.investmentPeriod;
+        }
+    }
+
+    /**
+     * Update period labels in results
+     */
+    updatePeriodLabels(period) {
+        const periodLabels = this.element.querySelectorAll('[data-period]');
+        periodLabels.forEach(label => {
+            label.textContent = period;
         });
     }
 
@@ -265,10 +304,10 @@ class SolarCalculator {
         const paybackYears = netCost / realisticSavings;
 
         // ROI calculation (simple payback method)
-        const lifetimeYears = 25;
+        const lifetimeYears = this.state.investmentPeriod;
         const totalLifetimeSavings = realisticSavings * lifetimeYears;
         const netLifetimeBenefit = totalLifetimeSavings - netCost;
-        const roi = (netLifetimeBenefit / netCost) * 100;
+        const roi = lifetimeYears >= paybackYears ? (netLifetimeBenefit / netCost) * 100 : 0;
 
         // Update results with realistic values
         this.updateResults({
@@ -277,7 +316,8 @@ class SolarCalculator {
             roi: Math.round(Math.max(0, Math.min(roi, 25))), // Cap at realistic 25%
             systemSize: system.size.toFixed(1),
             annualGeneration: Math.round(annualGeneration),
-            systemCost: systemCost.toLocaleString()
+            systemCost: systemCost.toLocaleString(),
+            investmentPeriod: lifetimeYears
         });
 
         // Update chart

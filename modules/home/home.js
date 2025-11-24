@@ -321,107 +321,89 @@ const HomePage = class {
             <section id="calculator" class="section bg-dark-light">
                 <div class="container">
                     <div class="section-header text-center mb-12">
-                        <h2 class="text-4xl font-bold mb-4">Calculate Your Solar Savings</h2>
-                        <p class="text-xl text-light-darker">See how much you could save with solar panels</p>
+                        <h2 class="text-4xl font-bold mb-4">Solar Investment Calculator</h2>
+                        <p class="text-xl text-light-darker">Calculate your potential returns with our advanced solar analytics</p>
                     </div>
-                    
-                    <!-- Calculator Component - no data-component attribute -->
+
+                    <!-- Calculator Component -->
                     <div class="solar-calculator" id="solar-calculator">
                         <div class="calc-inputs">
-                            <div class="input-group">
+                            <div class="input-field">
                                 <label>Monthly Electricity Bill</label>
-                                <div class="slider-container">
-                                    <input type="range" class="range-input" 
-                                           data-input="bill" 
-                                           min="50" 
-                                           max="500" 
-                                           value="100"
-                                           step="10">
-                                    <div class="slider-marks">
-                                        <span>£50</span>
-                                        <span>£250</span>
-                                        <span>£500</span>
-                                    </div>
-                                </div>
-                                <span class="range-value">£<span data-value="bill">100</span></span>
+                                <input type="number" min="50" max="500" value="120" step="5" class="calc-input" data-input="bill">
+                                <div class="input-hint">Enter the total value of your monthly electricity bill in pounds</div>
                             </div>
-                            
-                            <div class="input-group">
+
+                            <div class="input-field">
                                 <label>Property Type</label>
-                                <div class="toggle-group">
-                                    <button class="toggle-option" data-input="property" data-value="terraced">
-                                        <span class="toggle-icon">🏠</span>
-                                        <span class="toggle-label">Terraced</span>
-                                    </button>
-                                    <button class="toggle-option active" data-input="property" data-value="semi">
-                                        <span class="toggle-icon">🏡</span>
-                                        <span class="toggle-label">Semi-Detached</span>
-                                    </button>
-                                    <button class="toggle-option" data-input="property" data-value="detached">
-                                        <span class="toggle-icon">🏘️</span>
-                                        <span class="toggle-label">Detached</span>
-                                    </button>
-                                    <button class="toggle-option" data-input="property" data-value="bungalow">
-                                        <span class="toggle-icon">🏚️</span>
-                                        <span class="toggle-label">Bungalow</span>
-                                    </button>
-                                </div>
+                                <select class="calc-select" data-input="property">
+                                    <option value="terraced">🏠 Terraced House</option>
+                                    <option value="semi" selected>🏡 Semi-Detached</option>
+                                    <option value="detached">🏘️ Detached House</option>
+                                    <option value="bungalow">🏚️ Bungalow</option>
+                                </select>
                             </div>
-                            
-                            <div class="input-group">
+
+                            <div class="input-field">
                                 <label>Roof Orientation</label>
-                                <div class="toggle-group">
-                                    <button class="toggle-option active" data-input="facing" data-value="south">
-                                        <span class="toggle-icon">☀️</span>
-                                        <span class="toggle-label">South</span>
-                                    </button>
-                                    <button class="toggle-option" data-input="facing" data-value="east-west">
-                                        <span class="toggle-icon">🌅</span>
-                                        <span class="toggle-label">East/West</span>
-                                    </button>
-                                    <button class="toggle-option" data-input="facing" data-value="north">
-                                        <span class="toggle-icon">🌙</span>
-                                        <span class="toggle-label">North</span>
-                                    </button>
+                                <select class="calc-select" data-input="facing">
+                                    <option value="south" selected>☀️ South Facing</option>
+                                    <option value="east-west">🌅 East/West Facing</option>
+                                    <option value="north">🌙 North Facing</option>
+                                </select>
+                            </div>
+
+                            <div class="input-field">
+                                <label>Investment Period (Years)</label>
+                                <input type="range" min="10" max="25" value="25" step="5" class="calc-slider" data-input="period">
+                                <div class="slider-display">
+                                    <span class="slider-value" data-value="period">25</span> years
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="calc-results">
-                            <div class="result-card saving animate-scaleIn">
-                                <div class="result-icon">💷</div>
-                                <div class="result-value">
-                                    £<span data-result="annual">0</span>
-                                </div>
-                                <div class="result-label">Annual Savings</div>
+                            <h3 class="results-title">Investment Summary</h3>
+
+                            <div class="result-metric">
+                                <div class="metric-label">Annual Savings</div>
+                                <div class="metric-value">£<span data-result="annual">0</span></div>
                             </div>
-                            
-                            <div class="result-card roi animate-scaleIn delay-100">
-                                <div class="result-icon">📈</div>
-                                <div class="result-value">
-                                    <span data-result="roi">0</span>%
-                                </div>
-                                <div class="result-label">25 Year ROI</div>
+
+                            <div class="result-metric">
+                                <div class="metric-label">System Size</div>
+                                <div class="metric-value"><span data-result="systemSize">3.5</span> kWp</div>
                             </div>
-                            
-                            <div class="result-card payback animate-scaleIn delay-200">
-                                <div class="result-icon">⏱️</div>
-                                <div class="result-value">
-                                    <span data-result="payback">0</span> years
-                                </div>
-                                <div class="result-label">Payback Period</div>
+
+                            <div class="result-metric">
+                                <div class="metric-label">System Cost</div>
+                                <div class="metric-value">£<span data-result="systemCost">4,800</span></div>
+                            </div>
+
+                            <div class="result-metric">
+                                <div class="metric-label"><span data-period="25">25</span> Year ROI</div>
+                                <div class="metric-value"><span data-result="roi">0</span>%</div>
+                            </div>
+
+                            <div class="result-metric">
+                                <div class="metric-label">Payback Period</div>
+                                <div class="metric-value"><span data-result="payback">0</span> years</div>
+                            </div>
+
+                            <div class="result-cta">
+                                <p class="cta-text">Ready to start your solar investment journey?</p>
+                                <button class="btn-primary btn-large" data-action="show-quote-form">
+                                    Get Your Free Quote
+                                    <span class="btn-arrow">→</span>
+                                </button>
                             </div>
                         </div>
-                        
-                        <div class="calc-chart">
+                    </div>
+
+                    <div class="calc-chart-section">
+                        <h3 class="chart-title">25-Year Savings Projection</h3>
+                        <div class="chart-container">
                             <canvas id="savings-chart" width="800" height="300"></canvas>
-                        </div>
-                        
-                        <div class="calc-cta">
-                            <button class="btn-primary btn-large" data-action="show-quote-form">
-                                Get Your Personalized Quote
-                                <span class="arrow">→</span>
-                            </button>
                         </div>
                     </div>
                 </div>

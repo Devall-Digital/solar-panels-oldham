@@ -3,58 +3,120 @@
  * Purpose: Interactive calculator component styling
  */
 
-/* Calculator Container */
+/* Calculator Container - Two Column Layout */
 .solar-calculator {
-    background:
-        radial-gradient(circle at 30% 20%, rgba(var(--primary-rgb), 0.08) 0%, transparent 50%),
-        radial-gradient(circle at 70% 80%, rgba(var(--accent-rgb), 0.06) 0%, transparent 50%),
-        linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.9) 100%);
-    border: 1px solid rgba(var(--primary-rgb), 0.2);
-    border-radius: 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid #e5e7eb;
+    border-radius: 20px;
     padding: 3rem;
     box-shadow:
-        0 25px 80px rgba(0, 0, 0, 0.6),
-        0 0 0 1px rgba(var(--primary-rgb), 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.08),
-        0 0 60px rgba(var(--primary-rgb), 0.1);
+        0 20px 40px rgba(0, 0, 0, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
     position: relative;
-    overflow: hidden;
-    backdrop-filter: blur(20px);
-    isolation: isolate;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.solar-calculator::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background:
-        radial-gradient(circle at 30% 30%, rgba(var(--primary-rgb), 0.04) 0%, transparent 40%),
-        radial-gradient(circle at 70% 70%, rgba(var(--accent-rgb), 0.03) 0%, transparent 40%);
-    animation: rotate 20s linear infinite;
+@media (max-width: 1024px) {
+    .solar-calculator {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
 }
 
 /* Input Section */
 .calc-inputs {
-    display: grid;
-    gap: var(--spacing-8);
-    margin-bottom: var(--spacing-12);
-    position: relative;
-    z-index: 1;
-}
-
-.input-group {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-3);
+    gap: 2rem;
 }
 
-.input-group label {
-    font-weight: var(--font-semibold);
-    color: var(--light);
-    font-size: var(--text-lg);
+.input-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.input-field label {
+    font-weight: 600;
+    color: #374151;
+    font-size: 1rem;
+    letter-spacing: 0.025em;
+}
+
+.calc-input, .calc-select {
+    padding: 0.875rem 1rem;
+    border: 2px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #111827;
+    background: white;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.calc-input:focus, .calc-select:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.calc-input::-webkit-outer-spin-button,
+.calc-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.calc-input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.input-hint {
+    font-size: 0.875rem;
+    color: #6b7280;
+    font-weight: 400;
+}
+
+.calc-slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: #e5e7eb;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.calc-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #3b82f6;
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.calc-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+}
+
+.slider-display {
+    display: flex;
+    justify-content: center;
+    margin-top: 0.5rem;
+}
+
+.slider-value {
+    font-weight: 600;
+    color: #3b82f6;
+    font-size: 0.875rem;
 }
 
 .slider-container {
@@ -217,24 +279,57 @@
 
 /* Results Section */
 .calc-results {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 2rem;
-    margin: 3rem 0 2.5rem 0;
-    position: relative;
-    z-index: 1;
+    background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+    border: 2px solid #d1d5db;
+    border-radius: 16px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
-.result-card {
-    background:
-        linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(30, 41, 59, 0.7) 100%),
-        radial-gradient(circle at 50% 0%, rgba(var(--primary-rgb), 0.1) 0%, transparent 70%);
-    border: 1px solid rgba(var(--primary-rgb), 0.2);
-    border-radius: 20px;
-    padding: 2rem 1.5rem;
+.results-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    margin: 0 0 1rem 0;
     text-align: center;
-    position: relative;
-    overflow: hidden;
+}
+
+.result-metric {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.result-metric:last-child {
+    border-bottom: none;
+}
+
+.metric-label {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #e5e7eb;
+}
+
+.metric-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: white;
+}
+
+.result-cta {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.cta-text {
+    font-size: 1rem;
+    color: #e5e7eb;
+    margin-bottom: 1rem;
+}
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow:
         0 12px 40px rgba(0, 0, 0, 0.4),
@@ -343,20 +438,30 @@
 }
 
 /* Chart Section */
-.calc-chart {
-    margin: var(--spacing-10) 0;
-    padding: var(--spacing-8);
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 215, 0, 0.15);
-    border-radius: var(--radius-xl);
-    position: relative;
-    z-index: 1;
+.calc-chart-section {
+    margin-top: 3rem;
+    text-align: center;
 }
 
-.calc-chart canvas {
-    width: 100%;
-    height: auto;
-    display: block;
+.chart-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--light);
+    margin-bottom: 2rem;
+}
+
+.chart-container {
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.calc-chart-section canvas {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 300px;
 }
 
 /* CTA Section */
