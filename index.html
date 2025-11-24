@@ -3,91 +3,338 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Professional solar panel installation in Oldham, Saddleworth & Greater Manchester. Save money with renewable energy. Get your free quote today.">
-    <meta name="keywords" content="solar panels oldham, solar installation, renewable energy, solar panels saddleworth">
+    <meta name="description" content="Calculate your solar panel savings in Oldham, Rochdale, Manchester, and surrounding areas. Get instant quotes for solar panel installation with our interactive calculator.">
+    <meta name="keywords" content="solar panels Oldham, solar panels Rochdale, solar panels Manchester, solar panel calculator, solar installation Oldham, renewable energy Oldham">
+    <meta name="author" content="Solar Panels Oldham">
+    <meta name="robots" content="index, follow">
     
-    <title>Solar Panels Oldham | Premium Solar Installation</title>
-    
-    <!-- Preconnect to external resources -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
-    <!-- Styles -->
-    <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="stylesheet" href="/assets/css/animations.css">
-    <link rel="stylesheet" href="/assets/css/utilities.css">
-    <link rel="stylesheet" href="/components/hero/hero.css">
-    <link rel="stylesheet" href="/components/counter/counter.css">
-    <link rel="stylesheet" href="/components/modal/modal.css">
-    <link rel="stylesheet" href="/components/form/animated-input.css">
-    <link rel="stylesheet" href="/components/mobile/mobile-menu.css">
-    <link rel="stylesheet" href="/components/cta/floating-cta.css">
-    <link rel="stylesheet" href="/components/card/interactive-card.css">
-    <link rel="stylesheet" href="/components/loader/loader.css">
-    <link rel="stylesheet" href="/components/calculator/calculator.css">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    
-    <!-- Open Graph -->
-    <meta property="og:title" content="Solar Panels Oldham | Premium Solar Installation">
-    <meta property="og:description" content="Professional solar panel installation in Oldham & Greater Manchester">
+    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
+    <meta property="og:title" content="Solar Panel Calculator - Oldham & Surrounding Areas">
+    <meta property="og:description" content="Calculate your solar panel savings and get instant quotes for solar installation in Oldham, Rochdale, Manchester, and surrounding areas.">
     <meta property="og:url" content="https://solar-panels-oldham.co.uk">
     
-    <!-- Theme Color -->
-    <meta name="theme-color" content="#FFD700">
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="Solar Panel Calculator - Oldham & Surrounding Areas">
+    <meta property="twitter:description" content="Calculate your solar panel savings and get instant quotes for solar installation in Oldham, Rochdale, Manchester, and surrounding areas.">
     
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="">
+    <title>Solar Panel Calculator - Oldham, Rochdale, Manchester | Get Your Free Quote</title>
+    
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Schema.org LocalBusiness -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Solar Panels Oldham",
+      "description": "Professional solar panel installation and consultation services in Oldham, Rochdale, Manchester, and surrounding areas",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Oldham",
+        "addressRegion": "Greater Manchester",
+        "addressCountry": "GB"
+      },
+      "areaServed": [
+        "Oldham",
+        "Rochdale",
+        "Manchester",
+        "Ashton-under-Lyne",
+        "Bury",
+        "Bolton"
+      ],
+      "serviceType": "Solar Panel Installation",
+      "priceRange": "$$"
+    }
+    </script>
 </head>
 <body>
-    <!-- Skip to content -->
-    <a href="#main" class="skip-to-content">Skip to main content</a>
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
     
-    <!-- App Container -->
-    <div id="app">
-        <!-- Initial loading state -->
-        <div class="app-loading">
-            <div class="loading-animation" data-component="loader">
-                <div class="solar-loader">
-                    <div class="sun"></div>
-                    <div class="panel panel-1"></div>
-                    <div class="panel panel-2"></div>
-                    <div class="panel panel-3"></div>
-                </div>
-                <p class="loading-text">Powering up your solar experience...</p>
+    <!-- Navigation -->
+    <nav class="nav-container">
+        <div class="nav-content">
+            <div class="logo">Solar Panels Oldham</div>
+            <div class="nav-links">
+                <a href="#calculator" class="nav-link">Calculator</a>
+                <a href="#benefits" class="nav-link">Benefits</a>
+                <a href="#quote" class="nav-link cta-nav">Get Quote</a>
             </div>
         </div>
-    </div>
+    </nav>
     
-    <!-- Main content will be loaded here -->
-    <main id="main" role="main">
-        <!-- Content loaded dynamically by router -->
-    </main>
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                <span class="title-line">Power Your Home with</span>
+                <span class="title-line highlight">Solar Energy</span>
+            </h1>
+            <p class="hero-subtitle">Calculate your savings and discover how solar panels can transform your energy costs in Oldham, Rochdale, Manchester, and surrounding areas.</p>
+            <a href="#calculator" class="hero-cta">Start Calculating</a>
+        </div>
+        <div class="hero-visual">
+            <div class="floating-elements">
+                <div class="float-element float-1"></div>
+                <div class="float-element float-2"></div>
+                <div class="float-element float-3"></div>
+            </div>
+        </div>
+    </section>
     
-    <!-- Core Application -->
-    <script type="module">
-        import { app } from '/core/app.js';
-        
-        // Initialize app when DOM is ready
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => {
-                // Remove loading state when app initializes
-                app.eventBus.once('app:ready', () => {
-                    document.querySelector('.app-loading').style.display = 'none';
-                });
-            });
-        }
-    </script>
+    <!-- Benefits Section -->
+    <section class="benefits" id="benefits">
+        <div class="container">
+            <h2 class="section-title">Why Choose Solar Panels?</h2>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">£</div>
+                    <h3>Save Money</h3>
+                    <p>Reduce your electricity bills by up to 90% with solar panel installation</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">ECO</div>
+                    <h3>Eco-Friendly</h3>
+                    <p>Reduce your carbon footprint and contribute to a sustainable future</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">PWR</div>
+                    <h3>Energy Independence</h3>
+                    <p>Generate your own clean energy and reduce reliance on the grid</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">+4%</div>
+                    <h3>Increase Property Value</h3>
+                    <p>Solar panels can increase your property value by up to 4%</p>
+                </div>
+            </div>
+        </div>
+    </section>
     
-    <!-- Analytics (replace with actual ID) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=GA-MEASUREMENT-ID"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'GA-MEASUREMENT-ID');
-    </script>
+    <!-- Calculator Section -->
+    <section class="calculator-section" id="calculator">
+        <div class="container">
+            <h2 class="section-title">Solar Panel Calculator</h2>
+            <p class="section-subtitle">Adjust the sliders below to see your potential savings in real-time</p>
+            
+            <div class="calculator-container">
+                <!-- Input Panel -->
+                <div class="calculator-panel input-panel">
+                    <h3 class="panel-title">Your Details</h3>
+                    
+                    <div class="input-group">
+                        <label for="location">Location</label>
+                        <select id="location" class="input-field">
+                            <option value="oldham">Oldham</option>
+                            <option value="rochdale">Rochdale</option>
+                            <option value="manchester">Manchester</option>
+                            <option value="ashton">Ashton-under-Lyne</option>
+                            <option value="bury">Bury</option>
+                            <option value="bolton">Bolton</option>
+                            <option value="other">Other Greater Manchester Area</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="roofSize">
+                            Roof Size: <span id="roofSizeValue">50</span> m²
+                        </label>
+                        <input type="range" id="roofSize" min="20" max="200" value="50" class="slider">
+                        <div class="slider-track"></div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="energyUsage">
+                            Monthly Energy Usage: <span id="energyUsageValue">300</span> kWh
+                        </label>
+                        <input type="range" id="energyUsage" min="100" max="1000" value="300" class="slider">
+                        <div class="slider-track"></div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="roofOrientation">Roof Orientation</label>
+                        <div class="orientation-selector">
+                            <button class="orientation-btn" data-orientation="south">South</button>
+                            <button class="orientation-btn" data-orientation="southeast">SE</button>
+                            <button class="orientation-btn active" data-orientation="southwest">SW</button>
+                            <button class="orientation-btn" data-orientation="east">East</button>
+                            <button class="orientation-btn" data-orientation="west">West</button>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="roofPitch">
+                            Roof Pitch: <span id="roofPitchValue">35</span>°
+                        </label>
+                        <input type="range" id="roofPitch" min="15" max="60" value="35" class="slider">
+                        <div class="slider-track"></div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="shading">
+                            Shading Level: <span id="shadingValue">Low</span>
+                        </label>
+                        <input type="range" id="shading" min="0" max="100" value="20" class="slider">
+                        <div class="slider-track"></div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="propertyType">Property Type</label>
+                        <div class="property-selector">
+                            <button class="property-btn" data-type="detached">Detached</button>
+                            <button class="property-btn active" data-type="semi">Semi-Detached</button>
+                            <button class="property-btn" data-type="terraced">Terraced</button>
+                            <button class="property-btn" data-type="flat">Flat</button>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="budget">
+                            Budget: £<span id="budgetValue">10000</span>
+                        </label>
+                        <input type="range" id="budget" min="3000" max="30000" value="10000" step="500" class="slider">
+                        <div class="slider-track"></div>
+                    </div>
+                </div>
+                
+                <!-- Results Panel -->
+                <div class="calculator-panel results-panel">
+                    <h3 class="panel-title">Your Results</h3>
+                    
+                    <div class="results-grid">
+                        <div class="result-card">
+                            <div class="result-label">System Size</div>
+                            <div class="result-value" id="systemSize">4.5 kW</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Number of Panels</div>
+                            <div class="result-value" id="numPanels">12</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Installation Cost</div>
+                            <div class="result-value" id="installCost">£8,500</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Annual Savings</div>
+                            <div class="result-value highlight" id="annualSavings">£1,200</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">ROI</div>
+                            <div class="result-value" id="roi">14.1%</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Payback Period</div>
+                            <div class="result-value" id="paybackPeriod">7.1 years</div>
+                        </div>
+                        <div class="result-card full-width">
+                            <div class="result-label">CO₂ Reduction</div>
+                            <div class="result-value" id="co2Reduction">2.1 tonnes/year</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Charts Container -->
+                    <div class="charts-container">
+                        <div class="chart-wrapper">
+                            <h4 class="chart-title">Savings Over Time</h4>
+                            <canvas id="savingsChart"></canvas>
+                        </div>
+                        <div class="chart-wrapper">
+                            <h4 class="chart-title">Energy Generation vs Consumption</h4>
+                            <canvas id="energyChart"></canvas>
+                        </div>
+                        <div class="chart-wrapper">
+                            <h4 class="chart-title">ROI Progress</h4>
+                            <canvas id="roiChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Quote Form Section -->
+    <section class="quote-section" id="quote">
+        <div class="container">
+            <h2 class="section-title">Request Your Free Quote</h2>
+            <p class="section-subtitle">Get a personalized quote based on your calculations</p>
+            
+            <div class="quote-form-container">
+                <form id="quoteForm" class="quote-form" action="calculator.php" method="POST">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Full Name *</label>
+                            <input type="text" id="name" name="name" required class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required class="form-input">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone">Phone Number *</label>
+                            <input type="tel" id="phone" name="phone" required class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Address *</label>
+                            <input type="text" id="address" name="address" required class="form-input">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Additional Information</label>
+                        <textarea id="message" name="message" rows="4" class="form-input"></textarea>
+                    </div>
+                    
+                    <!-- Hidden fields with calculator results -->
+                    <input type="hidden" id="calcSystemSize" name="system_size">
+                    <input type="hidden" id="calcNumPanels" name="num_panels">
+                    <input type="hidden" id="calcInstallCost" name="install_cost">
+                    <input type="hidden" id="calcAnnualSavings" name="annual_savings">
+                    <input type="hidden" id="calcRoi" name="roi">
+                    <input type="hidden" id="calcPaybackPeriod" name="payback_period">
+                    <input type="hidden" id="calcLocation" name="location">
+                    
+                    <button type="submit" class="submit-btn">
+                        <span>Submit Quote Request</span>
+                        <div class="btn-ripple"></div>
+                    </button>
+                    
+                    <div id="formMessage" class="form-message"></div>
+                </form>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Solar Panels Oldham</h4>
+                    <p>Professional solar panel installation services across Greater Manchester</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Areas We Serve</h4>
+                    <p>Oldham, Rochdale, Manchester, Ashton-under-Lyne, Bury, Bolton</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>Get in touch for your free consultation</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Solar Panels Oldham. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
+
