@@ -1,53 +1,445 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Professional solar panel installation in Oldham, Saddleworth & Greater Manchester. Save money with renewable energy. Get your free quote today.">
-    <meta name="keywords" content="solar panels oldham, solar installation, renewable energy, solar panels saddleworth">
-    
-    <title>Solar Panels Oldham | Premium Solar Installation</title>
-    
-    <!-- Preconnect to external resources -->
+    <title>Solar Panels Oldham | Premium Solar Installation | MCS Certified</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Transform your home with premium solar panels in Oldham. MCS certified installers, 25-year warranty, cut your energy bills by up to 70%. Get your free solar quote today.">
+    <meta name="keywords" content="solar panels Oldham, solar installation Manchester, renewable energy Greater Manchester, MCS certified solar, solar PV systems">
+    <meta name="author" content="Solar Panels Oldham">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Solar Panels Oldham | Premium Solar Installation">
+    <meta property="og:description" content="MCS certified solar panel installation in Oldham. Cut your energy bills by up to 70% with premium solar PV systems.">
+    <meta property="og:image" content="/assets/images/og-solar-oldham.jpg">
+    <meta property="og:url" content="https://solar-panels-oldham.co.uk">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Solar Panels Oldham | Premium Solar Installation">
+    <meta name="twitter:description" content="MCS certified solar panel installation in Oldham. Cut your energy bills by up to 70%.">
+    <meta name="twitter:image" content="/assets/images/og-solar-oldham.jpg">
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
-    <!-- Styles -->
-    <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="stylesheet" href="/assets/css/animations.css">
-    <link rel="stylesheet" href="/assets/css/utilities.css">
-    <link rel="stylesheet" href="/components/hero/hero.css">
-    <link rel="stylesheet" href="/components/counter/counter.css">
-    <link rel="stylesheet" href="/components/modal/modal.css">
-    <link rel="stylesheet" href="/components/form/animated-input.css">
-    <link rel="stylesheet" href="/components/mobile/mobile-menu.css">
-    <link rel="stylesheet" href="/components/cta/floating-cta.css">
-    <link rel="stylesheet" href="/components/card/interactive-card.css">
-    <link rel="stylesheet" href="/components/loader/loader.css">
-    <link rel="stylesheet" href="/components/calculator/calculator.css">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    
-    <!-- Open Graph -->
-    <meta property="og:title" content="Solar Panels Oldham | Premium Solar Installation">
-    <meta property="og:description" content="Professional solar panel installation in Oldham & Greater Manchester">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://solar-panels-oldham.co.uk">
-    
-    <!-- Theme Color -->
-    <meta name="theme-color" content="#FFD700">
-    
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" href="/favicon.svg">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/assets/css/design-system.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+
+    <!-- Preload Critical Resources -->
+    <link rel="preload" href="/assets/css/main.css" as="style">
+    <link rel="preload" href="/assets/js/main.js" as="script">
 </head>
 <body>
-    <!-- Skip to content -->
-    <a href="#main" class="skip-to-content">Skip to main content</a>
-    
-    <!-- App Container -->
-    <div id="app">
-        <!-- Initial loading state -->
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="header-container">
+            <!-- Logo -->
+            <div class="logo">
+                <a href="/" aria-label="Solar Panels Oldham Home">
+                    <span class="logo-icon">⚡</span>
+                    <span class="logo-text">Solar Panels Oldham</span>
+                    <span class="logo-tagline">MCS Certified Installers</span>
+                </a>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="main-nav" aria-label="Main navigation">
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="#home" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="#services" class="nav-link">Services</a></li>
+                    <li class="nav-item"><a href="#calculator" class="nav-link">Calculator</a></li>
+                    <li class="nav-item"><a href="#testimonials" class="nav-link">Reviews</a></li>
+                    <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+
+            <!-- Contact Info -->
+            <div class="header-contact">
+                <div class="contact-phone">
+                    <span class="contact-label">Expert Advice</span>
+                    <a href="tel:01615550198" class="contact-link">0161 555 0198</a>
+                </div>
+                <button class="btn-primary btn-sm" data-action="quote-modal">
+                    <span class="btn-text">Get Free Quote</span>
+                    <span class="btn-icon">⚡</span>
+                </button>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <nav class="mobile-nav" aria-label="Mobile navigation" hidden>
+            <ul class="mobile-nav-list">
+                <li class="mobile-nav-item"><a href="#home" class="mobile-nav-link">Home</a></li>
+                <li class="mobile-nav-item"><a href="#services" class="mobile-nav-link">Services</a></li>
+                <li class="mobile-nav-item"><a href="#calculator" class="mobile-nav-link">Calculator</a></li>
+                <li class="mobile-nav-item"><a href="#testimonials" class="mobile-nav-link">Reviews</a></li>
+                <li class="mobile-nav-item"><a href="#contact" class="mobile-nav-link">Contact</a></li>
+                <li class="mobile-nav-item">
+                    <a href="tel:01615550198" class="mobile-nav-link contact-link">
+                        <span class="link-icon">📞</span>
+                        Call 0161 555 0198
+                    </a>
+                </li>
+                <li class="mobile-nav-item">
+                    <button class="btn-primary btn-full" data-action="quote-modal">
+                        <span class="btn-text">Get Free Quote</span>
+                        <span class="btn-icon">⚡</span>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        <!-- Hero Section -->
+        <section id="home" class="hero-section">
+            <div class="hero-container">
+                <!-- Hero Content -->
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <span class="badge-icon">🏆</span>
+                        <span class="badge-text">#1 Solar Installer Oldham 2024</span>
+                    </div>
+
+                    <h1 class="hero-title">
+                        <span class="title-line">Power Your Future</span>
+                        <span class="title-line">With Solar Energy</span>
+                    </h1>
+
+                    <p class="hero-subtitle">
+                        Transform your home into a clean energy powerhouse. Cut your electricity bills by up to 70%
+                        with premium solar panels installed by MCS certified experts in Oldham and Greater Manchester.
+                    </p>
+
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <div class="stat-number" data-counter="500">0</div>
+                            <div class="stat-label">Homes Powered</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" data-counter="2500000">£0</div>
+                            <div class="stat-label">Savings Generated</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" data-counter="25">0</div>
+                            <div class="stat-label">Year Warranty</div>
+                        </div>
+                    </div>
+
+                    <div class="hero-actions">
+                        <button class="btn-primary btn-lg" data-action="calculator-scroll">
+                            <span class="btn-text">Calculate Your Savings</span>
+                            <span class="btn-icon">⚡</span>
+                        </button>
+                        <button class="btn-secondary btn-lg" data-action="quote-modal">
+                            <span class="btn-text">Get Free Consultation</span>
+                            <span class="btn-icon">📞</span>
+                        </button>
+                    </div>
+
+                    <div class="hero-trust">
+                        <div class="trust-item">
+                            <span class="trust-icon">✓</span>
+                            <span class="trust-text">MCS Certified</span>
+                        </div>
+                        <div class="trust-item">
+                            <span class="trust-icon">✓</span>
+                            <span class="trust-text">25 Year Warranty</span>
+                        </div>
+                        <div class="trust-item">
+                            <span class="trust-icon">✓</span>
+                            <span class="trust-text">Fully Insured</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Visual -->
+                <div class="hero-visual">
+                    <div class="solar-system-preview">
+                        <div class="roof-outline">
+                            <div class="solar-panels" id="hero-solar-panels">
+                                <!-- Solar panels will be generated dynamically -->
+                            </div>
+                            <div class="sun-position" id="hero-sun">
+                                <div class="sun-rays"></div>
+                                <div class="sun-core"></div>
+                            </div>
+                            <div class="energy-flow" id="hero-energy-flow">
+                                <div class="flow-particle" style="animation-delay: 0s"></div>
+                                <div class="flow-particle" style="animation-delay: 0.5s"></div>
+                                <div class="flow-particle" style="animation-delay: 1s"></div>
+                            </div>
+                        </div>
+                        <div class="system-stats">
+                            <div class="system-stat">
+                                <span class="stat-value">4.2 kWp</span>
+                                <span class="stat-label">System Size</span>
+                            </div>
+                            <div class="system-stat">
+                                <span class="stat-value">£6,800</span>
+                                <span class="stat-label">Total Cost</span>
+                            </div>
+                            <div class="system-stat">
+                                <span class="stat-value">7 Years</span>
+                                <span class="stat-label">Payback Period</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Background Effects -->
+            <div class="hero-bg-effects">
+                <div class="particle-field" id="hero-particles"></div>
+                <div class="electricity-arc arc-1"></div>
+                <div class="electricity-arc arc-2"></div>
+                <div class="energy-wave wave-1"></div>
+                <div class="energy-wave wave-2"></div>
+            </div>
+
+            <!-- Scroll Indicator -->
+            <div class="scroll-indicator">
+                <div class="scroll-text">Scroll to explore</div>
+                <div class="scroll-line">
+                    <div class="scroll-progress"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="services-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Complete Solar Solutions</h2>
+                    <p class="section-subtitle">From consultation to installation, we handle every aspect of your solar journey</p>
+                </div>
+
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-icon">🔍</div>
+                        <h3 class="service-title">Free Site Survey</h3>
+                        <p class="service-description">Comprehensive roof assessment and solar potential analysis at no cost</p>
+                        <div class="service-features">
+                            <span class="feature">✓ Roof inspection</span>
+                            <span class="feature">✓ Shade analysis</span>
+                            <span class="feature">✓ System design</span>
+                        </div>
+                    </div>
+
+                    <div class="service-card featured">
+                        <div class="service-badge">Most Popular</div>
+                        <div class="service-icon">⚡</div>
+                        <h3 class="service-title">Premium Installation</h3>
+                        <p class="service-description">Professional solar panel installation with Tier 1 panels and premium inverters</p>
+                        <div class="service-features">
+                            <span class="feature">✓ MCS certified</span>
+                            <span class="feature">✓ 25 year warranty</span>
+                            <span class="feature">✓ Full insurance</span>
+                        </div>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-icon">🔧</div>
+                        <h3 class="service-title">Maintenance & Support</h3>
+                        <p class="service-description">Ongoing system monitoring and maintenance to ensure optimal performance</p>
+                        <div class="service-features">
+                            <span class="feature">✓ Remote monitoring</span>
+                            <span class="feature">✓ Annual inspections</span>
+                            <span class="feature">✓ 24/7 support</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Calculator Section -->
+        <section id="calculator" class="calculator-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title text-electric">Solar Investment Calculator</h2>
+                    <p class="section-subtitle">Discover your path to energy independence with our advanced solar simulation</p>
+                </div>
+
+                <div class="calculator-wrapper" id="solar-calculator">
+                    <!-- Calculator content will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="testimonials-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Trusted by Oldham Residents</h2>
+                    <p class="section-subtitle">Real stories from real customers who've transformed their homes with solar</p>
+                </div>
+
+                <div class="testimonials-grid">
+                    <!-- Testimonials will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <div class="container">
+                <div class="cta-content">
+                    <h2 class="cta-title">Ready to Start Saving?</h2>
+                    <p class="cta-subtitle">Join hundreds of Oldham homeowners already generating their own clean energy</p>
+                    <div class="cta-actions">
+                        <button class="btn-primary btn-xl" data-action="quote-modal">
+                            <span class="btn-text">Get Your Free Quote</span>
+                            <span class="btn-icon">⚡</span>
+                        </button>
+                        <div class="cta-contact">
+                            <span class="contact-text">Or call us directly:</span>
+                            <a href="tel:01615550198" class="contact-number">0161 555 0198</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <!-- Company Info -->
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <span class="logo-icon">⚡</span>
+                        <span class="logo-text">Solar Panels Oldham</span>
+                    </div>
+                    <p class="footer-description">
+                        MCS certified solar panel installation specialists serving Oldham and Greater Manchester.
+                        Transform your home with clean, renewable energy and start saving money today.
+                    </p>
+                    <div class="footer-certifications">
+                        <span class="cert-badge">MCS Certified</span>
+                        <span class="cert-badge">Fully Insured</span>
+                        <span class="cert-badge">25 Year Warranty</span>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="footer-section">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#services">Our Services</a></li>
+                        <li><a href="#calculator">Solar Calculator</a></li>
+                        <li><a href="#testimonials">Customer Reviews</a></li>
+                        <li><a href="#contact">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <!-- Services -->
+                <div class="footer-section">
+                    <h4 class="footer-title">Our Services</h4>
+                    <ul class="footer-links">
+                        <li><a href="#services">Solar Panel Installation</a></li>
+                        <li><a href="#services">Free Site Survey</a></li>
+                        <li><a href="#services">System Maintenance</a></li>
+                        <li><a href="#services">Battery Storage</a></li>
+                        <li><a href="#services">Smart Monitoring</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div class="footer-section">
+                    <h4 class="footer-title">Get in Touch</h4>
+                    <div class="footer-contact">
+                        <div class="contact-item">
+                            <span class="contact-icon">📞</span>
+                            <a href="tel:01615550198">0161 555 0198</a>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">📧</span>
+                            <a href="mailto:info@solar-panels-oldham.co.uk">info@solar-panels-oldham.co.uk</a>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">📍</span>
+                            <span>Oldham, Greater Manchester</span>
+                        </div>
+                    </div>
+                    <div class="footer-social">
+                        <a href="#" aria-label="Facebook" class="social-link">📘</a>
+                        <a href="#" aria-label="Twitter" class="social-link">🐦</a>
+                        <a href="#" aria-label="Instagram" class="social-link">📷</a>
+                        <a href="#" aria-label="LinkedIn" class="social-link">💼</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="footer-legal">
+                    <p>&copy; 2024 Solar Panels Oldham. All rights reserved.</p>
+                    <ul class="legal-links">
+                        <li><a href="/privacy">Privacy Policy</a></li>
+                        <li><a href="/terms">Terms of Service</a></li>
+                        <li><a href="/cookies">Cookie Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-credits">
+                    <p>Powered by clean energy ⚡</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Quote Modal -->
+    <div class="modal" id="quote-modal" hidden>
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <button class="modal-close" aria-label="Close modal">✕</button>
+            <div class="modal-header">
+                <h2 class="modal-title">Get Your Free Solar Quote</h2>
+                <p class="modal-subtitle">Tell us about your property and we'll provide a detailed solar solution</p>
+            </div>
+            <div class="modal-body">
+                <form class="quote-form" id="quote-form">
+                    <!-- Form fields will be loaded here -->
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/assets/js/main.js" defer></script>
+    <script src="/core/events.js"></script>
+    <script src="/core/state.js"></script>
+    <script src="/core/components.js"></script>
+
+    <!-- Component Scripts -->
+    <script src="/components/hero/hero.js" defer></script>
+    <script src="/components/calculator/calculator.js" defer></script>
+    <script src="/components/testimonials/testimonials.js" defer></script>
+    <script src="/components/cta/cta.js" defer></script>
+</body>
         <div class="app-loading">
             <div class="loading-animation" data-component="loader">
                 <div class="solar-loader">
