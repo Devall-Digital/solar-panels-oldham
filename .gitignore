@@ -2,8 +2,9 @@
 webhook-config.php
 email-config.php
 
-# Backup directory
+# Backup directories (used by deployment script)
 .config-backup/
+.temp-config-backup/
 
 # Logs
 deploy.log

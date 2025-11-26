@@ -209,7 +209,14 @@ foreach ($configFiles as $configFile) {
 
 // Clean up temp backup directory
 if (is_dir($tempBackupDir)) {
+    // Remove any remaining files first
+    foreach (glob($tempBackupDir . '/*') as $file) {
+        if (is_file($file)) {
+            unlink($file);
+        }
+    }
     rmdir($tempBackupDir);
+    logMessage("Cleaned up temp backup directory");
 }
 
 // Restore config files if they were removed
