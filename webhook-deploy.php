@@ -3,6 +3,7 @@
  * GitHub Webhook Auto-Deploy Script
  * This script automatically pulls updates from GitHub when triggered by a webhook
  * Created for solar-panels-oldham.co.uk automatic deployment
+ * Updated: Full design elements deployment
  */
 
 // Configuration

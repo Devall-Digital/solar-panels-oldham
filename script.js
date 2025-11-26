@@ -1,4 +1,5 @@
 // Calculator State
+// Updated: Full design elements deployment
 const calculatorState = {
     location: 'oldham',
     roofSize: 50,

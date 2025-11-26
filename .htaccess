@@ -1,6 +1,7 @@
 # Solar Panels Oldham - .htaccess Configuration
 # SEO optimizations and performance enhancements
 # Preserves webhook-deploy.php functionality
+# Updated: Full design elements deployment
 
 # Enable Rewrite Engine
 <IfModule mod_rewrite.c>

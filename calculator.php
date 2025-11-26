@@ -2,6 +2,7 @@
 /**
  * Solar Panel Calculator Quote Form Handler
  * Processes quote requests from the calculator form
+ * Updated: Full design elements deployment
  */
 
 // Set content type to JSON
