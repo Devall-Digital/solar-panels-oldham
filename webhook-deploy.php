@@ -157,10 +157,74 @@ if ($commitResult['success']) {
     logMessage("Latest commit: " . $commitResult['output']);
 }
 
-// Clean up any untracked files that might cause issues
-logMessage("Cleaning untracked files...");
+// Backup critical config files before cleaning
+logMessage("Backing up config files...");
+$configFiles = ['webhook-config.php', 'email-config.php'];
+$backupDir = $REPO_PATH . '/.config-backup';
+if (!is_dir($backupDir)) {
+    mkdir($backupDir, 0700, true);
+}
+
+foreach ($configFiles as $configFile) {
+    $filePath = $REPO_PATH . '/' . $configFile;
+    if (file_exists($filePath)) {
+        $backupPath = $backupDir . '/' . $configFile;
+        copy($filePath, $backupPath);
+        logMessage("Backed up: $configFile");
+    }
+}
+
+// Clean up any untracked files that might cause issues (excluding config files)
+logMessage("Cleaning untracked files (preserving config files)...");
+// Temporarily move config files to backup, clean, then restore
+$tempBackupDir = $REPO_PATH . '/.temp-config-backup';
+if (!is_dir($tempBackupDir)) {
+    mkdir($tempBackupDir, 0700, true);
+}
+
+// Move config files to temp backup
+foreach ($configFiles as $configFile) {
+    $filePath = $REPO_PATH . '/' . $configFile;
+    if (file_exists($filePath)) {
+        $tempPath = $tempBackupDir . '/' . $configFile;
+        rename($filePath, $tempPath);
+        logMessage("Temporarily moved: $configFile");
+    }
+}
+
+// Now clean untracked files
 $cleanResult = executeCommand("cd $REPO_PATH && git clean -fd");
 logMessage("Git clean result: " . $cleanResult['output']);
+
+// Restore config files from temp backup
+foreach ($configFiles as $configFile) {
+    $filePath = $REPO_PATH . '/' . $configFile;
+    $tempPath = $tempBackupDir . '/' . $configFile;
+    
+    if (file_exists($tempPath)) {
+        rename($tempPath, $filePath);
+        logMessage("Restored: $configFile");
+    }
+}
+
+// Clean up temp backup directory
+if (is_dir($tempBackupDir)) {
+    rmdir($tempBackupDir);
+}
+
+// Restore config files if they were removed
+logMessage("Restoring config files...");
+foreach ($configFiles as $configFile) {
+    $filePath = $REPO_PATH . '/' . $configFile;
+    $backupPath = $backupDir . '/' . $configFile;
+    
+    if (!file_exists($filePath) && file_exists($backupPath)) {
+        copy($backupPath, $filePath);
+        logMessage("Restored: $configFile");
+    } elseif (file_exists($filePath)) {
+        logMessage("Config file already exists: $configFile");
+    }
+}
 
 logMessage("=== Deployment Completed Successfully ===");
 echo "Deployment successful! Latest commit: " . ($commitResult['output'] ?? 'Unknown');

@@ -1,0 +1,32 @@
+# Config files with sensitive data - DO NOT COMMIT
+webhook-config.php
+email-config.php
+
+# Backup directory
+.config-backup/
+
+# Logs
+deploy.log
+*.log
+
+# Quotes directory (contains user data)
+quotes/
+
+# Rate limit files
+rate_limit_*.json
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.bak
+
