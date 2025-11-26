@@ -694,6 +694,31 @@ function initializeShapeInteractions() {
     const shapes = document.querySelectorAll('.shape');
     if (shapes.length === 0) return;
     
+    // Physics-based bouncing for shapes
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+    
+    const shapePhysics = Array.from(shapes).map((shape, index) => {
+        const rect = shape.getBoundingClientRect();
+        const width = rect.width || 200;
+        const height = rect.height || 150;
+        
+        // Random starting position (with padding from edges)
+        const padding = 100;
+        const startX = padding + Math.random() * (viewportWidth - padding * 2);
+        const startY = padding + Math.random() * (viewportHeight - padding * 2);
+        
+        return {
+            element: shape,
+            x: startX, // Center X
+            y: startY,  // Center Y
+            vx: (Math.random() - 0.5) * 0.4, // Random velocity X (-0.2 to 0.2 px/frame)
+            vy: (Math.random() - 0.5) * 0.4, // Random velocity Y (-0.2 to 0.2 px/frame)
+            width: width,
+            height: height
+        };
+    });
+    
     // Scroll tracking variables
     let lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
     let scrollVelocity = 0;
@@ -704,6 +729,61 @@ function initializeShapeInteractions() {
     let mouseX = 0;
     let mouseY = 0;
     let isDesktop = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    
+    // Physics animation loop
+    function animateShapes() {
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        
+        shapePhysics.forEach(physics => {
+            // Update position
+            physics.x += physics.vx;
+            physics.y += physics.vy;
+            
+            // Bounce off edges (with some padding to keep shapes visible)
+            const padding = 50;
+            if (physics.x - physics.width / 2 < padding || physics.x + physics.width / 2 > viewportWidth - padding) {
+                physics.vx *= -1; // Reverse X velocity
+                physics.x = Math.max(padding + physics.width / 2, Math.min(viewportWidth - padding - physics.width / 2, physics.x));
+            }
+            
+            if (physics.y - physics.height / 2 < padding || physics.y + physics.height / 2 > viewportHeight - padding) {
+                physics.vy *= -1; // Reverse Y velocity
+                physics.y = Math.max(padding + physics.height / 2, Math.min(viewportHeight - padding - physics.height / 2, physics.y));
+            }
+            
+            // Update CSS position (absolute positioning with parallax offset)
+            const parallaxX = physics.element.style.getPropertyValue('--parallax-x') || '0px';
+            const parallaxY = physics.element.style.getPropertyValue('--parallax-y') || '0px';
+            
+            // Apply position directly in pixels (more accurate for bouncing)
+            physics.element.style.left = `calc(${physics.x - physics.width / 2}px + ${parallaxX})`;
+            physics.element.style.top = `calc(${physics.y - physics.height / 2}px + ${parallaxY})`;
+            physics.element.style.right = 'auto';
+            physics.element.style.bottom = 'auto';
+        });
+        
+        requestAnimationFrame(animateShapes);
+    }
+    
+    // Start physics animation
+    animateShapes();
+    
+    // Handle window resize - keep shapes within bounds
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            const newWidth = window.innerWidth;
+            const newHeight = window.innerHeight;
+            
+            shapePhysics.forEach(physics => {
+                // Keep shapes within new viewport bounds
+                physics.x = Math.max(physics.width / 2 + 50, Math.min(newWidth - physics.width / 2 - 50, physics.x));
+                physics.y = Math.max(physics.height / 2 + 50, Math.min(newHeight - physics.height / 2 - 50, physics.y));
+            });
+        }, 250);
+    });
     
     // Scroll event handler
     function handleScroll() {

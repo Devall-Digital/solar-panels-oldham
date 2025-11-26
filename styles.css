@@ -128,52 +128,47 @@ body {
 .shape-solar-panel {
     width: 200px;
     height: 120px;
-    top: calc(10% + var(--parallax-y));
-    left: calc(5% + var(--parallax-x));
     color: var(--primary-purple);
-    animation: shapeRotate 25s infinite linear, shapeMove1 30s ease-in-out infinite;
+    animation: shapeRotate 25s infinite linear;
+    transition: left 0.1s linear, top 0.1s linear;
 }
 
 /* Sun Icon */
 .shape-sun {
     width: 180px;
     height: 180px;
-    bottom: calc(15% - var(--parallax-y));
-    right: calc(10% - var(--parallax-x));
     color: rgba(251, 191, 36, 0.6);
-    animation: shapeRotate 35s infinite linear reverse, shapeMove2 35s ease-in-out infinite;
+    animation: shapeRotate 35s infinite linear reverse;
     filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.4));
+    transition: left 0.1s linear, top 0.1s linear;
 }
 
 /* Energy Bolt */
 .shape-energy {
     width: 80px;
     height: 130px;
-    top: calc(50% + var(--parallax-y));
-    right: calc(20% - var(--parallax-x));
     color: var(--primary-cyan);
-    animation: shapeRotate 40s infinite linear, shapeMove3 28s ease-in-out infinite, energyPulse 3s ease-in-out infinite;
+    animation: shapeRotate 40s infinite linear, energyPulse 3s ease-in-out infinite;
+    transition: left 0.1s linear, top 0.1s linear;
 }
 
 /* Solar Panel Array */
 .shape-panel-array {
     width: 240px;
     height: 160px;
-    bottom: calc(20% - var(--parallax-y));
-    left: calc(15% + var(--parallax-x));
     color: var(--primary-purple);
-    animation: shapeRotate 28s infinite linear reverse, shapeMove4 32s ease-in-out infinite;
+    animation: shapeRotate 28s infinite linear reverse;
+    transition: left 0.1s linear, top 0.1s linear;
 }
 
 /* Sun Rays */
 .shape-sun-rays {
     width: 200px;
     height: 200px;
-    top: calc(30% + var(--parallax-y));
-    left: calc(50% + var(--parallax-x));
     color: rgba(251, 191, 36, 0.5);
-    animation: shapeRotate 32s infinite linear, shapeMove5 26s ease-in-out infinite;
+    animation: shapeRotate 32s infinite linear;
     filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.3));
+    transition: left 0.1s linear, top 0.1s linear;
 }
 
 /* Scroll-reactive styles */
