@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeCharts();
     initializeAnimations();
     initializeForm();
+    initializeShapeInteractions();
 });
 
 // Initialize Calculator
@@ -687,4 +688,139 @@ document.addEventListener('click', function(e) {
         }, 600);
     }
 });
+
+// Initialize Shape Interactions (Scroll & Cursor)
+function initializeShapeInteractions() {
+    const shapes = document.querySelectorAll('.shape');
+    if (shapes.length === 0) return;
+    
+    // Scroll tracking variables
+    let lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    let scrollVelocity = 0;
+    let lastScrollTime = Date.now();
+    let scrollTimeout = null;
+    
+    // Cursor tracking variables (desktop only)
+    let mouseX = 0;
+    let mouseY = 0;
+    let isDesktop = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    
+    // Scroll event handler
+    function handleScroll() {
+        const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const currentTime = Date.now();
+        const timeDelta = currentTime - lastScrollTime;
+        
+        // Calculate scroll velocity (pixels per second)
+        if (timeDelta > 0) {
+            const scrollDelta = Math.abs(currentScrollTop - lastScrollTop);
+            scrollVelocity = (scrollDelta / timeDelta) * 1000; // Convert to px/s
+        }
+        
+        // Update shapes based on scroll speed
+        shapes.forEach(shape => {
+            shape.classList.remove('scroll-fast', 'scroll-slow');
+            
+            if (scrollVelocity > 100) {
+                // Fast scrolling
+                shape.classList.add('scroll-fast');
+            } else if (scrollVelocity < 20 && scrollVelocity > 0) {
+                // Slow scrolling
+                shape.classList.add('scroll-slow');
+            }
+        });
+        
+        lastScrollTop = currentScrollTop;
+        lastScrollTime = currentTime;
+        
+        // Reset scroll velocity after scrolling stops
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            scrollVelocity = 0;
+            shapes.forEach(shape => {
+                shape.classList.remove('scroll-fast', 'scroll-slow');
+            });
+        }, 150);
+    }
+    
+    // Cursor tracking (desktop only)
+    function handleMouseMove(e) {
+        if (!isDesktop) return;
+        
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        
+        shapes.forEach(shape => {
+            const rect = shape.getBoundingClientRect();
+            const shapeCenterX = rect.left + rect.width / 2;
+            const shapeCenterY = rect.top + rect.height / 2;
+            
+            // Calculate distance from cursor to shape center
+            const distance = Math.sqrt(
+                Math.pow(mouseX - shapeCenterX, 2) + 
+                Math.pow(mouseY - shapeCenterY, 2)
+            );
+            
+            // React if cursor is within 300px of shape
+            const maxDistance = 300;
+            const proximity = 1 - (distance / maxDistance);
+            
+            shape.classList.remove('cursor-near', 'cursor-far');
+            
+            if (distance < maxDistance) {
+                if (proximity > 0.5) {
+                    shape.classList.add('cursor-near');
+                } else {
+                    shape.classList.add('cursor-far');
+                }
+                
+                // Add parallax effect using CSS variables (works with animations)
+                const moveX = (mouseX - shapeCenterX) * 0.03;
+                const moveY = (mouseY - shapeCenterY) * 0.03;
+                
+                shape.style.setProperty('--parallax-x', `${moveX}px`);
+                shape.style.setProperty('--parallax-y', `${moveY}px`);
+            } else {
+                // Reset parallax when cursor is far
+                shape.classList.remove('cursor-near', 'cursor-far');
+                shape.style.setProperty('--parallax-x', '0px');
+                shape.style.setProperty('--parallax-y', '0px');
+            }
+        });
+    }
+    
+    // Throttled scroll handler for performance
+    let scrollThrottle = null;
+    window.addEventListener('scroll', () => {
+        if (!scrollThrottle) {
+            scrollThrottle = requestAnimationFrame(() => {
+                handleScroll();
+                scrollThrottle = null;
+            });
+        }
+    }, { passive: true });
+    
+    // Mouse move handler (desktop only)
+    if (isDesktop) {
+        let mouseThrottle = null;
+        document.addEventListener('mousemove', (e) => {
+            if (!mouseThrottle) {
+                mouseThrottle = requestAnimationFrame(() => {
+                    handleMouseMove(e);
+                    mouseThrottle = null;
+                });
+            }
+        }, { passive: true });
+        
+        // Reset shapes when mouse leaves window
+        document.addEventListener('mouseleave', () => {
+            shapes.forEach(shape => {
+                shape.classList.remove('cursor-near', 'cursor-far');
+                shape.style.setProperty('--parallax-x', '0px');
+                shape.style.setProperty('--parallax-y', '0px');
+            });
+        });
+    }
+    
+}
 

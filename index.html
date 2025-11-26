@@ -22,7 +22,7 @@
     
     <title>Solar Panel Calculator - Oldham, Rochdale, Manchester | Get Your Free Quote</title>
     
-    <link rel="stylesheet" href="styles.css?v=3">
+    <link rel="stylesheet" href="styles.css?v=4">
     
     <!-- Schema.org LocalBusiness -->
     <script type="application/ld+json">
@@ -55,11 +55,84 @@
     <div class="animated-bg"></div>
     <div class="particles-container" id="particles"></div>
     <div class="geometric-shapes">
-        <div class="shape shape-1"></div>
-        <div class="shape shape-2"></div>
-        <div class="shape shape-3"></div>
-        <div class="shape shape-4"></div>
-        <div class="shape shape-5"></div>
+        <!-- Solar Panel Icon -->
+        <div class="shape shape-solar-panel" data-shape="solar-panel">
+            <svg viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
+                <rect x="5" y="5" width="90" height="50" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                <line x1="25" y1="5" x2="25" y2="55" stroke="currentColor" stroke-width="1"/>
+                <line x1="50" y1="5" x2="50" y2="55" stroke="currentColor" stroke-width="1"/>
+                <line x1="75" y1="5" x2="75" y2="55" stroke="currentColor" stroke-width="1"/>
+                <line x1="5" y1="20" x2="95" y2="20" stroke="currentColor" stroke-width="1"/>
+                <line x1="5" y1="35" x2="95" y2="35" stroke="currentColor" stroke-width="1"/>
+                <line x1="5" y1="50" x2="95" y2="50" stroke="currentColor" stroke-width="1"/>
+            </svg>
+        </div>
+        
+        <!-- Sun Icon -->
+        <div class="shape shape-sun" data-shape="sun">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="25" fill="none" stroke="currentColor" stroke-width="2"/>
+                <line x1="50" y1="10" x2="50" y2="20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <line x1="50" y1="80" x2="50" y2="90" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <line x1="10" y1="50" x2="20" y2="50" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <line x1="80" y1="50" x2="90" y2="50" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <line x1="22.5" y1="22.5" x2="28.5" y2="28.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <line x1="71.5" y1="71.5" x2="77.5" y2="77.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <line x1="77.5" y1="22.5" x2="71.5" y2="28.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <line x1="28.5" y1="71.5" x2="22.5" y2="77.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+        </div>
+        
+        <!-- Energy Bolt Icon -->
+        <div class="shape shape-energy" data-shape="energy">
+            <svg viewBox="0 0 60 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M35 10 L20 50 L30 50 L25 90 L45 50 L35 50 Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+            </svg>
+        </div>
+        
+        <!-- Solar Panel Array -->
+        <div class="shape shape-panel-array" data-shape="panel-array">
+            <svg viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg">
+                <rect x="5" y="5" width="35" height="25" fill="none" stroke="currentColor" stroke-width="1"/>
+                <line x1="15" y1="5" x2="15" y2="30" stroke="currentColor" stroke-width="0.8"/>
+                <line x1="25" y1="5" x2="25" y2="30" stroke="currentColor" stroke-width="0.8"/>
+                <line x1="5" y1="12" x2="40" y2="12" stroke="currentColor" stroke-width="0.8"/>
+                <line x1="5" y1="20" x2="40" y2="20" stroke="currentColor" stroke-width="0.8"/>
+                
+                <rect x="50" y="5" width="35" height="25" fill="none" stroke="currentColor" stroke-width="1"/>
+                <line x1="60" y1="5" x2="60" y2="30" stroke="currentColor" stroke-width="0.8"/>
+                <line x1="70" y1="5" x2="70" y2="30" stroke="currentColor" stroke-width="0.8"/>
+                <line x1="50" y1="12" x2="85" y2="12" stroke="currentColor" stroke-width="0.8"/>
+                <line x1="50" y1="20" x2="85" y2="20" stroke="currentColor" stroke-width="0.8"/>
+                
+                <rect x="5" y="40" width="35" height="25" fill="none" stroke="currentColor" stroke-width="1"/>
+                <line x1="15" y1="40" x2="15" y2="65" stroke="currentColor" stroke-width="0.8"/>
+                <line x1="25" y1="40" x2="25" y2="65" stroke="currentColor" stroke-width="0.8"/>
+                <line x1="5" y1="47" x2="40" y2="47" stroke="currentColor" stroke-width="0.8"/>
+                <line x1="5" y1="55" x2="40" y2="55" stroke="currentColor" stroke-width="0.8"/>
+                
+                <rect x="50" y="40" width="35" height="25" fill="none" stroke="currentColor" stroke-width="1"/>
+                <line x1="60" y1="40" x2="60" y2="65" stroke="currentColor" stroke-width="0.8"/>
+                <line x1="70" y1="40" x2="70" y2="65" stroke="currentColor" stroke-width="0.8"/>
+                <line x1="50" y1="47" x2="85" y2="47" stroke="currentColor" stroke-width="0.8"/>
+                <line x1="50" y1="55" x2="85" y2="55" stroke="currentColor" stroke-width="0.8"/>
+            </svg>
+        </div>
+        
+        <!-- Sun Rays -->
+        <div class="shape shape-sun-rays" data-shape="sun-rays">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="2"/>
+                <line x1="50" y1="5" x2="50" y2="15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                <line x1="50" y1="85" x2="50" y2="95" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                <line x1="5" y1="50" x2="15" y2="50" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                <line x1="85" y1="50" x2="95" y2="50" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                <line x1="18" y1="18" x2="25" y2="25" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                <line x1="75" y1="75" x2="82" y2="82" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                <line x1="82" y1="18" x2="75" y2="25" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                <line x1="25" y1="75" x2="18" y2="82" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+        </div>
     </div>
     
     <!-- Navigation -->
@@ -350,7 +423,7 @@
     
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <script src="script.js?v=3"></script>
+    <script src="script.js?v=4"></script>
 </body>
 </html>
 
