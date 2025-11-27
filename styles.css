@@ -394,6 +394,7 @@ body {
     animation: fadeInUp 1s ease forwards;
     width: 100%;
     box-sizing: border-box;
+    scroll-margin-top: 80px;
 }
 
 @keyframes fadeInUp {
@@ -539,6 +540,7 @@ body {
 /* Benefits Section */
 .benefits {
     padding: 100px 0;
+    scroll-margin-top: 80px;
     opacity: 0;
     animation: fadeInUp 1s ease forwards;
     width: 100%;
@@ -616,6 +618,7 @@ body {
 /* Calculator Section */
 .calculator-section {
     padding: 100px 0;
+    scroll-margin-top: 80px;
     opacity: 0;
     animation: fadeInUp 1s ease forwards;
     width: 100%;
@@ -633,6 +636,10 @@ body {
 
 .results-top {
     margin-bottom: 2rem;
+}
+
+.results-bottom {
+    margin-top: 2rem;
 }
 
 .results-grid-compact {
@@ -1050,6 +1057,7 @@ canvas {
     animation: fadeInUp 1s ease forwards;
     width: 100%;
     max-width: 100%;
+    scroll-margin-top: 80px;
     box-sizing: border-box;
 }
 
