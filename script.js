@@ -494,13 +494,13 @@ function initializeCharts() {
         }
     });
     
-    // ROI gauge chart - Shows annual progress toward break-even
+    // ROI gauge chart - Shows ROI percentage on a 0-20% scale
     roiChart = new Chart(roiCtx, {
         type: 'doughnut',
         data: {
-            labels: ['Annual Progress', 'Remaining'],
+            labels: ['ROI', 'Remaining'],
             datasets: [{
-                data: [0, 100],
+                data: [0, 20],
                 backgroundColor: [
                     'rgba(6, 182, 212, 0.8)',
                     'rgba(139, 92, 246, 0.2)'
@@ -535,7 +535,17 @@ function initializeCharts() {
                     borderWidth: 1,
                     titleColor: '#ffffff',
                     bodyColor: '#a0a0b0',
-                    padding: 12
+                    padding: 12,
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.label || '';
+                            const value = context.parsed;
+                            if (label === 'ROI') {
+                                return `ROI: ${value.toFixed(1)}% per year`;
+                            }
+                            return `${label}: ${value.toFixed(1)}%`;
+                        }
+                    }
                 }
             },
             animation: {
@@ -593,13 +603,15 @@ function updateCharts(results) {
     ];
     energyChart.update('active');
     
-    // Update ROI chart - Show progress to break-even (inverse of payback period)
-    // If payback is 12.2 years, we show progress as: (1 / paybackPeriod) * 100
-    // This shows how much progress you make each year toward break-even
-    const paybackPeriod = parseFloat(results.paybackPeriod);
-    const annualProgress = paybackPeriod > 0 ? (1 / paybackPeriod) * 100 : 0;
-    const progressValue = Math.min(annualProgress, 100);
-    roiChart.data.datasets[0].data = [progressValue, Math.max(0, 100 - progressValue)];
+    // Update ROI chart - Show ROI percentage on a 0-20% scale for clarity
+    // ROI of 8.2% means 8.2% annual return on investment
+    // We display it on a 0-20% scale so it's visually clear (most solar ROI is 5-15%)
+    const roiValue = parseFloat(results.roi);
+    const maxROIScale = 20; // Maximum ROI to display on scale (20% = excellent ROI)
+    const roiPercentage = Math.min(roiValue, maxROIScale);
+    const remaining = maxROIScale - roiPercentage;
+    
+    roiChart.data.datasets[0].data = [roiPercentage, remaining];
     roiChart.update('active');
     
     // Add ROI text in center
