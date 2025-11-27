@@ -22,6 +22,9 @@
 
 html {
     scroll-behavior: smooth;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 body {
@@ -30,12 +33,23 @@ body {
     color: var(--text-primary);
     line-height: 1.6;
     overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
+    position: relative;
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+@media (max-width: 640px) {
+    .container {
+        padding: 0 15px;
+    }
 }
 
 /* Animated Background */
@@ -371,6 +385,8 @@ body {
     position: relative;
     opacity: 0;
     animation: fadeInUp 1s ease forwards;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 @keyframes fadeInUp {
@@ -518,6 +534,10 @@ body {
     padding: 100px 0;
     opacity: 0;
     animation: fadeInUp 1s ease forwards;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
 }
 
 .section-title {
@@ -592,6 +612,10 @@ body {
     padding: 100px 0;
     opacity: 0;
     animation: fadeInUp 1s ease forwards;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
 }
 
 .calculator-wrapper {
@@ -967,6 +991,10 @@ body {
     padding: 100px 0;
     opacity: 0;
     animation: fadeInUp 1s ease forwards;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
 }
 
 .quote-form-container {
@@ -1145,6 +1173,12 @@ textarea.form-input {
 }
 
 @media (max-width: 640px) {
+    html, body {
+        width: 100%;
+        overflow-x: hidden;
+        position: relative;
+    }
+    
     .nav-links {
         gap: 1rem;
         font-size: 0.9rem;
@@ -1165,6 +1199,17 @@ textarea.form-input {
     
     .results-grid-compact {
         grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .hero {
+        padding: 100px 15px 40px;
+    }
+    
+    .benefits,
+    .calculator-section,
+    .quote-section {
+        padding-left: 15px;
+        padding-right: 15px;
     }
     
     .result-card-compact .result-value {
