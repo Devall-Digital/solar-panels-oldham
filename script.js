@@ -704,7 +704,8 @@ function initializeShapeInteractions() {
         const height = rect.height || 150;
         
         // Random starting position (with padding from edges)
-        const padding = 100;
+        const isMobile = viewportWidth < 768;
+        const padding = isMobile ? 60 : 100;
         const startX = padding + Math.random() * (viewportWidth - padding * 2);
         const startY = padding + Math.random() * (viewportHeight - padding * 2);
         
@@ -734,14 +735,20 @@ function initializeShapeInteractions() {
     function animateShapes() {
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
+        const isMobile = viewportWidth < 768;
+        const padding = isMobile ? 30 : 50; // Smaller padding on mobile
         
         shapePhysics.forEach(physics => {
+            // Update dimensions from element (in case of resize)
+            const rect = physics.element.getBoundingClientRect();
+            physics.width = rect.width;
+            physics.height = rect.height;
+            
             // Update position
             physics.x += physics.vx;
             physics.y += physics.vy;
             
             // Bounce off edges (with some padding to keep shapes visible)
-            const padding = 50;
             if (physics.x - physics.width / 2 < padding || physics.x + physics.width / 2 > viewportWidth - padding) {
                 physics.vx *= -1; // Reverse X velocity
                 physics.x = Math.max(padding + physics.width / 2, Math.min(viewportWidth - padding - physics.width / 2, physics.x));
@@ -777,10 +784,18 @@ function initializeShapeInteractions() {
             const newWidth = window.innerWidth;
             const newHeight = window.innerHeight;
             
+            const isMobile = newWidth < 768;
+            const padding = isMobile ? 30 : 50;
+            
             shapePhysics.forEach(physics => {
+                // Update dimensions
+                const rect = physics.element.getBoundingClientRect();
+                physics.width = rect.width;
+                physics.height = rect.height;
+                
                 // Keep shapes within new viewport bounds
-                physics.x = Math.max(physics.width / 2 + 50, Math.min(newWidth - physics.width / 2 - 50, physics.x));
-                physics.y = Math.max(physics.height / 2 + 50, Math.min(newHeight - physics.height / 2 - 50, physics.y));
+                physics.x = Math.max(physics.width / 2 + padding, Math.min(newWidth - physics.width / 2 - padding, physics.x));
+                physics.y = Math.max(physics.height / 2 + padding, Math.min(newHeight - physics.height / 2 - padding, physics.y));
             });
         }, 250);
     });

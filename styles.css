@@ -126,8 +126,8 @@ body {
 
 /* Solar Panel Icon */
 .shape-solar-panel {
-    width: 200px;
-    height: 120px;
+    width: 120px;
+    height: 72px;
     color: var(--primary-purple);
     animation: shapeRotate 25s infinite linear;
     transition: left 0.1s linear, top 0.1s linear;
@@ -135,8 +135,8 @@ body {
 
 /* Sun Icon */
 .shape-sun {
-    width: 180px;
-    height: 180px;
+    width: 100px;
+    height: 100px;
     color: rgba(251, 191, 36, 0.6);
     animation: shapeRotate 35s infinite linear reverse;
     filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.4));
@@ -145,8 +145,8 @@ body {
 
 /* Energy Bolt */
 .shape-energy {
-    width: 80px;
-    height: 130px;
+    width: 50px;
+    height: 80px;
     color: var(--primary-cyan);
     animation: shapeRotate 40s infinite linear, energyPulse 3s ease-in-out infinite;
     transition: left 0.1s linear, top 0.1s linear;
@@ -154,8 +154,8 @@ body {
 
 /* Solar Panel Array */
 .shape-panel-array {
-    width: 240px;
-    height: 160px;
+    width: 140px;
+    height: 95px;
     color: var(--primary-purple);
     animation: shapeRotate 28s infinite linear reverse;
     transition: left 0.1s linear, top 0.1s linear;
@@ -163,12 +163,40 @@ body {
 
 /* Sun Rays */
 .shape-sun-rays {
-    width: 200px;
-    height: 200px;
+    width: 110px;
+    height: 110px;
     color: rgba(251, 191, 36, 0.5);
     animation: shapeRotate 32s infinite linear;
     filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.3));
     transition: left 0.1s linear, top 0.1s linear;
+}
+
+/* Responsive sizing for mobile */
+@media (max-width: 768px) {
+    .shape-solar-panel {
+        width: 80px;
+        height: 48px;
+    }
+    
+    .shape-sun {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .shape-energy {
+        width: 35px;
+        height: 55px;
+    }
+    
+    .shape-panel-array {
+        width: 90px;
+        height: 60px;
+    }
+    
+    .shape-sun-rays {
+        width: 75px;
+        height: 75px;
+    }
 }
 
 /* Scroll-reactive styles */
