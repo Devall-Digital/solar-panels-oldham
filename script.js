@@ -494,11 +494,11 @@ function initializeCharts() {
         }
     });
     
-    // ROI gauge chart
+    // ROI gauge chart - Shows annual progress toward break-even
     roiChart = new Chart(roiCtx, {
         type: 'doughnut',
         data: {
-            labels: ['ROI', 'Remaining'],
+            labels: ['Annual Progress', 'Remaining'],
             datasets: [{
                 data: [0, 100],
                 backgroundColor: [
@@ -593,9 +593,13 @@ function updateCharts(results) {
     ];
     energyChart.update('active');
     
-    // Update ROI chart
-    const roiValue = Math.min(parseFloat(results.roi), 100);
-    roiChart.data.datasets[0].data = [roiValue, Math.max(0, 100 - roiValue)];
+    // Update ROI chart - Show progress to break-even (inverse of payback period)
+    // If payback is 12.2 years, we show progress as: (1 / paybackPeriod) * 100
+    // This shows how much progress you make each year toward break-even
+    const paybackPeriod = parseFloat(results.paybackPeriod);
+    const annualProgress = paybackPeriod > 0 ? (1 / paybackPeriod) * 100 : 0;
+    const progressValue = Math.min(annualProgress, 100);
+    roiChart.data.datasets[0].data = [progressValue, Math.max(0, 100 - progressValue)];
     roiChart.update('active');
     
     // Add ROI text in center
