@@ -1,5 +1,5 @@
 // Calculator State
-// Updated: Full design elements deployment
+// Updated: Realistic UK solar panel calculations (2024)
 const calculatorState = {
     location: 'oldham',
     roofSize: 50,
@@ -135,76 +135,120 @@ function updateSliderTrack(slider) {
 }
 
 // Calculate solar panel system
+// Updated with realistic UK values and formulas
 function calculateSolarSystem() {
     const { roofSize, energyUsage, roofOrientation, roofPitch, shading, propertyType } = calculatorState;
     
-    // Orientation efficiency (south is best)
+    // UK Realistic Values (2024)
+    // Solar irradiance for Greater Manchester/Oldham area: ~950 kWh/m²/year
+    const annualSolarIrradiance = 950; // kWh/m²/year (UK average is 900-1100)
+    
+    // Modern UK solar panel specifications
+    const panelEfficiency = 0.20; // 20% efficiency (typical modern panels)
+    const panelSize = 1.7; // m² per panel (standard UK panel size)
+    const panelPower = 0.375; // kW per panel (375W - typical modern UK panel)
+    
+    // UK installation costs (2024)
+    const costPerkW = 2000; // £2,000 per kW installed (includes panels, inverter, installation)
+    
+    // UK electricity price (2024 average)
+    const electricityPrice = 0.32; // £0.32 per kWh (UK average as of 2024)
+    const exportPrice = 0.15; // £0.15 per kWh (Smart Export Guarantee - typical rate)
+    
+    // Orientation efficiency multipliers (UK-specific, south-facing is optimal)
     const orientationEfficiency = {
-        'south': 1.0,
-        'southeast': 0.95,
-        'southwest': 0.95,
-        'east': 0.85,
-        'west': 0.85
+        'south': 1.0,        // Optimal
+        'southeast': 0.95,   // Very good
+        'southwest': 0.95,   // Very good
+        'east': 0.85,        // Good
+        'west': 0.85         // Good
     };
     
-    // Pitch efficiency (30-40 degrees is optimal)
-    const pitchEfficiency = Math.max(0.7, 1 - Math.abs(roofPitch - 35) / 50);
+    // Pitch efficiency (30-40 degrees is optimal for UK latitude ~53°N)
+    // Optimal pitch for UK is around 35-40 degrees
+    const optimalPitch = 37.5; // degrees
+    const pitchEfficiency = Math.max(0.75, 1 - Math.abs(roofPitch - optimalPitch) / 60);
     
-    // Shading efficiency
-    const shadingEfficiency = 1 - (shading / 100) * 0.3;
-    
-    // Average solar irradiance in Oldham area (kWh/m²/day)
-    const solarIrradiance = 2.8;
-    
-    // Panel efficiency and size
-    const panelEfficiency = 0.20; // 20% efficiency
-    const panelSize = 1.7; // m² per panel
-    const panelPower = 0.4; // kW per panel
+    // Shading efficiency (reduces output linearly)
+    // Shading value: 0-100 (0 = no shading, 100 = fully shaded)
+    const shadingEfficiency = 1 - (shading / 100) * 0.4; // Up to 40% reduction
     
     // Calculate available roof area for panels
-    const usableRoofArea = roofSize * 0.8; // 80% usable
+    // Typically 70-80% of roof area can be used (accounting for edges, obstructions, etc.)
+    const usableRoofArea = roofSize * 0.75; // 75% usable area
     
-    // Calculate max panels that fit
+    // Calculate maximum number of panels that fit
     const maxPanels = Math.floor(usableRoofArea / panelSize);
+    const maxSystemSize = maxPanels * panelPower;
     
-    // Calculate energy generation per panel per year
-    const energyPerPanel = panelPower * solarIrradiance * 365 * 
-                          orientationEfficiency[roofOrientation] * 
-                          pitchEfficiency * 
-                          shadingEfficiency;
+    // Calculate annual energy generation per kW of system
+    // Formula: Annual Irradiance (kWh/m²) × Panel Efficiency × Orientation × Pitch × Shading
+    const systemPerformanceRatio = orientationEfficiency[roofOrientation] * 
+                                   pitchEfficiency * 
+                                   shadingEfficiency;
+    
+    // Annual generation per kW of installed capacity
+    const annualGenerationPerkW = annualSolarIrradiance * panelEfficiency * systemPerformanceRatio;
     
     // Calculate required system size based on energy usage
-    const annualEnergyUsage = energyUsage * 12;
-    const requiredSystemSize = annualEnergyUsage / (energyPerPanel / panelPower);
+    const annualEnergyUsage = energyUsage * 12; // Convert monthly to annual
+    
+    // Target: Generate enough to cover 80-90% of usage (accounting for seasonal variation)
+    const targetCoverage = 0.85; // 85% of annual usage
+    const requiredGeneration = annualEnergyUsage * targetCoverage;
+    const requiredSystemSize = requiredGeneration / annualGenerationPerkW;
     
     // Determine actual system size (limited by roof space and budget)
-    const maxSystemSize = maxPanels * panelPower;
-    const budgetSystemSize = calculatorState.budget / 2000; // £2000 per kW
+    const budgetSystemSize = calculatorState.budget / costPerkW;
     
+    // Take the minimum of: required size, roof capacity, and budget
     const systemSize = Math.min(requiredSystemSize, maxSystemSize, budgetSystemSize);
-    const numPanels = Math.floor(systemSize / panelPower);
+    
+    // Round down to nearest panel
+    const numPanels = Math.max(1, Math.floor(systemSize / panelPower));
     const actualSystemSize = numPanels * panelPower;
     
+    // Calculate actual annual generation
+    const annualGeneration = actualSystemSize * annualGenerationPerkW;
+    
     // Calculate costs
-    const costPerkW = 2000;
-    const baseCost = actualSystemSize * costPerkW;
-    const installationCost = baseCost * 1.15; // 15% installation overhead
+    // Base cost scales with system size
+    let baseCost = actualSystemSize * costPerkW;
+    
+    // Small systems (< 3kW) have slightly higher per-kW cost
+    if (actualSystemSize < 3) {
+        baseCost = actualSystemSize * (costPerkW * 1.1);
+    }
+    // Large systems (> 6kW) have slightly lower per-kW cost
+    else if (actualSystemSize > 6) {
+        baseCost = actualSystemSize * (costPerkW * 0.95);
+    }
+    
+    const installationCost = Math.round(baseCost);
     
     // Calculate savings
-    const electricityPrice = 0.34; // £ per kWh
-    const annualGeneration = actualSystemSize * solarIrradiance * 365 * 
-                            orientationEfficiency[roofOrientation] * 
-                            pitchEfficiency * 
-                            shadingEfficiency;
-    const annualSavings = Math.min(annualGeneration * electricityPrice, annualEnergyUsage * electricityPrice * 0.9);
+    // Self-consumption: Typically 30-50% of generation is used directly
+    // Remaining is exported to grid
+    const selfConsumptionRate = 0.4; // 40% self-consumed, 60% exported
+    const selfConsumed = Math.min(annualGeneration * selfConsumptionRate, annualEnergyUsage);
+    const exported = annualGeneration - selfConsumed;
     
-    // Calculate ROI and payback
-    const roi = ((annualSavings / installationCost) * 100).toFixed(1);
-    const paybackPeriod = (installationCost / annualSavings).toFixed(1);
+    // Savings from self-consumption (avoid buying from grid)
+    const selfConsumptionSavings = selfConsumed * electricityPrice;
     
-    // CO2 reduction (kg CO2 per kWh)
-    const co2PerkWh = 0.233;
-    const co2Reduction = (annualGeneration * co2PerkWh / 1000).toFixed(1);
+    // Income from export (Smart Export Guarantee)
+    const exportIncome = exported * exportPrice;
+    
+    // Total annual savings
+    const annualSavings = selfConsumptionSavings + exportIncome;
+    
+    // Calculate ROI and payback period
+    const roi = installationCost > 0 ? ((annualSavings / installationCost) * 100).toFixed(1) : '0.0';
+    const paybackPeriod = annualSavings > 0 ? (installationCost / annualSavings).toFixed(1) : '999';
+    
+    // CO2 reduction (UK grid average: 0.233 kg CO2 per kWh)
+    const co2PerkWh = 0.233; // kg CO2 per kWh
+    const co2Reduction = (annualGeneration * co2PerkWh / 1000).toFixed(1); // Convert to tonnes
     
     return {
         systemSize: actualSystemSize,
@@ -215,7 +259,9 @@ function calculateSolarSystem() {
         paybackPeriod: paybackPeriod,
         co2Reduction: co2Reduction,
         annualGeneration: annualGeneration,
-        annualConsumption: annualEnergyUsage
+        annualConsumption: annualEnergyUsage,
+        selfConsumed: selfConsumed,
+        exported: exported
     };
 }
 
