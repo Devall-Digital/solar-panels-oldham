@@ -193,8 +193,13 @@ function calculateSolarSystem() {
     const areaPerkW = (1 / panelPower) * panelSize; // m² per kW
     
     // Annual generation per kW of installed capacity
-    // This accounts for: irradiance per m² × area per kW × efficiency × performance factors
-    const annualGenerationPerkW = annualSolarIrradiance * areaPerkW * panelEfficiency * systemPerformanceRatio;
+    // UK standard: 850-950 kWh per kW per year (accounts for efficiency and system losses)
+    // We use 900 kWh/kW/year as base, then apply performance factors for orientation, pitch, shading
+    const ukBaseGenerationPerkW = 900; // kWh/kW/year (UK average, already includes efficiency)
+    
+    // Apply performance factors (orientation, pitch, shading) to the UK base figure
+    // This gives realistic generation based on specific installation conditions
+    const annualGenerationPerkW = ukBaseGenerationPerkW * systemPerformanceRatio;
     
     // Calculate required system size based on energy usage
     const annualEnergyUsage = energyUsage * 12; // Convert monthly to annual
@@ -293,8 +298,17 @@ function updateCalculations() {
     document.getElementById('calcPaybackPeriod').value = results.paybackPeriod;
     document.getElementById('calcLocation').value = calculatorState.location;
     
-    // Update charts
-    updateCharts(results);
+    // Update charts - ensure they exist before updating
+    if (savingsChart && energyChart && roiChart) {
+        updateCharts(results);
+    } else {
+        // If charts aren't ready, try again after a short delay
+        setTimeout(() => {
+            if (savingsChart && energyChart && roiChart) {
+                updateCharts(results);
+            }
+        }, 200);
+    }
 }
 
 // Animate value changes
@@ -317,7 +331,11 @@ function initializeCharts() {
     const energyCtx = document.getElementById('energyChart');
     const roiCtx = document.getElementById('roiChart');
     
-    if (!savingsCtx || !energyCtx || !roiCtx) return;
+    if (!savingsCtx || !energyCtx || !roiCtx) {
+        // Retry after a short delay if charts aren't ready yet
+        setTimeout(initializeCharts, 100);
+        return;
+    }
     
     // Chart.js default colors
     Chart.defaults.color = '#a0a0b0';
@@ -370,15 +388,20 @@ function initializeCharts() {
             },
             scales: {
                 y: {
-                    beginAtZero: true,
+                    beginAtZero: false,
                     grid: {
-                        color: 'rgba(139, 92, 246, 0.1)'
+                        color: 'rgba(139, 92, 246, 0.1)',
+                        drawBorder: false
                     },
                     ticks: {
                         color: '#a0a0b0',
                         callback: function(value) {
                             return '£' + value.toLocaleString();
                         }
+                    },
+                    // Add zero line to show break-even point
+                    afterDataLimits: function(scale) {
+                        scale.min = Math.min(scale.min, 0);
                     }
                 },
                 x: {
@@ -539,19 +562,28 @@ function updateCharts(results) {
     if (!savingsChart || !energyChart || !roiChart) return;
     
     // Update savings chart (25 years projection)
+    // Shows cumulative savings minus initial investment
+    // Negative values = haven't paid back yet, Positive = profit
     const years = [];
     const savings = [];
     let cumulativeSavings = 0;
     const installCost = results.installCost;
     
     for (let year = 0; year <= 25; year++) {
-        years.push('Year ' + year);
+        years.push(year === 0 ? 'Now' : 'Year ' + year);
         cumulativeSavings += results.annualSavings;
         savings.push(cumulativeSavings - installCost);
     }
     
     savingsChart.data.labels = years;
     savingsChart.data.datasets[0].data = savings;
+    
+    // Update y-axis to show zero line clearly (break-even point)
+    const minValue = Math.min(...savings);
+    const maxValue = Math.max(...savings);
+    savingsChart.options.scales.y.min = Math.min(minValue * 1.1, 0);
+    savingsChart.options.scales.y.max = Math.max(maxValue * 1.1, 0);
+    
     savingsChart.update('active');
     
     // Update energy chart
