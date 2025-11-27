@@ -293,8 +293,16 @@ function initializeCharts() {
         },
         options: {
             responsive: true,
-            maintainAspectRatio: true,
+            maintainAspectRatio: false,
             aspectRatio: 2,
+            layout: {
+                padding: {
+                    left: 0,
+                    right: 0,
+                    top: 0,
+                    bottom: 0
+                }
+            },
             plugins: {
                 legend: {
                     display: false
@@ -359,8 +367,16 @@ function initializeCharts() {
         },
         options: {
             responsive: true,
-            maintainAspectRatio: true,
+            maintainAspectRatio: false,
             aspectRatio: 2,
+            layout: {
+                padding: {
+                    left: 0,
+                    right: 0,
+                    top: 0,
+                    bottom: 0
+                }
+            },
             plugins: {
                 legend: {
                     display: false
@@ -423,9 +439,17 @@ function initializeCharts() {
         },
         options: {
             responsive: true,
-            maintainAspectRatio: true,
+            maintainAspectRatio: false,
             aspectRatio: 1.5,
             cutout: '70%',
+            layout: {
+                padding: {
+                    left: 0,
+                    right: 0,
+                    top: 0,
+                    bottom: 0
+                }
+            },
             plugins: {
                 legend: {
                     display: false
@@ -444,6 +468,17 @@ function initializeCharts() {
                 easing: 'easeOutQuart'
             }
         }
+    });
+    
+    // Handle window resize to ensure charts stay responsive
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            if (savingsChart) savingsChart.resize();
+            if (energyChart) energyChart.resize();
+            if (roiChart) roiChart.resize();
+        }, 250);
     });
 }
 

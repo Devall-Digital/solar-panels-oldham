@@ -951,6 +951,9 @@ body {
     grid-template-columns: 1fr;
     gap: 2rem;
     margin-top: 2rem;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .charts-container-compact {
@@ -958,6 +961,38 @@ body {
     grid-template-columns: 1fr;
     gap: 1.5rem;
     margin-bottom: 1.5rem;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.charts-panel {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+canvas {
+    max-width: 100% !important;
+    width: 100% !important;
+    height: auto !important;
+    max-height: 300px;
+    box-sizing: border-box;
+}
+
+@media (max-width: 640px) {
+    canvas {
+        max-height: 250px;
+    }
+}
+
+.chart-wrapper,
+.chart-wrapper-compact {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
 }
 
 .chart-wrapper {
@@ -1175,8 +1210,12 @@ textarea.form-input {
         gap: 1.5rem;
     }
     
+    .calculator-panel {
+        padding: 1.5rem;
+    }
+    
     .inputs-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr !important;
         gap: 1rem;
     }
     
@@ -1254,6 +1293,24 @@ textarea.form-input {
     
     .nav-content {
         padding: 0 15px;
+    }
+    
+    .calculator-panel {
+        padding: 1.25rem;
+    }
+    
+    .inputs-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    canvas {
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+    
+    .chart-wrapper,
+    .chart-wrapper-compact {
+        padding: 1rem;
     }
     
     .result-card-compact .result-value {
