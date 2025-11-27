@@ -182,13 +182,19 @@ function calculateSolarSystem() {
     const maxSystemSize = maxPanels * panelPower;
     
     // Calculate annual energy generation per kW of system
-    // Formula: Annual Irradiance (kWh/m²) × Panel Efficiency × Orientation × Pitch × Shading
+    // Formula: Annual Irradiance (kWh/m²/year) × Area per kW (m²/kW) × Panel Efficiency × Performance Factors
     const systemPerformanceRatio = orientationEfficiency[roofOrientation] * 
                                    pitchEfficiency * 
                                    shadingEfficiency;
     
+    // Calculate area required per kW of installed capacity
+    // 1 kW = panelPower kW per panel, so 1 kW = 1/panelPower panels
+    // Area per kW = (1/panelPower) × panelSize
+    const areaPerkW = (1 / panelPower) * panelSize; // m² per kW
+    
     // Annual generation per kW of installed capacity
-    const annualGenerationPerkW = annualSolarIrradiance * panelEfficiency * systemPerformanceRatio;
+    // This accounts for: irradiance per m² × area per kW × efficiency × performance factors
+    const annualGenerationPerkW = annualSolarIrradiance * areaPerkW * panelEfficiency * systemPerformanceRatio;
     
     // Calculate required system size based on energy usage
     const annualEnergyUsage = energyUsage * 12; // Convert monthly to annual
