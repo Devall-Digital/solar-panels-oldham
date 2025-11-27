@@ -296,13 +296,18 @@ body {
 .nav-container {
     position: fixed;
     top: 0;
+    left: 0;
+    right: 0;
     width: 100%;
+    max-width: 100%;
     z-index: 1000;
     background: rgba(10, 10, 15, 0.8);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--glass-border);
     padding: 1rem 0;
     transition: all 0.3s ease;
+    box-sizing: border-box;
+    overflow-x: hidden;
 }
 
 .nav-content {
@@ -312,6 +317,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .logo {
@@ -537,7 +544,6 @@ body {
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
-    overflow-x: hidden;
 }
 
 .section-title {
@@ -615,11 +621,14 @@ body {
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
-    overflow-x: hidden;
 }
 
 .calculator-wrapper {
     margin-top: 3rem;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
 }
 
 .results-top {
@@ -679,12 +688,18 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .inputs-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .inputs-grid .input-group {
@@ -703,6 +718,10 @@ body {
     border-radius: 25px;
     padding: 2.5rem;
     transition: all 0.3s ease;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
 }
 
 .calculator-panel:hover {
@@ -722,6 +741,9 @@ body {
 .input-group {
     margin-bottom: 2rem;
     position: relative;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .input-group label {
@@ -994,7 +1016,6 @@ body {
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
-    overflow-x: hidden;
 }
 
 .quote-form-container {
@@ -1151,6 +1172,25 @@ textarea.form-input {
 @media (max-width: 968px) {
     .calculator-container {
         grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .inputs-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .input-group,
+    .orientation-selector,
+    .property-selector {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .slider {
+        max-width: 100%;
+        box-sizing: border-box;
     }
     
     .hero {
@@ -1205,11 +1245,15 @@ textarea.form-input {
         padding: 100px 15px 40px;
     }
     
-    .benefits,
+        .benefits,
     .calculator-section,
     .quote-section {
-        padding-left: 15px;
-        padding-right: 15px;
+        padding-left: 0;
+        padding-right: 0;
+    }
+    
+    .nav-content {
+        padding: 0 15px;
     }
     
     .result-card-compact .result-value {
