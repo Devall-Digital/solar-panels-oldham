@@ -1,0 +1,17 @@
+# Robots.txt for Solar Panels Oldham
+# Updated: SEO optimisation
+
+User-agent: *
+Allow: /
+
+# Disallow admin/config files
+Disallow: /email-config.php
+Disallow: /webhook-config.php
+Disallow: /webhook-deploy.php
+Disallow: /.git/
+Disallow: /.temp-config-backup/
+Disallow: /quotes/
+
+# Sitemap location
+Sitemap: https://solar-panels-oldham.co.uk/sitemap.xml
+
