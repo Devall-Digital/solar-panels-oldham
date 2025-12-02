@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate Favicon</title>
+</head>
+<body>
+    <h1>Favicon Generator</h1>
+    <p>Right-click the canvas below and "Save image as..." to save as favicon.png</p>
+    <canvas id="favicon" width="64" height="64"></canvas>
+    
+    <script>
+        const canvas = document.getElementById('favicon');
+        const ctx = canvas.getContext('2d');
+        
+        // Create gradient
+        const gradient = ctx.createLinearGradient(0, 0, 64, 64);
+        gradient.addColorStop(0, '#8B5CF6'); // Purple
+        gradient.addColorStop(1, '#06B6D4'); // Cyan
+        
+        // Draw background circle
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(32, 32, 30, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Draw solar panel grid
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+        for (let x = 12; x <= 42; x += 10) {
+            for (let y = 20; y <= 36; y += 8) {
+                ctx.fillRect(x, y, 8, 6);
+            }
+        }
+        
+        // Draw sun
+        ctx.fillStyle = 'rgba(255, 215, 0, 0.8)';
+        ctx.beginPath();
+        ctx.arc(32, 12, 3, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Auto-download
+        canvas.toBlob(function(blob) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'favicon.png';
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+    </script>
+</body>
+</html>
+
